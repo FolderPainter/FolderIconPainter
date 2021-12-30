@@ -3,13 +3,13 @@
   "splashscreen": {
     "imageFile": ""
   },
-  "name": "WebApp",
-  "author": "",
+  "name": "Folder Icon Painter",
+  "author": "Cold Foreign (George Radchuk)",
   "singleInstance": false,
   "environment": "Production",
   "build": {
     "appId": "com.WebApp.app",
-    "productName": "WebApp",
+    "productName": "Folder Icon Painter",
     "copyright": "Copyright © 2020",
     "buildVersion": "1.0.0",
     "compression": "maximum",

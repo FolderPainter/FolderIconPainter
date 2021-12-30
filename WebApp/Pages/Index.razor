@@ -1,7 +1,89 @@
 ﻿@page "/"
+@using WebApp.Shared.Components
 
-<h1>Hello, world!</h1>
+<MudContainer Class="mt-6">
+    <MudGrid>
+        <MudItem xs="12">
+            <MudGrid>
+                <MudItem xs="3">
+                        <MudCard>
+                            <MudCardContent>
+                                <DragDropZone Color=@(Cl)></DragDropZone>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="3">
+                        <MudCard>
+                            <MudCardContent>
+                                <DragDropZone Color="blue"></DragDropZone>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                @*@for (int i = 0; i < papers; i++)
+                {
 
-Welcome to your new app.
+                    int localindex = i;
+                   
+                    <MudItem xs="@breaks[localindex]">
+                        <MudCard>
+                            <MudCardContent>
+                                <DragDropZone Color=@(i == 5 ? "blue" : Cl)></DragDropZone>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                }*@
+            </MudGrid>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+
+    int papers = 16;
+    string cl = "red";
+
+    int Papers
+    {
+        get => papers;
+        set => UpdatePapers(value);
+    }
+    public string Cl { get => cl; set => cl = value; }
+
+
+
+
+    string[] colors = new string[] { "r", "ew"};
+    int[] breaks = new int[16] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+
+    void UpdatePapers(int value)
+    {
+
+        int[] newbreaks = Enumerable.Repeat(3, value).ToArray();
+
+        for (int i = 0; i < newbreaks.Length; i++)
+        {
+            if (i < breaks.Length)
+            {
+                newbreaks[i] = breaks[i];
+            }
+        }
+
+        breaks = newbreaks;
+
+        papers = value;
+
+        StateHasChanged();
+    }
+
+    void UpdateBreaks(int index, int changeamount)
+    {
+        List<int> newbreaks = breaks.ToList();
+
+        newbreaks[index] = newbreaks[index] += changeamount;
+
+        breaks = newbreaks.ToArray();
+
+        StateHasChanged();
+    }
+
+}

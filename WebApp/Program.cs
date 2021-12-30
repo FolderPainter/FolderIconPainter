@@ -17,6 +17,7 @@ namespace WebApp
                 {
                     webBuilder.UseElectron(args);
                     webBuilder.UseEnvironment("Development");
+                    webBuilder.UseStaticWebAssets();
                     webBuilder.UseStartup<Startup>();
                 });
     }

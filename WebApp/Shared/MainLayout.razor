@@ -1,17 +1,30 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<MudThemeProvider />
+<MudThemeProvider Theme="_currentTheme" />
+<MudSnackbarProvider />
 
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
+<MudLayout>
+    <MudAppBar Elevation="25">
+        <MudAvatar Image="img/FIP.png" Variant="Variant.Outlined" Size="Size.Large" Square="true" Class="noBorder" b-snfefjgk3b/>
+        <MudText Typo="Typo.h5" Class="ml-3">FolderIconPainter</MudText>
 
-        <div class="content px-4">
-            @Body
-        </div>
-    </div>
-</div>
+        <MudDivider Vertical="true" FlexItem="true" DividerType="DividerType.Middle" Class="mx-4 my-3" />
+
+        <MudButton Link="/" Variant="Variant.Text" Size="Size.Large" EndIcon="@Icons.Material.Filled.FormatPaint" Color="Color.Inherit" Class="ml-3">Paint</MudButton>
+        <MudButton Link="/addcustom" Variant="Variant.Text" Size="Size.Large" EndIcon="@Icons.Material.Filled.AddBox" Color="Color.Inherit" Class="ml-3">Add Custom</MudButton>
+        <MudButton Variant="Variant.Text" Size="Size.Large" EndIcon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Class="ml-3">Settings</MudButton>
+
+        <MudSpacer />
+
+        <MudTooltip Text="Toggle light/dark theme">
+            <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Inherit" OnClick="@((e) => DarkMode())" />
+        </MudTooltip>
+        <MudTooltip Text="GitHub repository">
+            <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/MudBlazor/MudBlazor/" Target="_blank" Class="fdsfds" />
+        </MudTooltip>
+    </MudAppBar>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
