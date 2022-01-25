@@ -1,14 +1,14 @@
 ﻿@inject ISnackbar Snackbar
 @inherits LayoutComponentBase
 
-<MudPaper @ondragenter="@(()=>_dragEnterStyle="drag-enter")"
+<div @ondragenter="@(()=>_dragEnterStyle="drag-enter")"
           @ondragleave="@(()=>_dragEnterStyle=null)"
           @ondragend="@(()=>_dragEnterStyle=null)"
-          Class=@("drag-drop-zone "+ _dragEnterStyle) Style=@("background-color: "+ Color)>
+          Class=@("mud-paper mud-elevation-1 drag-drop-zone " + _dragEnterStyle) Style=@("background-color: "+ Color)>
 
-    <InputFile OnChange="OnInputFileChanged" multiple  class="drag-drop-input" />
+    <input onchange="OnInputFileChanged" multiple  Class="drag-drop-input" />
 
-</MudPaper>
+</div>
 
 @code { 
     string _dragEnterStyle;

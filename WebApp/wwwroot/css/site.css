@@ -49,26 +49,10 @@ a, .btn-link {
         top: 0.5rem;
     }
 
+
+/*
+
 .drag-drop-zone {
-    background-color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all .4s;
-    cursor: pointer;
-    min-height: 100px;
-}
-
-.drag-drop-input {
-    position: relative;
-    height: 100%;
-    opacity: 0;
-    z-index: 3;
-    cursor: pointer;
-    min-height: 100px;
-}
-
-/*.drag-drop-zone {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -83,9 +67,9 @@ a, .btn-link {
     opacity: 0;
     cursor: pointer;
     z-index: 2;
-}
+}*/
 
-.drag-enter {
+/*.drag-enter {
     box-shadow: var(--mud-elevation-10);
 }
 
