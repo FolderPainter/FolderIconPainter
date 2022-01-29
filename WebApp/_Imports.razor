@@ -8,4 +8,9 @@
 @using Microsoft.JSInterop
 @using WebApp
 @using WebApp.Shared
+@using WebApp.Services.UserPreferences
 @using MudBlazor
+@using Blazored.LocalStorage;
+
+@inject UserPreferencesService _userPreferencesService
+@inject ILocalStorageService _localStorage;

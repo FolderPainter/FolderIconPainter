@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
@@ -6,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MudBlazor.Services;
+using WebApp.Services;
+using WebApp.Services.UserPreferences;
 
 namespace WebApp
 {
@@ -25,6 +28,9 @@ namespace WebApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddMudServices();
+            services.AddBlazoredLocalStorage();
+
+            services.AddScoped<UserPreferencesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

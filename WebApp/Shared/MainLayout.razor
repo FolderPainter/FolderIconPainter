@@ -1,6 +1,4 @@
 ﻿@inherits LayoutComponentBase
-
-<MudThemeProvider />
 <MudThemeProvider Theme="_currentTheme" />
 <MudSnackbarProvider />
 
@@ -20,9 +18,14 @@
         <MudTooltip Text="Toggle light/dark theme">
             <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Inherit" OnClick="@((e) => DarkMode())" />
         </MudTooltip>
+        <MudTooltip Duration="1000" Text="@(IsDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme")">
+            <MudIconButton Icon="@(IsDarkMode ? @Icons.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@((e) => DarkMode())"/>
+        </MudTooltip>
+
         <MudTooltip Text="GitHub repository">
             <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/MudBlazor/MudBlazor/" Target="_blank" Class="fdsfds" />
         </MudTooltip>
+
     </MudAppBar>
     <MudMainContent>
         @Body

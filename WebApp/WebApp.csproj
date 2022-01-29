@@ -4,8 +4,9 @@
 	  
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
     <PackageReference Include="ElectronNET.API" Version="13.5.1" />
-    <PackageReference Include="MudBlazor" Version="5.2.0" />
+    <PackageReference Include="MudBlazor" Version="5.2.4" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="electron.manifest.json">
