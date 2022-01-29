@@ -8,15 +8,16 @@ using WebApp.Services.UserPreferences;
 
 namespace WebApp.Shared
 {
-    public partial class MainLayout: LayoutComponentBase
+    public partial class MainLayout : LayoutComponentBase
     {
+        [Inject] private LayoutService LayoutService { get; set; }
+
         public bool IsDarkMode { get; private set; }
 
-        private MudTheme _currentTheme;
-
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            _currentTheme = Theme.DefaultTheme;
+            LayoutService.MajorUpdateOccured += LayoutServiceOnMajorUpdateOccured;
+            LayoutService.SetBaseTheme(Theme.DefaultTheme);
             base.OnInitialized();
         }
 
@@ -26,17 +27,22 @@ namespace WebApp.Shared
 
             if (firstRender)
             {
-                _currentTheme = await _userPreferencesService.GetCurrentThemeAsync();
+                await ApplyUserPreferences();
                 StateHasChanged();
             }
         }
 
-        private async Task DarkMode()
+        private async Task ApplyUserPreferences()
         {
-            IsDarkMode = await _userPreferencesService.ToggleDarkModeAsync();
-            _currentTheme = IsDarkMode
-                ? Theme.DefaultTheme
-                : Theme.DarkTheme;
+            //var defaultDarkMode = await _mudThemeProvider.GetSystemPreference();
+            await LayoutService.ApplyUserPreferences(true);
         }
+
+        public void Dispose()
+        {
+            LayoutService.MajorUpdateOccured -= LayoutServiceOnMajorUpdateOccured;
+        }
+
+        private void LayoutServiceOnMajorUpdateOccured(object sender, EventArgs e) => StateHasChanged();
     }
 }

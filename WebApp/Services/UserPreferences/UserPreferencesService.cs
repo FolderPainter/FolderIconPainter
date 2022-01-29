@@ -6,11 +6,11 @@ namespace WebApp.Services.UserPreferences
 {
     public interface IUserPreferencesService
     {
-        Task<MudTheme> GetCurrentThemeAsync();
+        Task SaveUserPreferences(UserPreferences userPreferences);
 
-        Task<bool> ToggleDarkModeAsync();
+        Task<UserPreferences> LoadUserPreferences();
     }
-    
+
     public class UserPreferencesService : IUserPreferencesService
     {
         private readonly ILocalStorageService _localStorageService;
@@ -21,37 +21,14 @@ namespace WebApp.Services.UserPreferences
             _localStorageService = localStorageService;
         }
 
-        public async Task<bool> ToggleDarkModeAsync()
+        public async Task SaveUserPreferences(UserPreferences userPreferences)
         {
-            var preference = await GetPreference();
-            if (preference != null)
-            {
-                preference.IsDarkMode = !preference.IsDarkMode;
-                await SetPreference(preference);
-                return !preference.IsDarkMode;
-            }
-
-            return false;
+            await _localStorageService.SetItemAsync(Key, userPreferences);
         }
 
-        public async Task<MudTheme> GetCurrentThemeAsync()
+        public async Task<UserPreferences> LoadUserPreferences()
         {
-            var preference = await GetPreference();
-            if (preference != null)
-            {
-                if (preference.IsDarkMode == true) return Theme.DarkTheme;
-            }
-            return Theme.DefaultTheme;
-        }
-
-        public async Task<UserPreferences> GetPreference()
-        {
-            return await _localStorageService.GetItemAsync<UserPreferences>(Key) ?? new UserPreferences();
-        }
-
-        public async Task SetPreference(UserPreferences preference)
-        {
-            await _localStorageService.SetItemAsync(Key, preference);
+            return await _localStorageService.GetItemAsync<UserPreferences>(Key);
         }
     }
 }
