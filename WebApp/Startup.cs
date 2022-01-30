@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
+using System.Linq;
 using WebApp.Services;
 using WebApp.Services.UserPreferences;
 
@@ -81,12 +82,120 @@ namespace WebApp
             var window = await Electron.WindowManager.CreateWindowAsync(
                 new BrowserWindowOptions
                 {
-                    AutoHideMenuBar = true
+                    WebPreferences = new WebPreferences
+                    {
+                        ContextIsolation = false
+                    }
                 });
+
+            if (HybridSupport.IsElectronActive)
+            {
+                Electron.App.Ready += () => CreateContextMenu();
+
+                var menu = new MenuItem[] {
+                new MenuItem { Label = "Edit", Submenu = new MenuItem[] {
+                    new MenuItem { Label = "Undo", Accelerator = "CmdOrCtrl+Z", Role = MenuRole.undo },
+                    new MenuItem { Label = "Redo", Accelerator = "Shift+CmdOrCtrl+Z", Role = MenuRole.redo },
+                    new MenuItem { Type = MenuType.separator },
+                    new MenuItem { Label = "Cut", Accelerator = "CmdOrCtrl+X", Role = MenuRole.cut },
+                    new MenuItem { Label = "Copy", Accelerator = "CmdOrCtrl+C", Role = MenuRole.copy },
+                    new MenuItem { Label = "Paste", Accelerator = "CmdOrCtrl+V", Role = MenuRole.paste },
+                    new MenuItem { Label = "Select All", Accelerator = "CmdOrCtrl+A", Role = MenuRole.selectall }
+                }
+                },
+                new MenuItem { Label = "View", Submenu = new MenuItem[] {
+                    new MenuItem
+                    {
+                        Label = "Reload",
+                        Accelerator = "CmdOrCtrl+R",
+                        Click = () =>
+                        {
+                            // on reload, start fresh and close any old
+                            // open secondary windows
+                            var mainWindowId = window.Id;
+                            Electron.WindowManager.BrowserWindows.ToList().ForEach(browserWindow => {
+                                if(browserWindow.Id != mainWindowId)
+                                {
+                                    browserWindow.Close();
+                                }
+                                else
+                                {
+                                    browserWindow.Reload();
+                                }
+                            });
+                        }
+                    },
+                    new MenuItem
+                    {
+                        Label = "Toggle Full Screen",
+                        Accelerator = "CmdOrCtrl+F",
+                        Click = async () =>
+                        {
+                            bool isFullScreen = await window.IsFullScreenAsync();
+                            window.SetFullScreen(!isFullScreen);
+                        }
+                    },
+                    new MenuItem
+                    {
+                        Label = "Open Developer Tools",
+                        Accelerator = "CmdOrCtrl+I",
+                        Click = () => window.WebContents.OpenDevTools()
+                    },
+                    new MenuItem
+                    {
+                        Type = MenuType.separator
+                    }
+                }
+                },
+                new MenuItem { Label = "Window", Role = MenuRole.window, Submenu = new MenuItem[] {
+                     new MenuItem { Label = "Minimize", Accelerator = "CmdOrCtrl+M", Role = MenuRole.minimize },
+                     new MenuItem { Label = "Close", Accelerator = "CmdOrCtrl+W", Role = MenuRole.close }
+                }
+                },
+                new MenuItem { Label = "Help", Role = MenuRole.help, Submenu = new MenuItem[] {
+                    new MenuItem
+                    {
+                        Label = "Learn More",
+                        Click = async () => await Electron.Shell.OpenExternalAsync("https://github.com/ElectronNET")
+                    }
+                }
+                }
+            };
+
+                Electron.Menu.SetApplicationMenu(menu);
+
+            }
+
+
+            await window.WebContents.Session.ClearCacheAsync();
+
             window.OnClosed += () =>
             {
                 Electron.App.Quit();
             };
+        }
+
+        private void CreateContextMenu()
+        {
+            var menu = new MenuItem[]
+            {
+                new MenuItem
+                {
+                    Label = "Hello",
+                    Click = async () => await Electron.Dialog.ShowMessageBoxAsync("Electron.NET rocks!")
+                },
+                new MenuItem { Type = MenuType.separator },
+                new MenuItem { Label = "Electron.NET", Type = MenuType.checkbox, Checked = true }
+            };
+
+            var mainWindow = Electron.WindowManager.BrowserWindows.FirstOrDefault();
+            Electron.Menu.SetContextMenu(mainWindow, menu);
+
+            Electron.IpcMain.On("show-context-menu", (args) =>
+            {
+                var mainWindow = Electron.WindowManager.BrowserWindows.FirstOrDefault();
+                Electron.Menu.ContextMenuPopup(mainWindow);
+            });
         }
     }
 }

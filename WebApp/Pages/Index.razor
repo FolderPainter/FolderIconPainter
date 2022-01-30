@@ -1,37 +1,39 @@
 ﻿@page "/"
 @using WebApp.Shared.Components
+@using WebApp.Models
+@using System
 
 <MudContainer Class="mt-6">
     <MudGrid>
         <MudItem xs="12">
             <MudGrid>
-                <MudItem xs="3">
-                        <MudCard>
-                            <MudCardContent>
-                                <DragDropZone Color=@(Cl)></DragDropZone>
-                            </MudCardContent>
-                        </MudCard>
-                    </MudItem>
-                    <MudItem xs="3">
-                        <MudCard>
-                            <MudCardContent>
-                                <DragDropZone Color="blue"></DragDropZone>
-                            </MudCardContent>
-                        </MudCard>
-                    </MudItem>
-                @*@for (int i = 0; i < papers; i++)
+              @*  <MudItem xs="3">
+                            <MudCard>
+                                <MudCardContent>
+                                    <DragDropZone Color=@(Cl)></DragDropZone>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                        <MudItem xs="3">
+                            <MudCard>
+                                <MudCardContent>
+                                    <DragDropZone Color="blue"></DragDropZone>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>*@
+                @for (int i = 0; i < papers; i++)
                 {
 
                     int localindex = i;
-                   
-                    <MudItem xs="@breaks[localindex]">
-                        <MudCard>
-                            <MudCardContent>
-                                <DragDropZone Color=@(i == 5 ? "blue" : Cl)></DragDropZone>
-                            </MudCardContent>
-                        </MudCard>
-                    </MudItem>
-                }*@
+
+                        <MudItem xs="@breaks[localindex]">
+                            <MudCard>
+                                <MudCardContent>
+                                    <DragDropZone Color="@colors[localindex]"></DragDropZone>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                }
             </MudGrid>
         </MudItem>
     </MudGrid>
@@ -40,19 +42,15 @@
 @code {
 
     int papers = 16;
-    string cl = "red";
 
     int Papers
     {
         get => papers;
         set => UpdatePapers(value);
     }
-    public string Cl { get => cl; set => cl = value; }
 
 
-
-
-    string[] colors = new string[] { "r", "ew"};
+    string[] colors = FolderColors.GetAllColors().ToArray();
     int[] breaks = new int[16] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
 
     void UpdatePapers(int value)

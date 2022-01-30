@@ -8,9 +8,10 @@
     min-height: 100px;
 }
 
-.drag-drop-input {
+::deep .drag-drop-input {
     position: relative;
     height: 100%;
+    width: 100%;
     opacity: 0;
     z-index: 3;
     cursor: pointer;
