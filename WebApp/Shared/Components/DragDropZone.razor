@@ -1,11 +1,20 @@
 ﻿@inherits LayoutComponentBase
 
-<div @ondragenter="@(()=>_dragEnterStyle="drag-enter")"
-    @ondragleave="@(()=>_dragEnterStyle=null)"
+<div @ondragleave="@(()=>_dragEnterStyle=null)"
     @ondragend="@(()=>_dragEnterStyle=null)"
+
+    @onclick="@OnClicked"
     @ondrop="@OnDrop" 
     @ondrop:preventDefault="true" 
     @ondrop:stopPropagation="true"
+
+    @ondragenter="@(()=>_dragEnterStyle="drag-enter")"
+    @ondragenter:preventDefault="true" 
+    @ondragenter:stopPropagation="true"
+
+    @ondragover:preventDefault="true" 
+    @ondragover:stopPropagation="true"
+
     @ref="dropZoneElement" 
     Class=@("mud-paper mud-elevation-1 drag-drop-zone " + _dragEnterStyle) 
     Style=@("background-color: "+ Color)>

@@ -13,7 +13,8 @@ namespace WebApp.Shared.Components
         private string color = "black";
         private string _dragEnterStyle;
 
-        private IJSRuntime JSRuntime;
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; }
 
         private IJSObjectReference module;
         private IJSObjectReference dropZoneInstance;
@@ -37,7 +38,7 @@ namespace WebApp.Shared.Components
         {
             var f = await module.InvokeAsync<string[]>("GetFiles");
             await JSRuntime.InvokeAsync<string>("console.log", f);
-
+            _dragEnterStyle = null;
             StateHasChanged();
         }
 
