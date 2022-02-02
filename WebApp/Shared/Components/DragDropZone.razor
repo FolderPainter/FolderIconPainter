@@ -1,29 +1,13 @@
-﻿@inject ISnackbar Snackbar
-@inherits LayoutComponentBase
+﻿@inherits LayoutComponentBase
 
 <div @ondragenter="@(()=>_dragEnterStyle="drag-enter")"
-          @ondragleave="@(()=>_dragEnterStyle=null)"
-          @ondragend="@(()=>_dragEnterStyle=null)"
-          Class=@("mud-paper mud-elevation-1 drag-drop-zone " + _dragEnterStyle) Style=@("background-color: "+ Color)>
-
-    <input onchange="OnInputFileChanged" multiple  Class="drag-drop-input" />
+    @ondragleave="@(()=>_dragEnterStyle=null)"
+    @ondragend="@(()=>_dragEnterStyle=null)"
+    @ondrop="@OnDrop" 
+    @ondrop:preventDefault="true" 
+    @ondrop:stopPropagation="true"
+    @ref="dropZoneElement" 
+    Class=@("mud-paper mud-elevation-1 drag-drop-zone " + _dragEnterStyle) 
+    Style=@("background-color: "+ Color)>
 
 </div>
-
-@code { 
-    string _dragEnterStyle;
-    IList<string> fileNames = new List<string>();
-
-    void OnInputFileChanged(InputFileChangeEventArgs e)
-    {
-        var files = e.GetMultipleFiles();
-        fileNames = files.Select(f => f.Name).ToList();
-    }
-
-    void Upload()
-    {
-        //Upload the files here
-        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.TopCenter;
-        Snackbar.Add("TODO: Upload your files!", Severity.Normal);
-    }
-}

@@ -8,6 +8,10 @@
     min-height: 100px;
 }
 
+.drag-enter {
+    box-shadow: var(--mud-elevation-10);
+}
+
 ::deep .drag-drop-input {
     position: relative;
     height: 100%;
