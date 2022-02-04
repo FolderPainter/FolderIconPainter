@@ -8,45 +8,7 @@ namespace WebApp.Services
 {
     public class IconService
     {
-        List<string> allDir = new List<string> { };
-
-        public List<string> AllDir { get => allDir; set => allDir = value; }
-
-        public Boolean SelectDirectory(int subFolders)
-        {
-            try
-            {
-                // ELECTRON DIALOG
-
-                //using (FolderBrowserDialog fbd = new FolderBrowserDialog())
-                //{
-                //    if (fbd.ShowDialog() == DialogResult.OK)
-                //    {
-                //        allDir.Add(fbd.SelectedPath);
-
-                //        if (subFolders == 0)
-                //        {
-                //            allDir.AddRange(System.IO.Directory.GetDirectories(fbd.SelectedPath, "*", System.IO.SearchOption.TopDirectoryOnly));
-                //        }
-                //        else if (subFolders == 1)
-                //        {
-                //            allDir.AddRange(System.IO.Directory.GetDirectories(fbd.SelectedPath, "*", System.IO.SearchOption.AllDirectories));
-                //        }
-
-                //        // Write to richTextbox
-                //        richTextBox.Text = "Selected Folders" + Environment.NewLine + " - ";
-                //        richTextBox.Text += string.Join(Environment.NewLine + " - ", allDir.ToArray());
-
-                //        return true;
-                //    }
-                //}
-            }
-            catch (Exception)
-            {
-            }
-            return false;
-        }
-
+        //for custom
         public string GettingIcons(string dir)
         {
             try
@@ -81,17 +43,14 @@ namespace WebApp.Services
             return null;
         }
 
-        public void SettingIcons(string dir, string icoPath, string folderType)
+        public string SettingIcons(string dir, string icoPath, string folderType = "Generic")
         {
-            if (folderType == "General items")
-            {
-                folderType = "Generic";
-            }
+            var res = "done.";
 
             try
             {
                 //deleting existing files
-                RettingIcons(dir);
+                res = RettingIcons(dir);
 
                 //copying Icon file //overwriting
                 File.Copy(icoPath, dir + @"\Icon.ico", true);
@@ -112,17 +71,19 @@ namespace WebApp.Services
 
                 File.SetAttributes(dir, File.GetAttributes(dir) | FileAttributes.ReadOnly);
 
-                RefreshIcons(dir);
+                res = RefreshIcons(dir);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                return ex.Message;
             }
             finally
             {
             }
+            return res;
         }
 
-        public void RettingIcons(string dir)
+        public string RettingIcons(string dir)
         {
             try
             {
@@ -158,13 +119,15 @@ namespace WebApp.Services
 
                     File.Delete(dir + @"\.hidden");
                 }
+                return "done";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                return ex.Message;
             }
         }
 
-        public void RefreshIcons(string dir)
+        public string RefreshIcons(string dir)
         {
             try
             {
@@ -188,43 +151,46 @@ namespace WebApp.Services
                     File.Delete(file.FullName);
                 }
 
-                // Attempt 04.01
-                using (Process process = new Process())
-                {
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.FileName = "cmd.exe";
-                    startInfo.Arguments = "/C ie4uinit.exe -ClearIconCache";
-                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    process.StartInfo = startInfo;
-                    process.Start();
-                }
+                //// Attempt 04.01
+                //using (Process process = new Process())
+                //{
+                //    ProcessStartInfo startInfo = new ProcessStartInfo();
+                //    startInfo.FileName = "cmd.exe";
+                //    startInfo.Arguments = "/C ie4uinit.exe -ClearIconCache";
+                //    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                //    process.StartInfo = startInfo;
+                //    process.Start();
+                //}
 
-                // Attempt 04.02
-                using (Process process = new Process())
-                {
-                    ProcessStartInfo startInfo = new ProcessStartInfo();
-                    startInfo.FileName = "cmd.exe";
-                    startInfo.Arguments = "/C ie4uinit.exe -ClearIconCache";
-                    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                    process.StartInfo = startInfo;
-                    process.Start();
-                }
+                //// Attempt 04.02
+                //using (Process process = new Process())
+                //{
+                //    ProcessStartInfo startInfo = new ProcessStartInfo();
+                //    startInfo.FileName = "cmd.exe";
+                //    startInfo.Arguments = "/C ie4uinit.exe -ClearIconCache";
+                //    startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                //    process.StartInfo = startInfo;
+                //    process.Start();
+                //}
 
-                // Attempt 05
-                foreach (Process p in Process.GetProcesses())
-                {
-                    if (p.MainModule.ModuleName.Contains("explorer") == true)
-                    {
-                        p.Kill();
-                    }
-                }
-                Process.Start("explorer.exe");
+                //// Attempt 05
+                //foreach (Process p in Process.GetProcesses())
+                //{
+                //    if (p.MainModule.ModuleName.Contains("explorer") == true)
+                //    {
+                //        p.Kill();
+                //    }
+                //}
+                //Process.Start("explorer.exe");
 
                 // Attempt 06
                 SHChangeNotify(0x08000000, 0x0000, (IntPtr)null, (IntPtr)null);//SHCNE_ASSOCCHANGED SHCNF_IDLIST
+                return "done";
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                return ex.Message;
             }
         }
 

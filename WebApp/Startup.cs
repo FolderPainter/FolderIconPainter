@@ -44,6 +44,7 @@ namespace WebApp
             services.AddBlazoredLocalStorage();
             services.AddScoped<IUserPreferencesService, UserPreferencesService>();
             services.AddScoped<LayoutService>();
+            services.AddScoped<IconService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,6 +83,7 @@ namespace WebApp
             var window = await Electron.WindowManager.CreateWindowAsync(
                 new BrowserWindowOptions
                 {
+                    Show= false,
                     WebPreferences = new WebPreferences
                     {
                         ContextIsolation = false
@@ -167,12 +169,12 @@ namespace WebApp
             }
 
 
-            await window.WebContents.Session.ClearCacheAsync();
-
-            window.OnClosed += () =>
-            {
-                Electron.App.Quit();
-            };
+            //await window.WebContents.Session.ClearCacheAsync();
+            window.OnReadyToShow += () => window.Show();
+            //window.OnClosed += () =>
+            //{
+            //    Electron.App.Quit();
+            //};
         }
 
         private void CreateContextMenu()

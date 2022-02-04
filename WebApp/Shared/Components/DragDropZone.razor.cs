@@ -3,18 +3,21 @@ using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApp.Services;
 
 namespace WebApp.Shared.Components
 {
     public partial class DragDropZone : LayoutComponentBase
     {
         private string color = "black";
+        private int index = 0;
         private string _dragEnterStyle;
 
-        [Inject]
-        private IJSRuntime JSRuntime { get; set; }
+        [Inject] private IJSRuntime JSRuntime { get; set; }
+        [Inject] private IconService IconService { get; set; }
 
         private IJSObjectReference module;
         private IJSObjectReference dropZoneInstance;
@@ -34,11 +37,33 @@ namespace WebApp.Shared.Components
             }
         }
 
+        private bool IsDirectoryEmpty(string path)
+        {
+            return !Directory.EnumerateFileSystemEntries(path).Any();
+        }
+
+        private async void SetIcons(string[] folders)
+        {
+            foreach (var path in folders)
+            {
+                string icoPath = Path.Combine(Directory.GetCurrentDirectory() +
+                $"\\wwwroot\\icons\\{(IsDirectoryEmpty(path) ? "empty" : "def")}\\{index}.png");
+                await JSRuntime.InvokeAsync<string>("console.log", icoPath);
+
+                var res = IconService.SettingIcons(path, icoPath);
+                await JSRuntime.InvokeAsync<string>("console.log", res);
+            }
+        }
+
         public async void OnDrop(DragEventArgs evt)
         {
-            var f = await module.InvokeAsync<string[]>("GetFiles");
-            await JSRuntime.InvokeAsync<string>("console.log", f);
             _dragEnterStyle = null;
+
+            string[] folders = await module.InvokeAsync<string[]>("GetFiles");
+            await JSRuntime.InvokeAsync<string>("console.log", folders);
+            SetIcons(folders);
+
+
             StateHasChanged();
         }
 
@@ -52,10 +77,12 @@ namespace WebApp.Shared.Components
                 }
             };
 
-            string[] files = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
-            await JSRuntime.InvokeAsync<string>("console.log", files);
+            string[] folders = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
+            await JSRuntime.InvokeAsync<string>("console.log", folders);
 
-            Electron.IpcMain.Send(mainWindow, "select-directory-reply", files);
+            SetIcons(folders);
+
+            Electron.IpcMain.Send(mainWindow, "select-directory-reply", folders);
         }
 
         [Parameter] public string Color
@@ -64,6 +91,11 @@ namespace WebApp.Shared.Components
             set => color = value;
         }
 
+        [Parameter] public int Index
+        {
+            get => index;
+            set => index = value;
+        }
 
         // Unregister the drop zone events
         public async ValueTask DisposeAsync()

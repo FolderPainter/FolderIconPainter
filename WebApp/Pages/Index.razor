@@ -29,7 +29,7 @@
                         <MudItem xs="@breaks[localindex]">
                             <MudCard>
                                 <MudCardContent>
-                                    <DragDropZone Color="@colors[localindex]"></DragDropZone>
+                                    <DragDropZone Color="@colors[localindex]" Index="@(localindex+1)"></DragDropZone>
                                 </MudCardContent>
                             </MudCard>
                         </MudItem>
@@ -48,7 +48,6 @@
         get => papers;
         set => UpdatePapers(value);
     }
-
 
     string[] colors = FolderColors.GetAllColors().ToArray();
     int[] breaks = new int[16] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
