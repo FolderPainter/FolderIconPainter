@@ -39,7 +39,10 @@ namespace WebApp.Shared.Components
 
         private bool IsDirectoryEmpty(string path)
         {
-            return !Directory.EnumerateFileSystemEntries(path).Any();
+            var filesCount = Directory.EnumerateFileSystemEntries(path).Count();
+            if (File.Exists(path + @"\desktop.ini"))
+                return filesCount - 3 == 0;
+            return filesCount == 0;
         }
 
         private async void SetIcons(string[] folders)
@@ -47,11 +50,9 @@ namespace WebApp.Shared.Components
             foreach (var path in folders)
             {
                 string icoPath = Path.Combine(Directory.GetCurrentDirectory() +
-                $"\\wwwroot\\icons\\{(IsDirectoryEmpty(path) ? "empty" : "def")}\\{index}.png");
-                await JSRuntime.InvokeAsync<string>("console.log", icoPath);
+                $"\\wwwroot\\icons\\{(IsDirectoryEmpty(path) ? "empty" : "def")}\\{index}.ico");
 
                 var res = IconService.SettingIcons(path, icoPath);
-                await JSRuntime.InvokeAsync<string>("console.log", res);
             }
         }
 
@@ -60,10 +61,7 @@ namespace WebApp.Shared.Components
             _dragEnterStyle = null;
 
             string[] folders = await module.InvokeAsync<string[]>("GetFiles");
-            await JSRuntime.InvokeAsync<string>("console.log", folders);
             SetIcons(folders);
-
-
             StateHasChanged();
         }
 
@@ -78,11 +76,8 @@ namespace WebApp.Shared.Components
             };
 
             string[] folders = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
-            await JSRuntime.InvokeAsync<string>("console.log", folders);
-
             SetIcons(folders);
-
-            Electron.IpcMain.Send(mainWindow, "select-directory-reply", folders);
+            //Electron.IpcMain.Send(mainWindow, "select-directory-reply", folders);
         }
 
         [Parameter] public string Color

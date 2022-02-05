@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -23,18 +24,6 @@ namespace WebApp.Services
                 }
 
                 // ELECTRON DIALOG
-                //using (OpenFileDialog open = new OpenFileDialog())
-                //{
-                //    open.InitialDirectory = "::{20D04FE0-3AEA-1069-A2D8-08002B30309D}";
-                //    open.Filter = "Image Files(*.icon)|*.ico";
-                //    open.Title = dir;
-
-                //    if (open.ShowDialog() == DialogResult.OK)
-                //    {
-                //        pictureBox.Image = Bitmap.FromHicon(new Icon(open.FileName, new Size(256, 256)).Handle);
-                //        return open.FileName;
-                //    }
-                //}
             }
             catch (Exception)
             {
@@ -52,7 +41,7 @@ namespace WebApp.Services
                 //deleting existing files
                 res = RettingIcons(dir);
 
-                //copying Icon file //overwriting
+                ////copying Icon file //overwriting
                 File.Copy(icoPath, dir + @"\Icon.ico", true);
                 //System.IO.File.Copy(filePath, TempIconSaveLocation + GetDateTime() + ".ico", true);
 
@@ -71,6 +60,7 @@ namespace WebApp.Services
 
                 File.SetAttributes(dir, File.GetAttributes(dir) | FileAttributes.ReadOnly);
 
+                RefreshIconCache();
                 res = RefreshIcons(dir);
             }
             catch (Exception ex)
@@ -131,25 +121,25 @@ namespace WebApp.Services
         {
             try
             {
-                // Attempt 01 
-                Directory.Move(dir, dir + "_Processing");
-                Directory.Move(dir + "_Processing", dir);
+                //// Attempt 01 
+                //Directory.Move(dir, dir + "_Processing");
+                //Directory.Move(dir + "_Processing", dir);
 
-                // Attempt 02
-                string localIconCachePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\IconCache.db";
-                if (File.Exists(localIconCachePath))
-                {
-                    File.Delete(localIconCachePath);
-                }
+                //// Attempt 02
+                //string localIconCachePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\IconCache.db";
+                //if (File.Exists(localIconCachePath))
+                //{
+                //    File.Delete(localIconCachePath);
+                //}
 
-                // Attempt 03
-                string dirCachePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Microsoft\Windows\Explorer\";
-                DirectoryInfo di = new DirectoryInfo(dirCachePath);
-                FileInfo[] files = di.GetFiles("iconcache*.db");
-                foreach (FileInfo file in files)
-                {
-                    File.Delete(file.FullName);
-                }
+                //// Attempt 03
+                //string dirCachePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Microsoft\Windows\Explorer\";
+                //DirectoryInfo di = new DirectoryInfo(dirCachePath);
+                //FileInfo[] files = di.GetFiles("iconcache*.db");
+                //foreach (FileInfo file in files)
+                //{
+                //    File.Delete(file.FullName);
+                //}
 
                 //// Attempt 04.01
                 //using (Process process = new Process())
@@ -196,5 +186,42 @@ namespace WebApp.Services
 
         [DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern void SHChangeNotify(int wEventId, int uFlags, IntPtr dwItem1, IntPtr dwItem2);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        static extern IntPtr SendMessageTimeout(int windowHandle, int Msg, int wParam,
+           String lParam, SendMessageTimeoutFlags flags, int timeout, out int result);
+
+        [Flags] enum SendMessageTimeoutFlags : uint
+        {
+            SMTO_NORMAL = 0x0,
+            SMTO_BLOCK = 0x1,
+            SMTO_ABORTIFHUNG = 0x2,
+            SMTO_NOTIMEOUTIFNOTHUNG = 0x8
+        }
+
+        static void RefreshIconCache()
+        {
+            // get the the original Shell Icon Size registry string value
+            RegistryKey k = Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Desktop").OpenSubKey("WindowMetrics", true);
+            Object OriginalIconSize = k.GetValue("Shell Icon Size");
+
+            // set the Shell Icon Size registry string value
+            k.SetValue("Shell Icon Size", (Convert.ToInt32(OriginalIconSize) + 1).ToString());
+            k.Flush(); 
+            k.Close();
+
+            // broadcast WM_SETTINGCHANGE to all window handles
+            int res = 0;
+            SendMessageTimeout(0xffff, 0x001A, 0, "", SendMessageTimeoutFlags.SMTO_ABORTIFHUNG, 5000, out res);
+
+            //SendMessageTimeout(HWD_BROADCAST,WM_SETTINGCHANGE,0,"",SMTO_ABORTIFHUNG,5 seconds, return result to res)
+            // set the Shell Icon Size registry string value to original value
+            k = Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Desktop").OpenSubKey("WindowMetrics", true);
+            k.SetValue("Shell Icon Size", OriginalIconSize);
+            k.Flush(); 
+            k.Close();
+
+            SendMessageTimeout(0xffff, 0x001A, 0, "", SendMessageTimeoutFlags.SMTO_ABORTIFHUNG, 5000, out res);
+        }
     }
 }

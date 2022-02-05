@@ -9,8 +9,8 @@
   "environment": "Production",
   "build": {
     "appId": "com.WebApp.app",
-    "productName": "FolderIconPainter",
-    "copyright": "Copyright © 2020",
+    "productName": "Folder Icon Painter",
+    "copyright": "Copyright ColdForeign | Durka Tech © 2022",
     "buildVersion": "1.0.0",
     "compression": "maximum",
     "win": {
