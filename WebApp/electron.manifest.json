@@ -3,18 +3,22 @@
   "splashscreen": {
     "imageFile": ""
   },
-  "name": "Folder Icon Painter",
+  "name": "FolderIconPainter",
   "author": "Cold Foreign (George Radchuk)",
   "singleInstance": false,
   "environment": "Production",
   "build": {
     "appId": "com.WebApp.app",
     "productName": "Folder Icon Painter",
-    "copyright": "Copyright © 2020",
+    "copyright": "Copyright ColdForeign | Durka Tech © 2022",
     "buildVersion": "1.0.0",
     "compression": "maximum",
+    "win": {
+      "icon": "favicon.ico"
+    },
     "directories": {
-      "output": "../../../bin/Desktop"
+      "output": "../../../bin/Desktop",
+      "buildResources": "icons"
     },
     "extraResources": [
       {
