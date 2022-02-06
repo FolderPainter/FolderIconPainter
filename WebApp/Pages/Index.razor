@@ -2,44 +2,50 @@
 @using WebApp.Shared.Components
 @using WebApp.Models
 @using System
+@using System.IO
 
 <MudContainer Class="mt-6">
     <MudGrid>
         <MudItem xs="12">
             <MudGrid>
-              @*  <MudItem xs="3">
-                            <MudCard>
-                                <MudCardContent>
-                                    <DragDropZone Color=@(Cl)></DragDropZone>
-                                </MudCardContent>
-                            </MudCard>
-                        </MudItem>
-                        <MudItem xs="3">
-                            <MudCard>
-                                <MudCardContent>
-                                    <DragDropZone Color="blue"></DragDropZone>
-                                </MudCardContent>
-                            </MudCard>
-                        </MudItem>*@
                 @for (int i = 0; i < papers; i++)
                 {
-
                     int localindex = i;
-
-                        <MudItem xs="@breaks[localindex]">
-                            <MudCard>
-                                <MudCardContent>
-                                    <DragDropZone Color="@colors[localindex]" Index="@(localindex+1)"></DragDropZone>
-                                </MudCardContent>
-                            </MudCard>
-                        </MudItem>
+                    bool disabled = !IconExists(localindex + 1);
+                    string cardClass = disabled ? "hazard-background" : "";
+                    <MudItem xs="@breaks[localindex]">
+                        <MudCard Class="@cardClass">
+                            <MudCardContent>
+                                <DragDropZone Color = "@colors[localindex]" Index = "@(localindex + 1)" Disabled="@disabled"></DragDropZone>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
                 }
             </MudGrid>
         </MudItem>
     </MudGrid>
 </MudContainer>
+@inject IJSRuntime jsRuntime
 
 @code {
+
+    bool IconExists(int index)
+    {
+        try
+        {
+            string currentDir = Directory.GetCurrentDirectory();
+            string icoDefPath = Path.Combine(currentDir + $"\\wwwroot\\icons\\def\\{index}.ico");
+            string icoEmptyPath = Path.Combine(currentDir + $"\\wwwroot\\icons\\empty\\{index}.ico");
+
+            bool data = File.Exists(icoDefPath) && File.Exists(icoEmptyPath);
+            jsRuntime.InvokeAsync<string>("console.log", data);
+            return data;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 
     int papers = 16;
 

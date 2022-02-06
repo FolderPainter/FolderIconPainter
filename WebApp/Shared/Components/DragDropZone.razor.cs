@@ -3,6 +3,7 @@ using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using MudBlazor.Utilities;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,8 +14,16 @@ namespace WebApp.Shared.Components
     public partial class DragDropZone : LayoutComponentBase
     {
         private string color = "black";
+        private bool disabled = false;
         private int index = 0;
         private string _dragEnterStyle;
+
+        protected string Classname =>
+        new CssBuilder("mud-paper mud-elevation-1 drag-drop-zone")
+          .AddClass(_dragEnterStyle)
+          .AddClass("not-working", Disabled)
+        .Build();
+
 
         [Inject] private IJSRuntime JSRuntime { get; set; }
         [Inject] private IconService IconService { get; set; }
@@ -58,6 +67,9 @@ namespace WebApp.Shared.Components
 
         public async void OnDrop(DragEventArgs evt)
         {
+            if (Disabled)
+                return;
+
             _dragEnterStyle = null;
 
             string[] folders = await module.InvokeAsync<string[]>("GetFiles");
@@ -67,6 +79,9 @@ namespace WebApp.Shared.Components
 
         private async void OnClicked()
         {
+            if (Disabled)
+                return;
+
             var mainWindow = Electron.WindowManager.BrowserWindows.First();
             var options = new OpenDialogOptions
             {
@@ -90,6 +105,12 @@ namespace WebApp.Shared.Components
         {
             get => index;
             set => index = value;
+        }
+
+        [Parameter] public bool Disabled
+        {
+            get => disabled;
+            set => disabled = value;
         }
 
         // Unregister the drop zone events

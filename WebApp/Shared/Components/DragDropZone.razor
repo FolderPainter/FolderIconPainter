@@ -14,9 +14,8 @@
 
     @ondragover:preventDefault="true" 
     @ondragover:stopPropagation="true"
-
     @ref="dropZoneElement" 
-    Class=@("mud-paper mud-elevation-1 drag-drop-zone " + _dragEnterStyle) 
+    Class=@("mud-paper mud-elevation-1 drag-drop-zone " + _dragEnterStyle + (Disabled ? " not-working" : "")) 
     Style=@("background-color: " + Color)>
 
 </div>

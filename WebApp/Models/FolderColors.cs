@@ -22,8 +22,8 @@ namespace WebApp.Models
         public readonly static string DarkMeganta = "#9c0597";
         public readonly static string BrightCyan = "#32ffc1";
         public readonly static string Malibu = "#74c2ff";
+        public readonly static string Gray = "#B5B5B5";
 
-        public readonly static string Random1 = "#0FB3FC";
         public readonly static string Random2 = "#AF1FF5";
         public readonly static string Random3 = "#E617A7";
 

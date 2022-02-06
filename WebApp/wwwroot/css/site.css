@@ -44,3 +44,8 @@ html, body {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+
+.hazard-background {
+    background-image: repeating-linear-gradient( -55deg, transparent, transparent 20px, rgba(182, 182, 182, 0.2) 20px, rgba(182, 182, 182, 0.2) 40px );
+}
