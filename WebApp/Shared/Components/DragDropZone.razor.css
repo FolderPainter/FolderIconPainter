@@ -26,16 +26,3 @@
     background-size: 100% 100%, auto;
     min-height: 100px;
 }
-/*
-.not-working:before {
-    content: "";
-    position: relative;
-    width: 100%;
-    z-index: 3;
-    cursor: pointer;
-    min-height: 20px;
-    background-color: aliceblue;
-    -webkit-transform: rotate(-45deg);    
-    transform: rotate(-45deg);
-}
- */

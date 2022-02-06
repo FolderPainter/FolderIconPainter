@@ -61,8 +61,10 @@ namespace WebApp.Shared.Components
                 string icoPath = Path.Combine(Directory.GetCurrentDirectory() +
                 $"\\wwwroot\\icons\\{(IsDirectoryEmpty(path) ? "empty" : "def")}\\{index}.ico");
 
-                var res = IconService.SettingIcons(path, icoPath);
+                IconService.SettingIcons(path, icoPath);
             }
+
+            IconService.RefreshIcons();
         }
 
         public async void OnDrop(DragEventArgs evt)
@@ -92,7 +94,6 @@ namespace WebApp.Shared.Components
 
             string[] folders = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
             SetIcons(folders);
-            //Electron.IpcMain.Send(mainWindow, "select-directory-reply", folders);
         }
 
         [Parameter] public string Color

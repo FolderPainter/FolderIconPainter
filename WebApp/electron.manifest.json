@@ -14,7 +14,7 @@
     "buildVersion": "1.0.0",
     "compression": "maximum",
     "win": {
-      "icon": "favicon.ico"
+      "icon": "icons/favicon.ico"
     },
     "directories": {
       "output": "../../../bin/Desktop",
