@@ -5,8 +5,10 @@
 
 <MudLayout>
     <MudAppBar Elevation="25">
-        @*<MudAvatar Image="img/FIP.png" Size="Size.Large" Color="Color.Primary" Square="true"/>*@
-        <MudText Typo="Typo.h5" Class="ml-3">FolderIconPainter</MudText>
+        <div class="mud-avatar mud-avatar-large mud-avatar-square mud-elevation-0" style="background-color: transparent")>
+            <img src="img/FIP.png" class="mud-avatar-img">
+        </div>
+        <MudText Typo="Typo.h5" Class="ml-3">Folder Icon Painter</MudText>
 
         <MudDivider Vertical="true" FlexItem="true" DividerType="DividerType.Middle" Class="mx-4 my-3" />
 
@@ -21,7 +23,7 @@
         </MudTooltip>
 
         <MudTooltip Duration="1000" Text="GitHub Repository">
-            <MudIconButton Link="https://github.com/ColdForeign/FolderIconPainter/" Target="_blank" Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Edge="Edge.End"/>
+            <MudIconButton OnClick="@OpenGitHub" Target="_blank" Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Edge="Edge.End"/>
         </MudTooltip>
 
     </MudAppBar>

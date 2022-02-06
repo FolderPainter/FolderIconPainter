@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using WebApp.Services;
 using WebApp.Services.UserPreferences;
+using ElectronNET.API;
+using ElectronNET.API.Entities;
 
 namespace WebApp.Shared
 {
@@ -44,5 +46,11 @@ namespace WebApp.Shared
         }
 
         private void LayoutServiceOnMajorUpdateOccured(object sender, EventArgs e) => StateHasChanged();
+
+
+        private async Task OpenGitHub()
+        {
+            await Electron.Shell.OpenExternalAsync("https://github.com/ColdForeign/FolderIconPainter/");
+        }
     }
 }
