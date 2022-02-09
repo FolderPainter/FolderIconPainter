@@ -9,6 +9,11 @@ namespace WebApp.Services
 {
     public class IconService
     {
+
+        public int FoldersQuantity { get; set; }
+
+        public int CurrentProgress { get; set; }
+
         public string SettingIcons(string dir, string icoPath, string folderType = "Generic")
         {
             var res = "done.";

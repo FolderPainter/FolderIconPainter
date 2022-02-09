@@ -84,6 +84,9 @@ namespace WebApp
                 new BrowserWindowOptions
                 {
                     Show= false,
+                    MinHeight = 600,
+                    MinWidth = 400,
+
                     WebPreferences = new WebPreferences
                     {
                         ContextIsolation = false

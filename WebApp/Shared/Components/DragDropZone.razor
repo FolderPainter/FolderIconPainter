@@ -11,11 +11,12 @@
     @ondragenter="@(()=>_dragEnterStyle="drag-enter")"
     @ondragenter:preventDefault="true" 
     @ondragenter:stopPropagation="true"
-
+    
     @ondragover:preventDefault="true" 
     @ondragover:stopPropagation="true"
     @ref="dropZoneElement" 
     Class=@("mud-paper mud-elevation-1 drag-drop-zone " + _dragEnterStyle + (Disabled ? " not-working" : "")) 
-    Style=@("background-color: " + Color)>
-
+    Style=@($"background-color: {Color.Value}; border-color: transparent transparent {Color.ColorDarken(0.1).Value} transparent;")>
+        @*<MudProgressCircular Color="MudBlazor.Color.Surface" Size="Size.Large" Value="@IconService.CurrentProgress"/>*@
+        @*<MudProgressLinear Color="@(Color.ColorDarken(15).Value)"  Striped="true" Size="Size.Large" Value="@IconService.FoldersQuantity"/>*@
 </div>

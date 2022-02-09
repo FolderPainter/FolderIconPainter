@@ -7,6 +7,8 @@ using WebApp.Services;
 using WebApp.Services.UserPreferences;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
+using static MudBlazor.CategoryTypes;
+using MudBlazor.Services;
 
 namespace WebApp.Shared
 {
@@ -14,8 +16,11 @@ namespace WebApp.Shared
     {
         [Inject] private LayoutService LayoutService { get; set; }
 
+        [Inject] private IBreakpointService BreakpointListener { get; set; }
+
         public bool IsDarkMode { get; private set; }
 
+        private Guid _subscriptionId;
         protected override void OnInitialized()
         {
             LayoutService.MajorUpdateOccured += LayoutServiceOnMajorUpdateOccured;
@@ -25,14 +30,29 @@ namespace WebApp.Shared
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            await base.OnAfterRenderAsync(firstRender);
 
             if (firstRender)
             {
+
+                var subscriptionResult = await BreakpointListener.Subscribe((breakpoint) =>
+                {
+                    OnDrawerOpenChanged((breakpoint == Breakpoint.Md));
+                    InvokeAsync(StateHasChanged);
+                }, new MudBlazor.Services.ResizeOptions
+                {
+                    ReportRate = 250,
+                    NotifyOnBreakpointOnly = true,
+                });
+
+                _subscriptionId = subscriptionResult.SubscriptionId;
                 await ApplyUserPreferences();
                 StateHasChanged();
             }
+
+            await base.OnAfterRenderAsync(firstRender);
         }
+
+        public async ValueTask DisposeAsync() => await BreakpointListener.Unsubscribe(_subscriptionId);
 
         private async Task ApplyUserPreferences()
         {
@@ -51,6 +71,21 @@ namespace WebApp.Shared
         private async Task OpenGitHub()
         {
             await Electron.Shell.OpenExternalAsync("https://github.com/ColdForeign/FolderIconPainter/");
+        }
+
+
+        //private NavMenu _navMenuRef;
+        private bool _drawerOpen = false;
+
+        private void ToggleDrawer()
+        {
+            _drawerOpen = !_drawerOpen;
+        }
+
+        private void OnDrawerOpenChanged(bool value)
+        {
+            _drawerOpen = value;
+            StateHasChanged();
         }
     }
 }

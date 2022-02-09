@@ -1,1 +1,29 @@
 ﻿@page "/addcustom"
+@using WebApp.Shared.Components
+
+<MudContainer Class="mt-5 px-4">
+    <MudGrid Class=" d-flex mt-3">
+        <MudItem xl="4" lg="4" md="3" sm="5" xs="12" Class="d-flex justify-center">
+            <MudCard>
+                <MudCardContent>            
+                    <MudColorPicker PickerVariant="PickerVariant.Static" Rounded="true" Class="rounded"/>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+        <MudItem xl="4" lg="4" md="5" sm="7" xs="12">
+            <MudCard>
+                <MudCardContent>
+                    <MudTextField T="string" Label="Icon name"/>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+         <MudItem xl="4" lg="4" md="5" sm="7" xs="12">
+            <MudCard>
+                <MudCardContent>
+                    <Image Src="icons/folder-empty.png" Fluid="true" Width="250" Height="250"/>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+    </MudGrid>
+</MudContainer>
