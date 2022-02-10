@@ -2,25 +2,42 @@
 @using WebApp.Shared.Components
 
 <MudContainer Class="mt-5 px-4">
-    <MudGrid Class=" d-flex mt-3">
-        <MudItem xl="4" lg="4" md="3" sm="5" xs="12" Class="d-flex justify-center">
+    <MudGrid Class="mt-3">
+        <MudItem xl="4" lg="4" md="4" sm="6" xs="12">
             <MudCard>
-                <MudCardContent>            
-                    <MudColorPicker PickerVariant="PickerVariant.Static" Rounded="true" Class="rounded"/>
+                <MudCardContent Class="d-flex justify-space-around">            
+                    <MudColorPicker PickerVariant="PickerVariant.Static" Rounded="true"/>
                 </MudCardContent>
             </MudCard>
         </MudItem>
-        <MudItem xl="4" lg="4" md="5" sm="7" xs="12">
+        <MudItem xl="4" lg="4" md="4" sm="6" xs="12">
             <MudCard>
                 <MudCardContent>
-                    <MudTextField T="string" Label="Icon name"/>
+                    <MudForm>
+                        <InputFile hidden accept=".jpg, .jpeg, .png"/>
+
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" 
+                            FullWidth="true" Class="mt-1" StartIcon="@Icons.Filled.CloudUpload">
+                            Upload your images
+                        </MudButton>
+
+                        <MudTextField T="string" Label="Icon name"/>
+                        <MudAutocomplete T="string" Label="Category" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" />
+                        
+
+                        <MudSlider Class="mt-3" Min="-100" Max="100" Value="0" Color="Color.Info">Saturation</MudSlider>
+                        <MudSlider Min="-100" Max="100" Value="0" Color="Color.Error">Brightness</MudSlider>
+                    </MudForm>   
                 </MudCardContent>
             </MudCard>
         </MudItem>
-         <MudItem xl="4" lg="4" md="5" sm="7" xs="12">
+         <MudItem xl="4" lg="4" md="4" sm="6" xs="12">
             <MudCard>
                 <MudCardContent>
-                    <Image Src="icons/folder-empty.png" Fluid="true" Width="250" Height="250"/>
+                    <div class="folder-preview"> 
+                        <Image Src="icons/folder-empty-bw.png" Fluid="true" Class="folder-image"/>
+                        <Image Src="icons/folder-doc.png" Fluid="true" Class="folder-image"/>
+                    </div>
                 </MudCardContent>
             </MudCard>
         </MudItem>

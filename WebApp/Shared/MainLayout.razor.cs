@@ -9,6 +9,9 @@ using ElectronNET.API;
 using ElectronNET.API.Entities;
 using static MudBlazor.CategoryTypes;
 using MudBlazor.Services;
+using Microsoft.JSInterop;
+using MudBlazor.Extensions;
+using WebApp.Enums;
 
 namespace WebApp.Shared
 {
@@ -16,11 +19,14 @@ namespace WebApp.Shared
     {
         [Inject] private LayoutService LayoutService { get; set; }
 
-        [Inject] private IBreakpointService BreakpointListener { get; set; }
+        [Inject] private NavigationManager NavigationManager { get; set; }
+
+        [Inject] IResizeService ResizeService { get; set; }
+
+        [Inject] private IJSRuntime JSRuntime { get; set; }
 
         public bool IsDarkMode { get; private set; }
 
-        private Guid _subscriptionId;
         protected override void OnInitialized()
         {
             LayoutService.MajorUpdateOccured += LayoutServiceOnMajorUpdateOccured;
@@ -28,23 +34,28 @@ namespace WebApp.Shared
             base.OnInitialized();
         }
 
+        private Guid _subscriptionId;
+
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-
             if (firstRender)
             {
-
-                var subscriptionResult = await BreakpointListener.Subscribe((breakpoint) =>
+                _subscriptionId = await ResizeService.Subscribe((size) =>
                 {
-                    OnDrawerOpenChanged((breakpoint == Breakpoint.Md));
+                    if (size.Width > 960)
+                    {
+                        OnDrawerOpenChanged(false);
+                    }
+
                     InvokeAsync(StateHasChanged);
                 }, new MudBlazor.Services.ResizeOptions
                 {
-                    ReportRate = 250,
-                    NotifyOnBreakpointOnly = true,
+                    ReportRate = 50,
+                    NotifyOnBreakpointOnly = false,
                 });
 
-                _subscriptionId = subscriptionResult.SubscriptionId;
+                var size = await ResizeService.GetBrowserWindowSize();
+
                 await ApplyUserPreferences();
                 StateHasChanged();
             }
@@ -52,7 +63,7 @@ namespace WebApp.Shared
             await base.OnAfterRenderAsync(firstRender);
         }
 
-        public async ValueTask DisposeAsync() => await BreakpointListener.Unsubscribe(_subscriptionId);
+        public async ValueTask DisposeAsync() => await ResizeService.Unsubscribe(_subscriptionId);
 
         private async Task ApplyUserPreferences()
         {
@@ -86,6 +97,26 @@ namespace WebApp.Shared
         {
             _drawerOpen = value;
             StateHasChanged();
+        }
+
+        private string GetActiveClass(BasePage page)
+        {
+            return page == GetDocsBasePage(NavigationManager.Uri) ? "mud-chip-text mud-chip-color-primary ml-3" : "ml-3";
+        }
+        public BasePage GetDocsBasePage(string uri)
+        {
+            if (uri.Contains("/addcustom"))
+            {
+                return BasePage.AddCustom;
+            }
+            else if (uri.Contains("/settings"))
+            {
+                return BasePage.Settings;
+            }
+            else
+            {
+                return BasePage.Home;
+            }
         }
     }
 }

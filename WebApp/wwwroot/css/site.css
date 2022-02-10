@@ -19,3 +19,16 @@ html, body {
     font-size: 24px;
     user-select: none;
 }
+
+.mud-image.folder-doc::after {
+    content: "";
+    z-index: 3;
+    float: left;
+    position: relative;
+    width: 100%;
+    height: auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('icons/folder-empty.png');
+}
