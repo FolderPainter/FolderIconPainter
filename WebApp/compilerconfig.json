@@ -1,6 +1,6 @@
 ﻿[
   {
-    "outputFile": "wwwroot/WebApp.css",
+    "outputFile": "wwwroot/css/WebApp.css",
     "inputFile": "Styles/WebApp.scss"
   }
 ]

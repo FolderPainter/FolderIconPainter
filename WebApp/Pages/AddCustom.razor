@@ -4,14 +4,14 @@
 <MudContainer Class="mt-5 px-4">
     <MudGrid Class="mt-3">
         <MudItem xl="4" lg="4" md="4" sm="6" xs="12">
-            <MudCard>
+            <MudCard Elevation="2">
                 <MudCardContent Class="d-flex justify-space-around">            
                     <MudColorPicker PickerVariant="PickerVariant.Static" Rounded="true"/>
                 </MudCardContent>
             </MudCard>
         </MudItem>
         <MudItem xl="4" lg="4" md="4" sm="6" xs="12">
-            <MudCard>
+            <MudCard Elevation="2">
                 <MudCardContent>
                     <MudForm>
                         <InputFile hidden accept=".jpg, .jpeg, .png"/>
@@ -24,7 +24,6 @@
                         <MudTextField T="string" Label="Icon name"/>
                         <MudAutocomplete T="string" Label="Category" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" />
                         
-
                         <MudSlider Class="mt-3" Min="-100" Max="100" Value="0" Color="Color.Info">Saturation</MudSlider>
                         <MudSlider Min="-100" Max="100" Value="0" Color="Color.Error">Brightness</MudSlider>
                     </MudForm>   
@@ -32,7 +31,7 @@
             </MudCard>
         </MudItem>
          <MudItem xl="4" lg="4" md="4" sm="6" xs="12">
-            <MudCard>
+            <MudCard Elevation="2">
                 <MudCardContent>
                     <div class="folder-preview"> 
                         <Image Src="icons/folder-empty-bw.png" Fluid="true" Class="folder-image"/>

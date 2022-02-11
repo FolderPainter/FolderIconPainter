@@ -30,9 +30,9 @@
 
             <MudDivider Vertical="true" FlexItem="true" DividerType="DividerType.Middle" Class="mx-4 my-3" />
 
-            <MudButton Link="/" Variant="Variant.Text" Size="Size.Large" EndIcon="@Icons.Material.Filled.FormatPaint" Color="Color.Inherit" Class="@GetActiveClass(BasePage.Home)">Paint</MudButton>
+            <MudButton Link="/home" Variant="Variant.Text" Size="Size.Large" EndIcon="@Icons.Material.Filled.FormatPaint" Color="Color.Inherit" Class="@GetActiveClass(BasePage.Home)">Paint</MudButton>
             <MudButton Link="/addcustom" Variant="Variant.Text" Size="Size.Large" EndIcon="@Icons.Material.Filled.AddBox" Color="Color.Inherit" Class="@GetActiveClass(BasePage.AddCustom)">Add Custom</MudButton>
-            <MudButton Variant="Variant.Text" Size="Size.Large" EndIcon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Class="@GetActiveClass(BasePage.Settings)">Settings</MudButton>
+            <MudButton  Link="/settings" Variant="Variant.Text" Size="Size.Large" EndIcon="@Icons.Material.Filled.Settings" Color="Color.Inherit" Class="@GetActiveClass(BasePage.Settings)">Settings</MudButton>
 
             <MudSpacer />
 
@@ -59,9 +59,9 @@
             </MudToolBar>
 
             <MudNavMenu Color="Color.Primary" Margin="Margin.Dense" Rounded="true" Class="pa-2">
-                <MudNavLink Href="/" Icon="@Icons.Material.Filled.FormatPaint">Paint</MudNavLink>
+                <MudNavLink Href="/home" Icon="@Icons.Material.Filled.FormatPaint">Paint</MudNavLink>
                 <MudNavLink Href="/addcustom" Icon="@Icons.Material.Filled.AddBox">Add Custom</MudNavLink>
-                <MudNavLink Href="/settings"  Match="NavLinkMatch.Prefix"  Icon="@Icons.Material.Filled.Settings">Settings</MudNavLink>
+                <MudNavLink Href="/settings" Icon="@Icons.Material.Filled.Settings">Settings</MudNavLink>
             </MudNavMenu>
         </MudHidden>
     </MudDrawer>
