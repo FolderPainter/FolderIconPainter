@@ -9,6 +9,11 @@ namespace WebApp.Services
 {
     public class IconService
     {
+
+        public int FoldersQuantity { get; set; }
+
+        public int CurrentProgress { get; set; }
+
         public string SettingIcons(string dir, string icoPath, string folderType = "Generic")
         {
             var res = "done.";
@@ -97,6 +102,7 @@ namespace WebApp.Services
             {
                 //SHCNE_ASSOCCHANGED SHCNF_IDLIST
                 SHChangeNotify(0x08000000, 0x0000, (IntPtr)null, (IntPtr)null);
+                RefreshIconCache();
                 return "done";
             }
             catch (Exception ex)
@@ -122,7 +128,7 @@ namespace WebApp.Services
             SMTO_NOTIMEOUTIFNOTHUNG = 0x8
         }
 
-        static void RefreshIconCache()
+        private void RefreshIconCache()
         {
             // get the the original Shell Icon Size registry string value
             RegistryKey k = Registry.CurrentUser.OpenSubKey("Control Panel").OpenSubKey("Desktop").OpenSubKey("WindowMetrics", true);

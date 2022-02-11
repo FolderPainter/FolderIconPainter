@@ -1,4 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<!--Hook for the generated static content-->
+	<PropertyGroup>
+		<ResolveStaticWebAssetsInputsDependsOn>
+			IncludeGeneratedStaticFiles;
+			$(ResolveStaticWebAssetsInputsDependsOn)
+		</ResolveStaticWebAssetsInputsDependsOn>
+	</PropertyGroup>
+
 	<PropertyGroup>
 		<TargetFramework>net5.0</TargetFramework>
 
@@ -17,7 +26,45 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
+
+	<!--Is this a rebuild - Dont clean generated files as this breaks rebuild behaviour-->
+	<Target Name="ShouldCleanGeneratedFiles" BeforeTargets="BeforeRebuild">
+		<PropertyGroup>
+			<CleanGeneratedFiles>false</CleanGeneratedFiles>
+		</PropertyGroup>
+	</Target>
+
+	<Target Name="CleanGeneratedFiles" BeforeTargets="Clean" Condition="'$(CleanGeneratedFiles)' != 'false'">
+		<ItemGroup>
+			<FilesToClean Include="./wwwroot/WebApp.min.css" />
+		</ItemGroup>
+		<Delete Files="@(FilesToClean)" />
+	</Target>
+
+	<Target Name="ToolRestore">
+		<Exec Command="dotnet tool restore" StandardOutputImportance="high" />
+	</Target>
+
+	<Target Name="WebCompiler" DependsOnTargets="ToolRestore">
+		<Message Text="Running webcompiler" Importance="high"/>
+		<Exec Command="dotnet webcompiler ./Styles/WebApp.scss -c excubowebcompiler.json" StandardOutputImportance="high" StandardErrorImportance="high" />
+	</Target>
+
+	<!--Output of Excubo webcompiler-->
+	<Target Name="IncludeGeneratedStaticFiles" DependsOnTargets="WebCompiler">
+		<Error Condition="!Exists('wwwroot/WebApp.min.css')" Text="Missing WebApp.min.css in wwwroot" />
+		<ItemGroup>
+			<Content Include="wwwroot/WebApp.min.css" Condition="!Exists('wwwroot/WebApp.min.css')" />
+		</ItemGroup>
+	</Target>
+
+	<!--Dont Include in build output-->
 	<ItemGroup>
-		<Folder Include="Entities\" />
+		<Content Remove="compilerconfig.json" />
+		<Content Remove="excubowebcompiler.json" />
+	</ItemGroup>
+	<!--Dont Include in build output-->
+	<ItemGroup>
+		<Watch Include="**/*.scss" />
 	</ItemGroup>
 </Project>

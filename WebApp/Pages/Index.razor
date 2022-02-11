@@ -1,19 +1,21 @@
-﻿@page "/"
+﻿@page "/home"
 @using WebApp.Shared.Components
 @using WebApp.Models
 @using System
 @using System.IO
 
-<MudContainer Class="mt-6">
-    <MudGrid>
-        <MudItem xs="12">
-            <MudGrid>
+<MudContainer Class="mt-5 px-4">
+  @*      <MudPaper Elevation="4" Style="overflow: auto;">
+
+    <div class="ma-0 px-5" style="height:auto; overflow: auto;">*@
+            <MudGrid Class="d-flex mt-3">
                 @for (int i = 0; i < papers; i++)
                 {
                     int localindex = i;
                     bool disabled = !IconExists(localindex + 1);
                     string cardClass = disabled ? "hazard-background" : "";
-                    <MudItem xs="@breaks[localindex]">
+                
+                    <MudItem xl="@lgBreakpoint" lg="@lgBreakpoint" md="@(lgBreakpoint)" sm="@(lgBreakpoint)" xs="@(lgBreakpoint * 2)">
                         <MudCard Class="@cardClass">
                             <MudCardContent>
                                 <DragDropZone Color = "@colors[localindex]" Index = "@(localindex + 1)" Disabled="@disabled"></DragDropZone>
@@ -22,13 +24,16 @@
                     </MudItem>
                 }
             </MudGrid>
-        </MudItem>
-    </MudGrid>
+@*    </div>
+        </MudPaper>*@
+
 </MudContainer>
+
 @inject IJSRuntime jsRuntime
 
 @code {
 
+    int lgBreakpoint = 3;
     bool IconExists(int index)
     {
         try
@@ -88,5 +93,4 @@
 
         StateHasChanged();
     }
-
 }

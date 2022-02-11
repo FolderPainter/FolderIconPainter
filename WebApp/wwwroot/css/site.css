@@ -1,9 +1,0 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
-html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
-.hazard-background {
-    background-image: repeating-linear-gradient(-55deg, transparent, transparent 20px, rgba(182, 182, 182, 0.2) 20px, rgba(182, 182, 182, 0.2) 40px );
-}

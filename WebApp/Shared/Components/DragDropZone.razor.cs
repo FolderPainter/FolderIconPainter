@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using MudBlazor.Utilities;
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace WebApp.Shared.Components
 {
     public partial class DragDropZone : LayoutComponentBase
     {
-        private string color = "black";
+        private MudColor color = new MudColor("#fff");
         private bool disabled = false;
         private int index = 0;
         private string _dragEnterStyle;
@@ -56,12 +57,17 @@ namespace WebApp.Shared.Components
 
         private async void SetIcons(string[] folders)
         {
+            IconService.FoldersQuantity = folders.Length;
+            IconService.CurrentProgress = 0;
+            var step = 100f / folders.Length;
             foreach (var path in folders)
             {
                 string icoPath = Path.Combine(Directory.GetCurrentDirectory() +
                 $"\\wwwroot\\icons\\{(IsDirectoryEmpty(path) ? "empty" : "def")}\\{index}.ico");
 
                 IconService.SettingIcons(path, icoPath);
+                IconService.CurrentProgress += (int)Math.Round(step);
+
             }
 
             IconService.RefreshIcons();
@@ -96,7 +102,7 @@ namespace WebApp.Shared.Components
             SetIcons(folders);
         }
 
-        [Parameter] public string Color
+        [Parameter] public MudColor Color
         {
             get => color;
             set => color = value;
