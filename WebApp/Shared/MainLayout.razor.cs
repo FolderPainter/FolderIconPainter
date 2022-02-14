@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 using WebApp.Services;
-using WebApp.Services.UserPreferences;
 using ElectronNET.API;
-using ElectronNET.API.Entities;
-using static MudBlazor.CategoryTypes;
 using MudBlazor.Services;
 using Microsoft.JSInterop;
-using MudBlazor.Extensions;
 using WebApp.Enums;
 
 namespace WebApp.Shared
@@ -78,12 +72,10 @@ namespace WebApp.Shared
 
         private void LayoutServiceOnMajorUpdateOccured(object sender, EventArgs e) => StateHasChanged();
 
-
         private async Task OpenGitHub()
         {
             await Electron.Shell.OpenExternalAsync("https://github.com/ColdForeign/FolderIconPainter/");
         }
-
 
         //private NavMenu _navMenuRef;
         private bool _drawerOpen = false;
