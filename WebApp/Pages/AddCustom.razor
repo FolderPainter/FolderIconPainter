@@ -28,6 +28,11 @@
                         
                         <MudSlider Class="mt-3" Min="-100" Max="100" Value="0" Color="Color.Info">Saturation</MudSlider>
                         <MudSlider Min="-100" Max="100" Value="0" Color="Color.Error">Brightness</MudSlider>
+                    
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Secondary" 
+                            FullWidth="true" Class="mt-3" StartIcon="@Icons.Filled.AddAPhoto" OnClick="SaveImageAsync">
+                            Save to library
+                        </MudButton>
                     </MudForm>   
                 </MudCardContent>
             </MudCard>
@@ -36,9 +41,9 @@
             <MudCard Elevation="2">
                 <MudCardContent>
                     <div class="folder-preview"> 
-                        <Image Src="icons/folder-empty.png" Fluid="true" Class="folder-image" 
-                        Style="@($"{Filter}")"/>
-                        <Image Src="icons/folder-doc.png" Fluid="true" Class="folder-image"/>
+                        <Image Src="icons/folder-empty-bw.png" Fluid="true" Class="folder-image" 
+                        Style="@($"{Filter}")" id="folderEmpty"/>
+                        <Image Src="icons/folder-doc.png" Fluid="true" Class="folder-image" id="folderDoc"/>
                     </div>
                 </MudCardContent>
             </MudCard>
