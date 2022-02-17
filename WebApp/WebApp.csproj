@@ -15,10 +15,12 @@
 		<AspNetCoreModuleName>AspNetCoreModule</AspNetCoreModuleName>
 		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
 		<TypeScriptToolsVersion>4.2</TypeScriptToolsVersion>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
 		<PackageReference Include="ElectronNET.API" Version="13.5.1" />
+		<PackageReference Include="Magick.NET-Q16-AnyCPU" Version="9.1.2" />
 		<PackageReference Include="MudBlazor" Version="5.2.4" />
 	</ItemGroup>
 	<ItemGroup>
@@ -36,7 +38,7 @@
 
 	<Target Name="CleanGeneratedFiles" BeforeTargets="Clean" Condition="'$(CleanGeneratedFiles)' != 'false'">
 		<ItemGroup>
-			<FilesToClean Include="./wwwroot/WebApp.min.css" />
+			<FilesToClean Include="./wwwroot/css/WebApp.min.css" />
 		</ItemGroup>
 		<Delete Files="@(FilesToClean)" />
 	</Target>
@@ -46,15 +48,15 @@
 	</Target>
 
 	<Target Name="WebCompiler" DependsOnTargets="ToolRestore">
-		<Message Text="Running webcompiler" Importance="high"/>
-		<Exec Command="dotnet webcompiler ./Styles/WebApp.scss -c excubowebcompiler.json" StandardOutputImportance="high" StandardErrorImportance="high" />
+		<Message Text="Running webcompiler" Importance="high" />
+		<Exec Command="dotnet webcompiler ./Styles/css/WebApp.scss -c excubowebcompiler.json" StandardOutputImportance="high" StandardErrorImportance="high" />
 	</Target>
 
 	<!--Output of Excubo webcompiler-->
 	<Target Name="IncludeGeneratedStaticFiles" DependsOnTargets="WebCompiler">
-		<Error Condition="!Exists('wwwroot/WebApp.min.css')" Text="Missing WebApp.min.css in wwwroot" />
+		<Error Condition="!Exists('wwwroot/css/WebApp.min.css')" Text="Missing WebApp.min.css in wwwroot/css/" />
 		<ItemGroup>
-			<Content Include="wwwroot/WebApp.min.css" Condition="!Exists('wwwroot/WebApp.min.css')" />
+			<Content Include="wwwroot/css/WebApp.min.css" Condition="!Exists('wwwroot/css/WebApp.min.css')" />
 		</ItemGroup>
 	</Target>
 
@@ -63,6 +65,12 @@
 		<Content Remove="compilerconfig.json" />
 		<Content Remove="excubowebcompiler.json" />
 	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="wwwroot\custom\def\" />
+		<Folder Include="wwwroot\custom\empty\" />
+	</ItemGroup>
+	
 	<!--Dont Include in build output-->
 	<ItemGroup>
 		<Watch Include="**/*.scss" />

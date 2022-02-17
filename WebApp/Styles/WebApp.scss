@@ -9,7 +9,6 @@
 }
 
 .folder-preview {
-    position: relative;
     @include responsive-box(100%);
     width: 80%;
     margin-left: auto;
@@ -31,8 +30,6 @@
         }
     }
 }
-
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;

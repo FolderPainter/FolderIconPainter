@@ -4,26 +4,27 @@
 @using WebApp.Shared.Components
 
 <MudContainer Class="mt-5 px-4">
-    <MudGrid Class="mt-3">
+    <MudGrid Class="mt-2">
         <MudItem xl="4" lg="4" md="4" sm="6" xs="12">
             <MudCard Elevation="2">
-                <MudCardContent Class="d-flex justify-space-around">            
-                    <MudColorPicker PickerVariant="PickerVariant.Static" Rounded="true" Value="pickerColor" ValueChanged="ChangeColor"/>
+                <MudCardContent Class="d-flex justify-space-around pb-0">            
+                    <MudColorPicker PickerVariant="PickerVariant.Static" Rounded="true" Value="pickerColor" 
+                    ValueChanged="ChangeColor" DisableAlpha="true" DisablePreview="true"/>
                 </MudCardContent>
             </MudCard>
         </MudItem>
         <MudItem xl="4" lg="4" md="4" sm="6" xs="12">
-            <MudCard Elevation="2">
+            <MudCard Elevation="2" Style="height: 100%" Class="d-flex align-center">
                 <MudCardContent>
                     <MudForm>
                         <InputFile hidden accept=".jpg, .jpeg, .png"/>
 
                         <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" 
-                            FullWidth="true" Class="mt-1" StartIcon="@Icons.Filled.CloudUpload">
+                            FullWidth="true" StartIcon="@Icons.Filled.CloudUpload">
                             Upload your images
                         </MudButton>
 
-                        <MudTextField T="string" Label="Icon name"/>
+                        <MudTextField T="string" Label="Icon name" @bind-Value="IconName"/>
                         <MudAutocomplete T="string" Label="Category" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" />
                         
                         <MudSlider Class="mt-3" Min="-100" Max="100" Value="0" Color="Color.Info">Saturation</MudSlider>
@@ -38,8 +39,8 @@
             </MudCard>
         </MudItem>
         <MudItem xl="4" lg="4" md="4" sm="6" xs="12">
-            <MudCard Elevation="2">
-                <MudCardContent>
+            <MudCard Elevation="2" Style="height: 100%">
+                <MudCardContent Style="height: 100%" Class="d-flex align-center">
                     <div class="folder-preview"> 
                         <Image Src="icons/folder-empty-bw.png" Fluid="true" Class="folder-image" 
                         Style="@($"{Filter}")" id="folderEmpty"/>
@@ -48,57 +49,26 @@
                 </MudCardContent>
             </MudCard>
         </MudItem>
-
-       @* <MudItem xl="4" lg="4" md="4" sm="6" xs="12">
+        <MudItem xl="12" lg="12" md="12" sm="12" xs="12">
             <MudCard Elevation="2">
                 <MudCardContent>
-                    <MudList Clickable="true">
-                        <MudListItem Text="1">
-                            <div class="mud-width-full rounded py-4" style="@($"background-color: {baseColor};")">ST</div>
-                        </MudListItem>
-                        <MudListItem Text="2">
-                            <div class="mud-width-full rounded py-4" style="@($"background-color: {pickerColor};")">CP</div>
-                        </MudListItem>
-                        <MudListItem Text="3">
-                            <div class="mud-width-full rounded py-4" 
-                            style="@($"background-color: #b19f7f; filter: hue-rotate({NewColor.HStr}deg) saturate({NewColor.SStr}%) brightness({NewColor.LStr}%);")">
-                                New Color
-                                @NewColor.ToString()
-                            </div>
-                        </MudListItem>
+                    <MudGrid>
+                        <MudItem xl="6" lg="6" md="6" sm="6" xs="12">
+                            <MudCard Elevation="2">
+                                <MudCardContent>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
 
-                    </MudList>
+                        <MudItem xl="6" lg="6" md="6" sm="6" xs="12">
+                            <MudCard Elevation="2">
+                                <MudCardContent>
+                                </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                    </MudGrid>
                 </MudCardContent>
             </MudCard>
-        </MudItem>*@
-      @*  <MudItem xl="4" lg="4" md="4" sm="6" xs="12">
-            <MudCard Elevation="2">
-                <MudCardContent>
-                    <MudList Clickable="true">
-                        <MudListItem Text="3">
-                            <div class="mud-width-full rounded py-4" style="@($"background-color: #689d94;")">Test cyan</div>
-                        </MudListItem>
-                          <MudListItem Text="3">
-                            <div class="mud-width-full rounded py-4" 
-                            style="@($"background-color: #b19f7f; {};")">
-                                Cyan Res
-                                @CyanTest.ToString()
-                            </div>
-                        </MudListItem>
-
-                         <MudListItem Text="3">
-                            <div class="mud-width-full rounded py-4" style="@($"background-color: #ff0000;")">Test red</div>
-                        </MudListItem>
-                          <MudListItem Text="3">
-                            <div class="mud-width-full rounded py-4" 
-                            style="@($"background-color: #b19f7f; filter: hue-rotate({RedTest.HStr}deg) saturate({RedTest.SStr}%) brightness({RedTest.LStr}%);")">
-                                Red res
-                                @RedTest.ToString()
-                            </div>
-                        </MudListItem>
-                    </MudList>
-                </MudCardContent>
-            </MudCard>
-        </MudItem>*@
+        </MudItem>
     </MudGrid>
 </MudContainer>

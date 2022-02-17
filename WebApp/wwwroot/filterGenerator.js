@@ -327,3 +327,30 @@ export function getBase64Image(id, filter) {
     //return dataURL;
     return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 }
+
+export function overlayImages(background, foreground, filter) {
+    var folderIconStrings = {
+        emptyFolderIcon: "",
+        defFolderIcon: ""
+    }
+
+    var canvas = document.createElement("canvas");
+    var ctx = canvas.getContext("2d");
+    ctx.canvas.width = 256;
+    ctx.canvas.height = 256;
+
+    var backgroundImg = document.getElementById(background);
+    var foregroundImg = document.getElementById(foreground);
+
+    ctx.filter = filter.replace('filter: ', '').replace(';', '');
+    ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
+    folderIconStrings.emptyFolderIcon = canvas.toDataURL("image/png")
+        .replace(/^data:image\/(png|jpg);base64,/, "");
+
+    ctx.filter = "none";
+    ctx.drawImage(foregroundImg, 0, 0, canvas.width, canvas.height);
+    folderIconStrings.defFolderIcon = canvas.toDataURL("image/png")
+        .replace(/^data:image\/(png|jpg);base64,/, "");
+
+    return folderIconStrings;
+}
