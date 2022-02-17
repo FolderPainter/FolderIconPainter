@@ -40,7 +40,9 @@ namespace WebApp
                 config.SnackbarConfiguration.ShowTransitionDuration = 500;
                 config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
             });
-
+            services.AddSignalR(e => {
+                e.MaximumReceiveMessageSize = 102400000;
+            });
             services.AddBlazoredLocalStorage();
             services.AddScoped<IUserPreferencesService, UserPreferencesService>();
             services.AddScoped<LayoutService>();

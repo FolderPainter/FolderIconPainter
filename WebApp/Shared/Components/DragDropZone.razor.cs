@@ -25,7 +25,6 @@ namespace WebApp.Shared.Components
           .AddClass("not-working", Disabled)
         .Build();
 
-
         [Inject] private IJSRuntime JSRuntime { get; set; }
         [Inject] private IconService IconService { get; set; }
 

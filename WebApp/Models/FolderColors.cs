@@ -24,8 +24,8 @@ namespace WebApp.Models
         public readonly static string Malibu = "#74c2ff";
         public readonly static string Gray = "#B5B5B5";
 
-        public readonly static string Random2 = "#AF1FF5";
-        public readonly static string Random3 = "#E617A7";
+        public readonly static string Random2 = "#FF269E";
+        public readonly static string Random3 = "#0D28EE";
 
         public static IEnumerable<string> GetAllColors()
         {
