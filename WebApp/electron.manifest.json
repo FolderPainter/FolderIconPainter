@@ -14,11 +14,10 @@
     "buildVersion": "1.0.0",
     "compression": "maximum",
     "win": {
-      "icon": "icons/electron.ico"
+      "icon": "bin/wwwroot/img/FIP.png"
     },
     "directories": {
-      "output": "../../../bin/Desktop",
-      "buildResources": "icons"
+      "output": "../../../bin/Desktop"
     },
     "extraResources": [
       {

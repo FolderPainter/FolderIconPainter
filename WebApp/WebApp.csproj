@@ -9,7 +9,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<TargetFramework>net5.0</TargetFramework>
+		<TargetFramework>net6.0</TargetFramework>
 
 		<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
 		<AspNetCoreModuleName>AspNetCoreModule</AspNetCoreModuleName>
@@ -18,10 +18,9 @@
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
+		<PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
 		<PackageReference Include="ElectronNET.API" Version="13.5.1" />
-		<PackageReference Include="Magick.NET-Q16-AnyCPU" Version="9.1.2" />
-		<PackageReference Include="MudBlazor" Version="5.2.4" />
+		<PackageReference Include="MudBlazor" Version="6.0.6" />
 	</ItemGroup>
 	<ItemGroup>
 		<Content Update="electron.manifest.json">
@@ -67,8 +66,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="wwwroot\custom\def\" />
-		<Folder Include="wwwroot\custom\empty\" />
+		<Folder Include="wwwroot\icons\custom\def\" />
+		<Folder Include="wwwroot\icons\custom\empty\" />
 	</ItemGroup>
 	
 	<!--Dont Include in build output-->

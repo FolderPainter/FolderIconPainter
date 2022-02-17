@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MudBlazor;
 using MudBlazor.Utilities;
 using System;
 using System.IO;
@@ -11,16 +12,14 @@ namespace WebApp.Pages
 {
     public partial class AddCustom : LayoutComponentBase
     {
-        public MudColor pickerColor = "#689d94";
-        public MudColor baseColor = "#b19f7f";
-        public MudColor testCyan = "#689d94";
-        public MudColor testRed = "#ff0000";
-
         [Inject] private IJSRuntime JSRuntime { get; set; }
 
-        private IJSObjectReference module;
+        MudColor pickerColor = "#3cec53";
+        IJSObjectReference module;
+        bool success;
+        MudForm form;
 
-        public string Filter { get; set; }
+        string Filter { get; set; }
 
         [Parameter] public string IconName { get; set; }
 
@@ -45,6 +44,9 @@ namespace WebApp.Pages
 
         public async void SaveImageAsync()
         {
+            await form.Validate();
+            if (!success)
+                return;
             try
             {
                 var folderIconStrings = await module.InvokeAsync<FolderIconStrings>("overlayImages", "folderEmpty", "folderDoc", Filter);

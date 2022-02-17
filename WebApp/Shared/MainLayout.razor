@@ -11,7 +11,7 @@
             <MudSpacer/>
             <NavLink ActiveClass="d-flex" href="/">
                 <div class="mud-avatar mud-avatar-large mud-avatar-square mud-elevation-0 brand-image" style="background-color: transparent;")>
-                    <img src="img/FIP.png" class="mud-avatar-img">
+                    <img src="img/FIP.png" class="mud-avatar-img" draggable="false">
                 </div>
                 <MudText Typo="Typo.h5" Class="ml-3 mt-1 brand-text">Folder Icon Painter</MudText>
             </NavLink>
@@ -23,10 +23,12 @@
         </MudHidden>
 
         <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
-            <div class="mud-avatar mud-avatar-large mud-avatar-square mud-elevation-0" style="background-color: transparent")>
-                <img src="img/FIP.png" class="mud-avatar-img">
-            </div>
-            <MudText Typo="Typo.h3" Class="ml-3 no-select">FIP</MudText>
+            <NavLink ActiveClass="d-flex" href="/">
+                <div class="mud-avatar mud-avatar-large mud-avatar-square mud-elevation-0" style="background-color: transparent")>
+                    <img src="img/FIP.png" class="mud-avatar-img" draggable="false">
+                </div>
+                <MudText Typo="Typo.h3" Class="ml-3 no-select">FIP</MudText>
+            </NavLink>
 
             <MudDivider Vertical="true" FlexItem="true" DividerType="DividerType.Middle" Class="mx-4 my-3" />
 
@@ -59,7 +61,7 @@
             </MudToolBar>
 
             <MudNavMenu Color="Color.Primary" Margin="Margin.Dense" Rounded="true" Class="pa-2">
-                <MudNavLink Href="/" Icon="@Icons.Material.Filled.FormatPaint">Paint</MudNavLink>
+                <MudNavLink Href="@NavigationManager.BaseUri" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.FormatPaint" >Paint</MudNavLink>
                 <MudNavLink Href="/addcustom" Icon="@Icons.Material.Filled.AddBox">Add Custom</MudNavLink>
                 <MudNavLink Href="/settings" Icon="@Icons.Material.Filled.Settings">Settings</MudNavLink>
             </MudNavMenu>
