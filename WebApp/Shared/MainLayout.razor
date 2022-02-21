@@ -18,7 +18,8 @@
             <MudSpacer/>
 
            <MudTooltip Duration="1000" Text="@(LayoutService.IsDarkMode ? "Switch to Light Theme" : "Switch to Dark Theme")">
-                <MudIconButton Icon="@(LayoutService.IsDarkMode ? @Icons.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" Color="Color.Inherit" OnClick="@((e) => LayoutService.ToggleDarkMode())"/>
+                <MudIconButton Icon="@(LayoutService.IsDarkMode ? @Icons.Rounded.LightMode : @Icons.Material.Outlined.DarkMode)" 
+                    Color="Color.Inherit" OnClick="@((e) => LayoutService.ToggleDarkMode())"/>
             </MudTooltip>
         </MudHidden>
 

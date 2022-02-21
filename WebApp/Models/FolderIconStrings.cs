@@ -8,7 +8,7 @@
 
         public bool IsNullOrWhiteSpace()
         {
-            return string.IsNullOrWhiteSpace(EmptyFolderIcon) 
+            return string.IsNullOrWhiteSpace(EmptyFolderIcon)
                 || string.IsNullOrWhiteSpace(DefFolderIcon);
         }
     }

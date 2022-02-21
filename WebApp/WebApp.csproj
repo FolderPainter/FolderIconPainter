@@ -10,7 +10,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-
+		<Nullable>disable</Nullable>
 		<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
 		<AspNetCoreModuleName>AspNetCoreModule</AspNetCoreModuleName>
 		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>

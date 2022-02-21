@@ -315,19 +315,6 @@ export function GenerateFilter(r, g, b) {
     return result.filter;
 }
 
-export function getBase64Image(id, filter) {
-    var canvas = document.createElement("canvas");
-    var ctx = canvas.getContext("2d");
-    ctx.canvas.width = 256;
-    ctx.canvas.height = 256;
-    var img = document.getElementById(id);
-    ctx.filter = filter.replace('filter: ', '').replace(';', '');
-    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    var dataURL = canvas.toDataURL("image/png");
-    //return dataURL;
-    return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-}
-
 export function overlayImages(background, foreground, filter) {
     var folderIconStrings = {
         emptyFolderIcon: "",
