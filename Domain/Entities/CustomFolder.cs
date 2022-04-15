@@ -8,7 +8,10 @@ public class CustomFolder : Entity
     public string Name { get; set; }
 
     [Required]
-    public int CategoryId { get; set; } 
-    
+    public int CategoryId { get; set; }
+
+    [Required]
+    public string ColorHex { get; set; }
+
     public Category Category { get; set; }
 }

@@ -1,4 +1,14 @@
-﻿.folder-preview {
+﻿.drop-zone-container {
+  position: relative;
+  width: 100%;
+}
+.drop-zone-container:before {
+  content: "";
+  display: block;
+  padding-top: 45%;
+}
+
+.folder-preview {
   position: relative;
   width: 80%;
   margin-left: auto;

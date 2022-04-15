@@ -8,6 +8,11 @@
     }
 }
 
+.drop-zone-container {
+    @include responsive-box(45%);
+    width: 100%;
+}
+
 .folder-preview {
     @include responsive-box(100%);
     width: 80%;

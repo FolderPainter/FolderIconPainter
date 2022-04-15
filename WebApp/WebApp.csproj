@@ -20,6 +20,11 @@
 	<ItemGroup>
 		<PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
 		<PackageReference Include="ElectronNET.API" Version="13.5.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.3">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="MudBlazor" Version="6.0.6" />
 	</ItemGroup>
 	<ItemGroup>
@@ -73,5 +78,8 @@
 	<!--Dont Include in build output-->
 	<ItemGroup>
 		<Watch Include="**/*.scss" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
 	</ItemGroup>
 </Project>

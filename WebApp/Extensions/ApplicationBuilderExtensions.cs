@@ -1,19 +1,24 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
+using Application.Interfaces.Services;
 
-namespace WebApp.Extensions;
-internal static class ApplicationBuilderExtensions
+namespace WebApp.Extensions
 {
-    internal static IApplicationBuilder UseExceptionHandling(
-        this IApplicationBuilder app,
-        IWebHostEnvironment env)
+    internal static class ApplicationBuilderExtensions
     {
-        if (env.IsDevelopment())
+        internal static async Task<IApplicationBuilder> Initialize(this IApplicationBuilder app, Microsoft.Extensions.Configuration.IConfiguration _configuration)
         {
-            app.UseDeveloperExceptionPage();
-        }
+            using var serviceScope = app.ApplicationServices.CreateScope();
 
-        return app;
+            var initializers = serviceScope.ServiceProvider.GetServices<IDatabaseSeeder>();
+
+            foreach (var initializer in initializers)
+            {
+                await initializer.InitializeAsync();
+            }
+
+            return app;
+        }
     }
 }

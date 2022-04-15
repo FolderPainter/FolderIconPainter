@@ -7,6 +7,8 @@ public interface IRepositoryAsync<T> where T : class
 
     Task<List<T>> GetPagedReponseAsync(int pageNumber, int pageSize, CancellationToken cancellationToken);
 
+    Task<T> GetByIdAsync(int id, CancellationToken cancellationToken);
+
     Task<T> AddAsync(T entity, CancellationToken cancellationToken);
 
     Task<T[]> AddRangeAsync(CancellationToken cancellationToken, params T[] entities);

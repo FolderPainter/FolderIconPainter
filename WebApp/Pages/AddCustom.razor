@@ -1,5 +1,7 @@
 ﻿@page "/addcustom"
 @inherits LayoutComponentBase
+@using Application.Features.Category.Queries.GetAll
+@using Domain.Entities;
 
 <MudContainer Class="mt-5 px-4">
     <MudGrid Class="mt-2">
@@ -23,8 +25,16 @@
                         </MudButton>
 
                         <MudTextField T="string" Label="Icon name" Required="true" RequiredError="Icon name is required!" @bind-Value="IconName"/>
-                        <MudAutocomplete T="string" Label="Category" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="Color.Primary" 
-                            RequiredError="Category is required!"/>
+                        
+                        <div class="d-flex flex-row">
+                            <MudAutocomplete T="GetAllCategoriesResponse" Label="Category" Required="true" AdornmentIcon="@Icons.Material.Filled.Search" 
+                                AdornmentColor="Color.Primary" RequiredError="Category is required!" ResetValueOnEmptyText="true"
+                                CoerceText="false" CoerceValue="true" ValueChanged="OnCategoryChanged" SearchFunc="SearchCategoryAsync"
+                                ToStringFunc="@(e => e == null ? null : e.Name)"/>
+                                
+                            <MudIconButton Icon="@Icons.Material.Filled.CreateNewFolder" Color="Color.Tertiary" Class="mt-3 ml-2" OnClick="SaveImageAsync">
+                            </MudIconButton>
+                        </div>
                         
                         <MudSlider Class="mt-3" Min="-100" Max="100" Value="0" Color="Color.Info" Disabled="true">Saturation</MudSlider>
                         <MudSlider Min="-100" Max="100" Value="0" Color="Color.Error" Disabled="true">Brightness</MudSlider>

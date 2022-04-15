@@ -63,6 +63,11 @@ public class RepositoryAsync<T> : IRepositoryAsync<T> where T : class
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<T> GetByIdAsync(int id, CancellationToken cancellationToken)
+    {
+        return await dbContext.Set<T>().FindAsync(id, cancellationToken);
+    }
+
     public Task UpdateAsync(T entity)
     {
         dbContext.Attach(entity);

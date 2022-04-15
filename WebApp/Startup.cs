@@ -1,6 +1,8 @@
+using Application.Extensions;
 using Blazored.LocalStorage;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
+using Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
 using System.Linq;
+using WebApp.Extensions;
 using WebApp.Services;
 using WebApp.Services.UserPreferences;
 
@@ -29,28 +32,15 @@ namespace WebApp
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddMudServices(config =>
-            {
-                config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
-                config.SnackbarConfiguration.PreventDuplicates = false;
-                config.SnackbarConfiguration.NewestOnTop = false;
-                config.SnackbarConfiguration.ShowCloseIcon = true;
-                config.SnackbarConfiguration.VisibleStateDuration = 10000;
-                config.SnackbarConfiguration.HideTransitionDuration = 500;
-                config.SnackbarConfiguration.ShowTransitionDuration = 500;
-                config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
-            });
-            services.AddSignalR(e => {
-                e.MaximumReceiveMessageSize = 102400000;
-            });
-            services.AddBlazoredLocalStorage();
-            services.AddScoped<IUserPreferencesService, UserPreferencesService>();
-            services.AddScoped<LayoutService>();
-            services.AddScoped<IconService>();
+            services.TryAddServices();
+            services.AddDatabase(Configuration);
+            services.AddApplicationLayer();
+            services.AddInfrastructureMappings();
+            services.AddRepositories();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -72,6 +62,7 @@ namespace WebApp
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+            await app.Initialize(Configuration);
 
 
             if (HybridSupport.IsElectronActive)

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <RazorPage_SelectedScaffolderID>RazorComponentScaffolder</RazorPage_SelectedScaffolderID>
     <RazorPage_SelectedScaffolderCategoryPath>root/Common/RazorComponent</RazorPage_SelectedScaffolderCategoryPath>
-    <ActiveDebugProfile>WebApp</ActiveDebugProfile>
+    <ActiveDebugProfile>IIS Express</ActiveDebugProfile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebuggerFlavor>ProjectDebugger</DebuggerFlavor>
