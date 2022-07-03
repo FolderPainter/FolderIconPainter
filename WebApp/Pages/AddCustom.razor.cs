@@ -26,6 +26,7 @@ namespace WebApp.Pages
         MudColor pickerColor = "#3cec53";
         IJSObjectReference module;
         bool success;
+        bool categoryFinded;
         MudForm form;
 
         string Filter { get; set; }
@@ -88,9 +89,13 @@ namespace WebApp.Pages
         {
         }
 
-        public void OnCategoryChanged()
+        public async Task OnCategoryTextChanged(string value)
         {
+            if (!String.IsNullOrEmpty(value))
+                categoryFinded = Categories.Any(c => c.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+           
 
+            await form.Validate();
         }
 
 
@@ -100,7 +105,10 @@ namespace WebApp.Pages
             {
                 return Categories;
             }
-            return Categories.Where(c => c.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+
+            var res = Categories.Where(c => c.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+            categoryFinded = res.Count() > 0;
+            return res;
         }
     }
 }

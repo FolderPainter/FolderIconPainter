@@ -7,15 +7,15 @@
     <MudGrid Class="mt-2">
         <MudItem xl="4" lg="4" md="4" sm="6" xs="12">
             <MudCard Elevation="2" Style="height: 100%">
-                <MudCardContent Class="d-flex justify-space-around pb-0">            
+                <MudCardContent Class="d-flex justify-center align-content-center pb-0">            
                     <MudColorPicker PickerVariant="PickerVariant.Static" Rounded="true" Value="pickerColor" 
                     ValueChanged="ChangeColor" DisableAlpha="true" DisablePreview="true"/>
                 </MudCardContent>
             </MudCard>
         </MudItem>
         <MudItem xl="4" lg="4" md="4" sm="6" xs="12">
-            <MudCard Elevation="2" Style="height: 100%" Class="d-flex align-center">
-                <MudCardContent>
+            <MudCard Elevation="2" Style="height: 100%">
+                <MudCardContent Class="d-flex justify-center"> 
                     <MudForm @ref="form" @bind-IsValid="@success"> 
                         <InputFile hidden accept=".jpg, .jpeg, .png"/>
 
@@ -29,13 +29,16 @@
                         <div class="d-flex flex-row">
                             <MudAutocomplete T="GetAllCategoriesResponse" Label="Category" Required="true" AdornmentIcon="@Icons.Material.Filled.Search" 
                                 AdornmentColor="Color.Primary" RequiredError="Category is required!" ResetValueOnEmptyText="true"
-                                CoerceText="false" CoerceValue="true" ValueChanged="OnCategoryChanged" SearchFunc="SearchCategoryAsync"
+                                CoerceText="false" CoerceValue="false" TextChanged="OnCategoryTextChanged" SearchFunc="SearchCategoryAsync"
                                 ToStringFunc="@(e => e == null ? null : e.Name)"/>
                                 
-                            <MudIconButton Icon="@Icons.Material.Filled.CreateNewFolder" Color="Color.Tertiary" Class="mt-3 ml-2" OnClick="SaveImageAsync">
+                            <MudIconButton Icon="@Icons.Material.Filled.CreateNewFolder" Color="Color.Tertiary" 
+                            Class="mt-3 ml-2 align-self-start" OnClick="SaveImageAsync" Disabled="categoryFinded">
                             </MudIconButton>
                         </div>
-                        
+                         
+
+
                         <MudSlider Class="mt-3" Min="-100" Max="100" Value="0" Color="Color.Info" Disabled="true">Saturation</MudSlider>
                         <MudSlider Min="-100" Max="100" Value="0" Color="Color.Error" Disabled="true">Brightness</MudSlider>
                     

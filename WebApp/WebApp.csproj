@@ -53,7 +53,7 @@
 
 	<Target Name="WebCompiler" DependsOnTargets="ToolRestore">
 		<Message Text="Running webcompiler" Importance="high" />
-		<Exec Command="dotnet webcompiler ./Styles/css/WebApp.scss -c excubowebcompiler.json" StandardOutputImportance="high" StandardErrorImportance="high" />
+		<Exec Command="dotnet webcompiler ./Styles/WebApp.scss -c excubowebcompiler.json" StandardOutputImportance="high" StandardErrorImportance="high" />
 	</Target>
 
 	<!--Output of Excubo webcompiler-->
