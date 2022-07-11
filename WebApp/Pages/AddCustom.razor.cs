@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces.Services;
-using Infrastructure.Services;
 using Domain.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -13,7 +12,7 @@ using WebApp.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Application.Features.Category.Queries.GetAll;
+using Application.Features.Categories.Queries.GetAll;
 
 namespace WebApp.Pages
 {
@@ -21,30 +20,29 @@ namespace WebApp.Pages
     {
         [Inject] private IJSRuntime JSRuntime { get; set; }
 
-        [Inject] private ICategoryService CategoryService { get; set; }
-
         MudColor pickerColor = "#3cec53";
         IJSObjectReference module;
         bool success;
-        bool categoryFinded;
         MudForm form;
 
         string Filter { get; set; }
 
-        public IEnumerable<GetAllCategoriesResponse> Categories { get; set; }
+        public IEnumerable<CategoryDto> Categories { get; set; }
+
+        public CategoryDto SelectedCategory = new CategoryDto { Id = 0 };
 
         [Parameter] public string IconName { get; set; }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
-
+            await form.Validate();
             if (firstRender)
             {
                 module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./filterGenerator.js");
-                Categories = await CategoryService.GetAllCategories(CancellationToken.None);
-
+                //Categories = await CategoryService.GetAllCategories(CancellationToken.None);
                 Filter = await module.InvokeAsync<string>("GenerateFilter", pickerColor.R, pickerColor.G, pickerColor.B);
+
                 StateHasChanged();
             }
         }
@@ -91,24 +89,21 @@ namespace WebApp.Pages
 
         public async Task OnCategoryTextChanged(string value)
         {
-            if (!String.IsNullOrEmpty(value))
-                categoryFinded = Categories.Any(c => c.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
-           
-
             await form.Validate();
         }
 
-
-        public async Task<IEnumerable<GetAllCategoriesResponse>> SearchCategoryAsync(string value)
+        public async Task<IEnumerable<string>> SearchCategoryAsync(string value)
         {
-            if (string.IsNullOrWhiteSpace(value))
+            return await Task.Run(() =>
             {
-                return Categories;
-            }
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    return Categories.Select(c => c.Name).ToList();
+                }
 
-            var res = Categories.Where(c => c.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
-            categoryFinded = res.Count() > 0;
-            return res;
+                var res = Categories.Select(c => c.Name).Where(c => c.Contains(value, StringComparison.InvariantCultureIgnoreCase));
+                return res.ToList();
+            });
         }
     }
 }

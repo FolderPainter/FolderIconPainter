@@ -2,15 +2,11 @@
 using Blazored.LocalStorage;
 using Infrastructure;
 using Infrastructure.Contexts;
-using Infrastructure.Services;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 using MudBlazor;
 using MudBlazor.Services;
-using System.Threading.Tasks;
 using WebApp.Services;
 using WebApp.Services.UserPreferences;
 
@@ -46,9 +42,6 @@ internal static class ServiceCollectionExtensions
 
         services.AddScoped<LayoutService>();
         services.AddScoped<IconService>();
-
-        services.AddTransient<ICategoryService, CategoryService>();
-        services.AddTransient<ICustomFolderService, CustomFolderService>();
 
         return services;
     }

@@ -1,6 +1,6 @@
 ﻿@page "/addcustom"
 @inherits LayoutComponentBase
-@using Application.Features.Category.Queries.GetAll
+@using Application.Features.Categories.Queries.GetAll
 @using Domain.Entities;
 
 <MudContainer Class="mt-5 px-4">
@@ -19,31 +19,24 @@
                     <MudForm @ref="form" @bind-IsValid="@success"> 
                         <InputFile hidden accept=".jpg, .jpeg, .png"/>
 
-                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" 
+                        @*<MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Primary" 
                             FullWidth="true" StartIcon="@Icons.Filled.CloudUpload">
                             Upload your image
-                        </MudButton>
+                        </MudButton>*@
 
                         <MudTextField T="string" Label="Icon name" Required="true" RequiredError="Icon name is required!" @bind-Value="IconName"/>
-                        
-                        <div class="d-flex flex-row">
-                            <MudAutocomplete T="GetAllCategoriesResponse" Label="Category" Required="true" AdornmentIcon="@Icons.Material.Filled.Search" 
-                                AdornmentColor="Color.Primary" RequiredError="Category is required!" ResetValueOnEmptyText="true"
-                                CoerceText="false" CoerceValue="false" TextChanged="OnCategoryTextChanged" SearchFunc="SearchCategoryAsync"
-                                ToStringFunc="@(e => e == null ? null : e.Name)"/>
-                                
-                            <MudIconButton Icon="@Icons.Material.Filled.CreateNewFolder" Color="Color.Tertiary" 
-                            Class="mt-3 ml-2 align-self-start" OnClick="SaveImageAsync" Disabled="categoryFinded">
-                            </MudIconButton>
-                        </div>
                          
-
-
+                        <MudAutocomplete Label="Category" @bind-Value="SelectedCategory.Name" Required="true" SearchFunc="SearchCategoryAsync"
+                            Immediate="true" CoerceText="true" CoerceValue="true" ResetValueOnEmptyText="true" AdornmentIcon="@Icons.Material.Filled.Search"
+                            AdornmentColor="Color.Primary" RequiredError="Category is required!" TextChanged="OnCategoryTextChanged" 
+                            For="@(() => SelectedCategory.Name)"/>
+                            
                         <MudSlider Class="mt-3" Min="-100" Max="100" Value="0" Color="Color.Info" Disabled="true">Saturation</MudSlider>
                         <MudSlider Min="-100" Max="100" Value="0" Color="Color.Error" Disabled="true">Brightness</MudSlider>
                     
-                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Secondary" 
-                            FullWidth="true" Class="mt-3" StartIcon="@Icons.Filled.AddAPhoto" OnClick="SaveImageAsync">
+                        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Secondary" Disabled="!success"
+                            FullWidth="true" Class="mt-3" StartIcon="@Icons.Material.Filled.CreateNewFolder" OnClick="SaveImageAsync"
+                            style="@($"background-color:{pickerColor};")">
                             Save to library
                         </MudButton>
                     </MudForm>   

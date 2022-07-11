@@ -1,5 +1,5 @@
-﻿using Application.Features.Category.Commands;
-using Application.Features.Category.Queries.GetAll;
+﻿using Application.Features.Categories.Commands;
+using Application.Features.Categories.Queries.GetAll;
 using AutoMapper;
 using Domain.Entities;
 
@@ -8,10 +8,8 @@ public class CategoryProfile : Profile
 {
     public CategoryProfile()
     {
-        CreateMap<CreateCategoryCommand, Category>().ReverseMap();
+        CreateMap<PatchCategoryRequest, Category>().ReverseMap();
 
-        CreateMap<PatchCategoryCommand, Category>().ReverseMap();
-
-        CreateMap<GetAllCategoriesResponse, Category>().ReverseMap();
+        CreateMap<CategoryDto, Category>().ReverseMap();
     }
 }
