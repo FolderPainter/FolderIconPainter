@@ -4,10 +4,9 @@ using Domain.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shared.Wrapper;
 
 namespace Application.Features.Categories.Commands;
-public partial class PatchCategoryRequest : IRequest<IResult<int>>
+public partial class PatchCategoryRequest : IRequest<int>
 {
     public int Id { get; set; }
 
@@ -26,13 +25,13 @@ public class PatchCategoryRequestValidator : AbstractValidator<PatchCategoryRequ
                .WithMessage((_, name) => $"Category {name} already Exists.");
 }
 
-internal class PatchCategoryRequestHandler : IRequestHandler<PatchCategoryRequest, IResult<int>>
+internal class PatchCategoryRequestHandler : IRequestHandler<PatchCategoryRequest, int>
 {
     private readonly IUnitOfWork unitOfWork;
 
     public PatchCategoryRequestHandler(IUnitOfWork unitOfWork) => this.unitOfWork = unitOfWork;
 
-    public async Task<IResult<int>> Handle(PatchCategoryRequest request, CancellationToken cancellationToken)
+    public async Task<int> Handle(PatchCategoryRequest request, CancellationToken cancellationToken)
     {
         var category = await unitOfWork.RepositoryClassic<Category>().GetByIdAsync(request.Id, cancellationToken);
 
@@ -41,8 +40,6 @@ internal class PatchCategoryRequestHandler : IRequestHandler<PatchCategoryReques
         category.Update(request.Name);
 
         await unitOfWork.RepositoryClassic<Category>().UpdateAsync(category);
-        await unitOfWork.CommitAsync(cancellationToken);
-
-        return await Result<int>.SuccessAsync(request.Id);
+        return await unitOfWork.CommitAsync(cancellationToken);
     }
 }

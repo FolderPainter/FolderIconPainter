@@ -12,7 +12,7 @@ using WebApp.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Application.Features.Categories.Queries.GetAll;
+using Application.Features.Categories.Queries;
 
 namespace WebApp.Pages
 {

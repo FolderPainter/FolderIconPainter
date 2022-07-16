@@ -3,11 +3,10 @@ using Domain.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shared.Wrapper;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Features.Categories.Commands;
-public partial class CreateCategoryRequest : IRequest<IResult<int>>
+public partial class CreateCategoryRequest : IRequest<int>
 {
     [Required]
     public string Name { get; set; }
@@ -23,19 +22,17 @@ public class CreateCategoryRequestValidator : AbstractValidator<CreateCategoryRe
                 .WithMessage((_, name) => $"Category {name} already Exists.");
 }
 
-internal class CreateCategoryRequestHandler : IRequestHandler<CreateCategoryRequest, IResult<int>>
+internal class CreateCategoryRequestHandler : IRequestHandler<CreateCategoryRequest, int>
 {
     private readonly IUnitOfWork unitOfWork;
 
     public CreateCategoryRequestHandler(IUnitOfWork unitOfWork) => this.unitOfWork = unitOfWork;
 
-    public async Task<IResult<int>> Handle(CreateCategoryRequest request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateCategoryRequest request, CancellationToken cancellationToken)
     {
         var category = new Category(request.Name);
 
         await unitOfWork.RepositoryClassic<Category>().AddAsync(category, cancellationToken);
-        int result = await unitOfWork.CommitAsync(cancellationToken);
-
-        return await Result<int>.SuccessAsync(result);
+        return await unitOfWork.CommitAsync(cancellationToken);
     }
 }

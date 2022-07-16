@@ -1,4 +1,4 @@
-﻿namespace Application.Features.Categories.Queries.GetAll;
+﻿namespace Application.Features.Categories.Queries;
 
 public class CategoryDto
 {

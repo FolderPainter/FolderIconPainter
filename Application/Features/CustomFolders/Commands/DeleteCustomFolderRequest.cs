@@ -5,7 +5,7 @@ using MediatR;
 using Shared.Wrapper;
 
 namespace Application.Features.CustomFolders.Commands;
-public class DeleteCustomFolderRequest : IRequest<IResult<int>>
+public class DeleteCustomFolderRequest : IRequest<int>
 {
     public DeleteCustomFolderRequest(int id)
     {
@@ -15,7 +15,7 @@ public class DeleteCustomFolderRequest : IRequest<IResult<int>>
     public int Id { get; set; }
 }
 
-internal class DeleteCustomFolderRequestHandler : IRequestHandler<DeleteCustomFolderRequest, IResult<int>>
+internal class DeleteCustomFolderRequestHandler : IRequestHandler<DeleteCustomFolderRequest, int>
 {
     private readonly IUnitOfWork unitOfWork;
 
@@ -24,15 +24,13 @@ internal class DeleteCustomFolderRequestHandler : IRequestHandler<DeleteCustomFo
         this.unitOfWork = unitOfWork;
     }
 
-    public async Task<IResult<int>> Handle(DeleteCustomFolderRequest request, CancellationToken cancellationToken)
+    public async Task<int> Handle(DeleteCustomFolderRequest request, CancellationToken cancellationToken)
     {
         var customFolder = await unitOfWork.RepositoryClassic<CustomFolder>().GetByIdAsync(request.Id, cancellationToken);
 
         _ = customFolder ?? throw new NotFoundException("Custom Folder not found!");
 
         await unitOfWork.RepositoryClassic<CustomFolder>().DeleteAsync(customFolder);
-        await unitOfWork.CommitAsync(cancellationToken);
-
-        return await Result<int>.SuccessAsync(request.Id);
+        return await unitOfWork.CommitAsync(cancellationToken);
     }
 }

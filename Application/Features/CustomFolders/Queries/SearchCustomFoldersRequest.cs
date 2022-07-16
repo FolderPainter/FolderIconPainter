@@ -1,7 +1,6 @@
 ﻿using Domain.Enums;
 using Shared.Wrapper;
 using MediatR;
-using Application.Interfaces.Services;
 using Application.Specifications;
 using Application.Interfaces.Repositories;
 using Domain.Entities;
@@ -10,7 +9,7 @@ using Application.Extensions;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 
-namespace Application.Features.CustomFolders.Queries.GetAllPaged;
+namespace Application.Features.CustomFolders.Queries;
 
 public class SearchCustomFoldersRequest : IRequest<PaginatedResult<CustomFolderDto>>
 {

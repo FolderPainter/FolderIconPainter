@@ -1,4 +1,4 @@
-﻿namespace Application.Features.CustomFolders.Queries.GetAllPaged;
+﻿namespace Application.Features.CustomFolders.Queries;
 
 public class CustomFolderDto
 {

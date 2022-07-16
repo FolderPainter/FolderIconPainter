@@ -1,15 +1,13 @@
 ﻿using Application.Exceptions;
 using Application.Interfaces.Repositories;
-using Application.Interfaces.Services;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shared.Wrapper;
 using System.ComponentModel.DataAnnotations;
 
 namespace Application.Features.CustomFolders.Commands;
-public partial class PatchCustomFolderRequest : IRequest<IResult<int>>
+public partial class PatchCustomFolderRequest : IRequest<int>
 {
     public int Id { get; set; }
 
@@ -44,7 +42,7 @@ public class PatchCustomFolderRequestValidator : AbstractValidator<PatchCustomFo
     }
 }
 
-internal class PatchCustomFolderRequestHandler : IRequestHandler<PatchCustomFolderRequest, IResult<int>>
+internal class PatchCustomFolderRequestHandler : IRequestHandler<PatchCustomFolderRequest, int>
 {
     private readonly IUnitOfWork unitOfWork;
 
@@ -53,7 +51,7 @@ internal class PatchCustomFolderRequestHandler : IRequestHandler<PatchCustomFold
         this.unitOfWork = unitOfWork;
     }
 
-    public async Task<IResult<int>> Handle(PatchCustomFolderRequest request, CancellationToken cancellationToken)
+    public async Task<int> Handle(PatchCustomFolderRequest request, CancellationToken cancellationToken)
     {
         var customFolder = await unitOfWork.RepositoryClassic<CustomFolder>().GetByIdAsync(request.Id, cancellationToken);
 
@@ -61,8 +59,6 @@ internal class PatchCustomFolderRequestHandler : IRequestHandler<PatchCustomFold
         customFolder.Update(request.Name, request.CategoryId, request.ColorHex);
 
         await unitOfWork.RepositoryClassic<CustomFolder>().UpdateAsync(customFolder);
-        await unitOfWork.CommitAsync(cancellationToken);
-
-        return await Result<int>.SuccessAsync(request.Id);
+        return await unitOfWork.CommitAsync(cancellationToken);
     }
 }

@@ -1,16 +1,12 @@
 ﻿using Application.Interfaces.Repositories;
-using Application.Interfaces.Services;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace Application.Features.Categories.Queries.GetAll
+namespace Application.Features.Categories.Queries
 {
     public class SearchCategoriesRequest : IRequest<IEnumerable<CategoryDto>>
     {

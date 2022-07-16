@@ -3,10 +3,9 @@ using Domain.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shared.Wrapper;
 
 namespace Application.Features.CustomFolders.Commands;
-public partial class CreateCustomFolderRequest : IRequest<IResult<int>>
+public partial class CreateCustomFolderRequest : IRequest<int>
 {
     public string Name { get; set; }
 
@@ -34,7 +33,7 @@ public class CreateCustomFolderRequestValidator : AbstractValidator<CreateCustom
     }
 }
 
-internal class CreateCustomFolderRequestHandler : IRequestHandler<CreateCustomFolderRequest, IResult<int>>
+internal class CreateCustomFolderRequestHandler : IRequestHandler<CreateCustomFolderRequest, int>
 {
     private readonly IUnitOfWork unitOfWork;
 
@@ -43,13 +42,11 @@ internal class CreateCustomFolderRequestHandler : IRequestHandler<CreateCustomFo
         this.unitOfWork = unitOfWork;
     }
 
-    public async Task<IResult<int>> Handle(CreateCustomFolderRequest request, CancellationToken cancellationToken)
+    public async Task<int> Handle(CreateCustomFolderRequest request, CancellationToken cancellationToken)
     {
         var customFolder = new CustomFolder(request.Name, request.CategoryId, request.ColorHex);
 
         await unitOfWork.RepositoryClassic<CustomFolder>().AddAsync(customFolder, cancellationToken);
-        int result = await unitOfWork.CommitAsync(cancellationToken);
-
-        return await Result<int>.SuccessAsync(result);
+        return await unitOfWork.CommitAsync(cancellationToken);
     }
 }
