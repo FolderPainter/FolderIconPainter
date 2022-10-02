@@ -1,5 +1,5 @@
 ﻿using Application.Features.Categories.Commands;
-using Application.Features.Categories.Queries.GetAll;
+using Application.Features.Categories.Queries;
 using AutoMapper;
 using Domain.Entities;
 

@@ -28,7 +28,7 @@ public class GetCategoryRequestHandler : IRequestHandler<GetCategoryRequest, Cat
     {
         var category = await unitOfWork.RepositoryClassic<Category>().GetByIdAsync(request.Id, cancellationToken);
 
-        _ = category ?? throw new NotFoundException("Category not found!");
+        _ = category ?? throw new NotFoundException($"Category with id {request.Id} Not Found.");
         return mapper.Map<CategoryDto>(category);
     }
 }

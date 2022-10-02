@@ -1,5 +1,5 @@
 ﻿namespace Shared.Wrapper;
-public class PaginatedResult<T> : Result
+public class PaginatedResult<T>
 {
     public PaginatedResult(List<T> data)
     {
@@ -14,7 +14,6 @@ public class PaginatedResult<T> : Result
     {
         Data = data;
         CurrentPage = page;
-        Succeeded = succeeded;
         PageSize = pageSize;
         TotalPages = (int)Math.Ceiling(count / (double)pageSize);
         TotalCount = count;

@@ -1,5 +1,5 @@
 ﻿using Application.Features.CustomFolders.Commands;
-using Application.Features.CustomFolders.Queries.GetAllPaged;
+using Application.Features.CustomFolders.Queries;
 using AutoMapper;
 using Domain.Entities;
 
