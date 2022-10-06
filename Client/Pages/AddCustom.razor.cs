@@ -15,12 +15,19 @@ using System.Threading;
 using Application.Features.Categories.Queries;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Client.Infrastructure.Services;
+using Application.Features.Categories.Commands;
+using Application.Features.CustomFolders.Commands;
 
 namespace Client.Pages
 {
     public partial class AddCustom : LayoutComponentBase
     {
         [Inject] private IJSRuntime JSRuntime { get; set; }
+
+        [Inject] private CategoryService CategoryService { get; set; }
+
+        [Inject] private CustomFolderService CustomFolderService { get; set; }
 
         MudColor pickerColor = "#3cec53";
         IJSObjectReference module;
@@ -41,18 +48,7 @@ namespace Client.Pages
             await form.Validate();
             if (firstRender)
             {
-                //try
-                //{
-                //    var response = await HttpClient.GetAsync("api/category?id=1");
-                //    var responseText = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                //    Console.WriteLine(responseText);
-
-                //    Categories = new[] { JsonConvert.DeserializeObject<CategoryDto>(responseText) };
-                //}
-                //catch (Exception exception)
-                //{
-                //    Console.WriteLine(exception);
-                //}
+                Categories = await CategoryService.SearchAsync(new SearchCategoriesRequest { SortDirection = Domain.Enums.SortDirection.Descending });
                 module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./filterGenerator.js");
 
                 Filter = await module.InvokeAsync<string>("GenerateFilter", pickerColor.R, pickerColor.G, pickerColor.B);
@@ -74,22 +70,38 @@ namespace Client.Pages
                 return;
             try
             {
-                var folderIconStrings = await module.InvokeAsync<FolderIconStrings>("overlayImages", "folderEmpty", "folderDoc", Filter);
-
-                if (!folderIconStrings.IsNullOrWhiteSpace())
+                if (!Categories.Any(c => c.Name.Equals(SelectedCategory.Name)))
                 {
-                    byte[] byteBuffer = Convert.FromBase64String(folderIconStrings.EmptyFolderIcon);
-                    using (MemoryStream ms = new MemoryStream(byteBuffer))
-                    {
-                        ImagingHelper.ConvertToIcon(ms, $"wwwroot/icons/custom/empty/{IconName}.ico");
-                    }
+                    SelectedCategory.Id = await CategoryService.CreateAsync(new CreateCategoryRequest { Name = SelectedCategory.Name });
+                }
 
-                    byteBuffer = Convert.FromBase64String(folderIconStrings.DefFolderIcon);
-                    using (MemoryStream ms = new MemoryStream(byteBuffer))
+                if (SelectedCategory.Id != 0)
+                {
+                    var folderIconStrings = await module.InvokeAsync<FolderIconStrings>("overlayImages", "folderEmpty", "folderDoc", Filter);
+
+                    if (!folderIconStrings.IsNullOrWhiteSpace())
                     {
-                        ImagingHelper.ConvertToIcon(ms, $"wwwroot/icons/custom/def/{IconName}.ico");
+
+                        byte[] byteBuffer = Convert.FromBase64String(folderIconStrings.EmptyFolderIcon);
+                        using (MemoryStream ms = new MemoryStream(byteBuffer))
+                        {
+                            ImagingHelper.ConvertToIcon(ms, $"wwwroot/icons/custom/empty/{IconName}_{SelectedCategory.Id}.ico");
+                        }
+
+                        byteBuffer = Convert.FromBase64String(folderIconStrings.DefFolderIcon);
+                        using (MemoryStream ms = new MemoryStream(byteBuffer))
+                        {
+                            ImagingHelper.ConvertToIcon(ms, $"wwwroot/icons/custom/def/{IconName}_{SelectedCategory.Id}.ico");
+                        }
+
+                        var res = await CustomFolderService.CreateAsync(new CreateCustomFolderRequest { 
+                            Name = IconName, 
+                            CategoryId = SelectedCategory.Id,
+                            ColorHex = pickerColor.ToString(MudColorOutputFormats.Hex)
+                        });
                     }
                 }
+
             }
             catch (Exception ex)
             {
@@ -117,6 +129,20 @@ namespace Client.Pages
 
                 var res = Categories.Select(c => c.Name).Where(c => c.Contains(value, StringComparison.InvariantCultureIgnoreCase));
                 return res.ToList();
+            });
+        }
+
+
+        public async Task<IEnumerable<CategoryDto>> SearchCategoryAsync2(string value)
+        {
+            return await Task.Run(() =>
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    return Categories;
+                }
+
+                return Categories.Where(c => c.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase));
             });
         }
     }

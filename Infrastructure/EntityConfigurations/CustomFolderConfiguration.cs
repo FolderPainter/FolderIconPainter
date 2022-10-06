@@ -11,5 +11,8 @@ public class CustomFolderConfiguration : IEntityTypeConfiguration<CustomFolder>
 
         builder.Property(c => c.Name)
             .IsRequired();
+
+        builder.Property(c => c.ColorHex)
+            .IsRequired();
     }
 }

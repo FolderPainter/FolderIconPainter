@@ -22,8 +22,4 @@
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Managers\CustomFolder\" />
-  </ItemGroup>
-
 </Project>

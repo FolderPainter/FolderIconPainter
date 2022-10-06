@@ -33,6 +33,7 @@ internal class CreateCategoryRequestHandler : IRequestHandler<CreateCategoryRequ
         var category = new Category(request.Name);
 
         await unitOfWork.RepositoryClassic<Category>().AddAsync(category, cancellationToken);
-        return await unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.CommitAsync(cancellationToken);
+        return category.Id;
     }
 }

@@ -14,6 +14,6 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 
         builder.HasMany(c => c.CustomFolders)
             .WithOne(fc => fc.Category)
-            .HasForeignKey(fc => fc.Id);
+            .HasForeignKey(fc => fc.CategoryId);
     }
 }

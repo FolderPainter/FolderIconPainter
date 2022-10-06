@@ -47,6 +47,7 @@ internal class CreateCustomFolderRequestHandler : IRequestHandler<CreateCustomFo
         var customFolder = new CustomFolder(request.Name, request.CategoryId, request.ColorHex);
 
         await unitOfWork.RepositoryClassic<CustomFolder>().AddAsync(customFolder, cancellationToken);
-        return await unitOfWork.CommitAsync(cancellationToken);
+        await unitOfWork.CommitAsync(cancellationToken);
+        return customFolder.Id;
     }
 }

@@ -14,7 +14,7 @@ namespace Infrastructure.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.2");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
 
             modelBuilder.Entity("Domain.Entities.Category", b =>
                 {
@@ -34,16 +34,23 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.CustomFolder", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ColorHex")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("CustomFolders");
                 });
@@ -52,7 +59,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.Category", "Category")
                         .WithMany("CustomFolders")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

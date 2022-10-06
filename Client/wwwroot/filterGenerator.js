@@ -161,10 +161,10 @@ class Color {
 }
 
 class Solver {
-  constructor(target, baseColor) {
+  constructor(target) {
     this.target = target;
     this.targetHSL = target.hsl();
-    this.reusedColor = new Color(165, 165, 165);
+      this.reusedColor = new Color(100, 100, 100);
   }
 
   solve() {
@@ -259,7 +259,7 @@ class Solver {
   loss(filters) {
     // Argument is array of percentages.
     const color = this.reusedColor;
-    color.set(165, 165, 165);
+      color.set(120, 120, 120);
 
     color.invert(filters[0] / 100);
     color.sepia(filters[1] / 100);

@@ -18,7 +18,6 @@ public class CategoryController : BaseApiController
         return _mediator.Send(request);
     }
 
-
     //[HttpPost("search")]
     //public Task<PaginationResponse<CategoryDto>> SearchAsync(SearchCategoriesRequest request)
     //{

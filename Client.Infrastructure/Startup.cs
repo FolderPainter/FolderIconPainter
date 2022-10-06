@@ -11,6 +11,8 @@ using Application.Interfaces.Services;
 using Infrastructure.Contexts;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
+using Application.Features.Categories.Commands;
 
 namespace Client.Infrastructure;
 
@@ -23,7 +25,7 @@ public static class Startup
             .AddTransient<IDatabaseSeeder, DatabaseSeeder>();
     }
 
-    public static IServiceCollection AddClientServices(this IServiceCollection services, IConfiguration config) =>
+    public static IServiceCollection AddClientServices(this IServiceCollection services) =>
         services
             .AddBlazoredLocalStorage()
             .AddMudServices(config =>
@@ -39,7 +41,10 @@ public static class Startup
             })
             .AddScoped<IUserPreferencesManager, UserPreferencesManager>()
             .AddScoped<LayoutService>()
-            .AddScoped<IconService>();
+            .AddScoped<IconService>()
+            .AddScoped<CategoryService>()
+            .AddScoped<CustomFolderService>();
+            //.AddScoped<IValidator<CreateCategoryRequest>, CreateCategoryRequestValidator>();
 
     public static IServiceCollection AutoRegisterInterfaces<T>(this IServiceCollection services)
     {
