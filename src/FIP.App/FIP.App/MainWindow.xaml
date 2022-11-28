@@ -8,10 +8,7 @@
 	xmlns:winuiex="using:WinUIEx"
 	mc:Ignorable="d">
 
-    <winuiex:WindowEx.Backdrop>
-        <winuiex:MicaSystemBackdrop Kind="BaseAlt" />
-    </winuiex:WindowEx.Backdrop>
-
-    <local:MainLayout></local:MainLayout>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+    </StackPanel>
 </winuiex:WindowEx>
     

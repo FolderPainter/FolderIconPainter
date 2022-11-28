@@ -5,10 +5,16 @@
     <None Update="App.xaml">
       <SubType>Designer</SubType>
     </None>
-    <None Update="MainWindow.xaml">
+    <Page Update="Views\CreateCustomIconPage.xaml">
       <SubType>Designer</SubType>
-    </None>
-    <Page Update="Views\MainLayout.xaml">
+    </Page>
+    <Page Update="Views\AllIconsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="AppShell.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

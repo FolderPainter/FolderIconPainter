@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>FIP</AssemblyName>
     <OutputType>WinExe</OutputType>
@@ -11,7 +11,10 @@
     <UseWinUI>true</UseWinUI>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Views\MainLayout.xaml" />
+    <None Remove="AppShell.xaml" />
+    <None Remove="Views\AllIconsPage.xaml" />
+    <None Remove="Views\CreateCustomIconPage.xaml" />
+    <None Remove="Views\SettingsPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,8 +29,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Views\MainLayout.xaml">
+    <Page Update="Views\CreateCustomIconPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AllIconsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\SettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="AppShell.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
 </Project>
