@@ -18,7 +18,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Client.Infrastructure\Client.Infrastructure.csproj" />
-		<ProjectReference Include="..\Shared\Shared.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="wwwroot\icons\custom\def\" />
