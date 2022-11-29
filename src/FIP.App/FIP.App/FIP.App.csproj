@@ -12,6 +12,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="AppShell.xaml" />
+    <None Remove="Views\AboutPage.xaml" />
     <None Remove="Views\AllIconsPage.xaml" />
     <None Remove="Views\CreateCustomIconPage.xaml" />
     <None Remove="Views\SettingsPage.xaml" />
@@ -26,6 +27,12 @@
 
   <ItemGroup>
     <Folder Include="ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Views\AboutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

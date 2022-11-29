@@ -35,7 +35,7 @@ namespace FIP.App
 
             Loaded += (sender, args) =>
             {
-                NavView.SelectedItem = CustomerListMenuItem;
+                NavView.SelectedItem = AllIconsMenuItem;
             };
 
             // Set up custom title bar.
@@ -100,6 +100,8 @@ namespace FIP.App
 
         public readonly string AboutLabel = "About";
 
+        public readonly string AllIconsLabel = "All icons";
+
         /// <summary>
         /// Navigates to the page corresponding to the tapped item.
         /// </summary>
@@ -109,7 +111,7 @@ namespace FIP.App
             var pageType =
                 args.IsSettingsInvoked ? typeof(SettingsPage) :
                 label == CreateCustomIconLabel ? typeof(CreateCustomIconPage) :
-                label == AboutLabel ? typeof(SettingsPage) : null;
+                label == AboutLabel ? typeof(AboutPage) : null;
             if (pageType != null && pageType != AppFrame.CurrentSourcePageType)
             {
                 AppFrame.Navigate(pageType);
@@ -127,11 +129,11 @@ namespace FIP.App
             {
                 if (e.SourcePageType == typeof(AllIconsPage))
                 {
-                    NavView.SelectedItem = CustomerListMenuItem;
+                    NavView.SelectedItem = AllIconsMenuItem;
                 }
                 else if (e.SourcePageType == typeof(CreateCustomIconPage))
                 {
-                    NavView.SelectedItem = OrderListMenuItem;
+                    NavView.SelectedItem = CreateCustomIconMenuItem;
                 }
                 else if (e.SourcePageType == typeof(SettingsPage))
                 {

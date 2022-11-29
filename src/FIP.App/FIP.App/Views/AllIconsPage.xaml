@@ -8,10 +8,33 @@
     xmlns:local="using:FIP.App.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    mc:Ignorable="d">
 
     <Grid>
+        <StackPanel>
+            <TextBlock x:Name="PageTitle"
+                Style="{StaticResource PageTitleTextBlockStyle}"
+                Text="Icon list" />
 
+            <Grid>
+                <Grid.Resources >
+                    <Style TargetType="Border" >
+                        <Setter Property="Margin" Value="5,5,5,5" />
+                    </Style>
+                </Grid.Resources>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Grid.Column="0" Width="100px" Height="80px" Background="Aqua" CornerRadius="6">
+
+                </Border>
+                <Border Grid.Row="1" Grid.Column="0"  Width="100px" Height="80px" Background="Red" CornerRadius="6">
+                </Border>
+            </Grid>
+            
+        </StackPanel>
     </Grid>
 </Page>

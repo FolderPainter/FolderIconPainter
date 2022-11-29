@@ -47,16 +47,24 @@
             IsTitleBarAutoPaddingEnabled="False">
             
         <NavigationView.MenuItems>
-            <NavigationViewItem
-                    x:Name="CustomerListMenuItem"
+                <NavigationViewItem
+                    x:Name="AllIconsMenuItem"
+                    Content="{x:Bind AllIconsLabel}" 
+                    ToolTipService.ToolTip="{x:Bind AllIconsLabel}"
+                    Icon="List"/>
+                <NavigationViewItem
+                    x:Name="CreateCustomIconMenuItem"
                     Content="{x:Bind CreateCustomIconLabel}" 
                     ToolTipService.ToolTip="{x:Bind CreateCustomIconLabel}"
-                    Icon="ContactInfo"/>
-            <NavigationViewItem
-                    x:Name="OrderListMenuItem"
+                    Icon="NewFolder"/>
+                <NavigationViewItem
+                    x:Name="AboutMenuItem"
                     Content="{x:Bind AboutLabel}" 
-                    ToolTipService.ToolTip="{x:Bind AboutLabel}"
-                    Icon="Shop"/>
+                    ToolTipService.ToolTip="{x:Bind AboutLabel}">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xf167;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
         </NavigationView.MenuItems>
 
         <NavigationView.PaneFooter>
