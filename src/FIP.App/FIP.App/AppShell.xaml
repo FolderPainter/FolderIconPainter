@@ -49,13 +49,13 @@
         <NavigationView.MenuItems>
             <NavigationViewItem
                     x:Name="CustomerListMenuItem"
-                    Content="{x:Bind CustomerListLabel}" 
-                    ToolTipService.ToolTip="{x:Bind CustomerListLabel}"
+                    Content="{x:Bind CreateCustomIconLabel}" 
+                    ToolTipService.ToolTip="{x:Bind CreateCustomIconLabel}"
                     Icon="ContactInfo"/>
             <NavigationViewItem
                     x:Name="OrderListMenuItem"
-                    Content="{x:Bind OrderListLabel}" 
-                    ToolTipService.ToolTip="{x:Bind OrderListLabel}"
+                    Content="{x:Bind AboutLabel}" 
+                    ToolTipService.ToolTip="{x:Bind AboutLabel}"
                     Icon="Shop"/>
         </NavigationView.MenuItems>
 

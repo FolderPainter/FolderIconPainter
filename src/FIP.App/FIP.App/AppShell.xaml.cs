@@ -96,9 +96,9 @@ namespace FIP.App
         }
 
 
-        public readonly string CustomerListLabel = "Customer list";
+        public readonly string CreateCustomIconLabel = "Create custom icon";
 
-        public readonly string OrderListLabel = "Order list";
+        public readonly string AboutLabel = "About";
 
         /// <summary>
         /// Navigates to the page corresponding to the tapped item.
@@ -108,8 +108,8 @@ namespace FIP.App
             var label = args.InvokedItem as string;
             var pageType =
                 args.IsSettingsInvoked ? typeof(SettingsPage) :
-                label == CustomerListLabel ? typeof(CreateCustomIconPage) :
-                label == OrderListLabel ? typeof(SettingsPage) : null;
+                label == CreateCustomIconLabel ? typeof(CreateCustomIconPage) :
+                label == AboutLabel ? typeof(SettingsPage) : null;
             if (pageType != null && pageType != AppFrame.CurrentSourcePageType)
             {
                 AppFrame.Navigate(pageType);
@@ -145,7 +145,7 @@ namespace FIP.App
         /// </summary>
         private async void ViewCodeNavPaneButton_Tapped(object sender, TappedRoutedEventArgs e) =>
             await Launcher.LaunchUriAsync(new Uri(
-                "https://github.com/Microsoft/Windows-appsample-customers-orders-database"));
+                "https://github.com/FolderPainter/FolderIconPainter"));
 
         /// <summary>
         /// Navigates the frame to the previous page.
