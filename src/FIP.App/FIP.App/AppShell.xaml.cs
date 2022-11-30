@@ -95,12 +95,11 @@ namespace FIP.App
             }
         }
 
+        public readonly string AllIconsLabel = "All icons";
 
         public readonly string CreateCustomIconLabel = "Create custom icon";
 
         public readonly string AboutLabel = "About";
-
-        public readonly string AllIconsLabel = "All icons";
 
         /// <summary>
         /// Navigates to the page corresponding to the tapped item.
@@ -110,6 +109,7 @@ namespace FIP.App
             var label = args.InvokedItem as string;
             var pageType =
                 args.IsSettingsInvoked ? typeof(SettingsPage) :
+                label == AllIconsLabel ? typeof(AllIconsPage) :
                 label == CreateCustomIconLabel ? typeof(CreateCustomIconPage) :
                 label == AboutLabel ? typeof(AboutPage) : null;
             if (pageType != null && pageType != AppFrame.CurrentSourcePageType)

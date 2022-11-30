@@ -7,7 +7,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:FIP.App.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:usercontrols="using:FIP.App.UserControls"
     mc:Ignorable="d">
 
     <Grid>
@@ -16,25 +17,12 @@
                 Style="{StaticResource PageTitleTextBlockStyle}"
                 Text="Icon list" />
 
-            <Grid>
-                <Grid.Resources >
-                    <Style TargetType="Border" >
-                        <Setter Property="Margin" Value="5,5,5,5" />
-                    </Style>
-                </Grid.Resources>
 
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-
-                <Border Grid.Row="0" Grid.Column="0" Width="100px" Height="80px" Background="Aqua" CornerRadius="6">
-
-                </Border>
-                <Border Grid.Row="1" Grid.Column="0"  Width="100px" Height="80px" Background="Red" CornerRadius="6">
-                </Border>
-            </Grid>
-            
+            <VariableSizedWrapGrid x:Name="dropZonesFrame" MaximumRowsOrColumns="4" 
+                                   Orientation="Horizontal"
+                                  HorizontalChildrenAlignment="Stretch">
+                
+            </VariableSizedWrapGrid>
         </StackPanel>
     </Grid>
 </Page>
