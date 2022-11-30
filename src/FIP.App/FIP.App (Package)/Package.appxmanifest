@@ -12,8 +12,8 @@
     Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>FIP.App (Package)</DisplayName>
-    <PublisherDisplayName>ColdSiemens</PublisherDisplayName>
+    <DisplayName>Folder Icon Painter</DisplayName>
+    <PublisherDisplayName>George Radchuk</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
 
@@ -31,8 +31,8 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="FIP.App (Package)"
-        Description="FIP.App (Package)"
+        DisplayName="Folder Icon Painter"
+        Description="This program can help you change the color of the default folder icon on Windows 11 and 10."
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
         Square44x44Logo="Images\Square44x44Logo.png">
