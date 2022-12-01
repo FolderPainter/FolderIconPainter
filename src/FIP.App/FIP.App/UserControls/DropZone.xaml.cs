@@ -49,6 +49,7 @@ namespace FIP.App.UserControls
 
         private async void ZoneButton_Click(object sender, RoutedEventArgs e)
         {
+
             // Clear previous returned file name, if it exists, between iterations of this scenario
             ZoneButton.Content = "";
 

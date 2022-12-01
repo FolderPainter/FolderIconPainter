@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation and Contributors.
 // Licensed under the MIT License.
 
+using FIP.App.Helpers;
 using FIP.App.Views;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -38,18 +39,48 @@ namespace FIP.App
                 NavView.SelectedItem = AllIconsMenuItem;
             };
 
-            // Set up custom title bar.
-            App.Window.ExtendsContentIntoTitleBar = true;
-            // Set XAML element as a draggable region.
-            App.Window.SetTitleBar(AppTitleBar);
+            Loaded += delegate (object sender, RoutedEventArgs e)
+            {
+                NavigationOrientationHelper.UpdateTitleBarForElement(NavigationOrientationHelper.IsLeftMode(), this);
+                WindowHelper.GetWindowForElement(this).Title = AppTitleText;
+                var window = WindowHelper.GetWindowForElement(sender as UIElement);
+                window.ExtendsContentIntoTitleBar = true;
+                window.SetTitleBar(this.AppTitleBar);
+            };
+        }
 
-            AppTitle.Text = Windows.ApplicationModel.Package.Current.DisplayName;
+        public static AppShell GetForElement(object obj)
+        {
+            UIElement element = (UIElement)obj;
+            Window window = WindowHelper.GetWindowForElement(element);
+            if (window != null)
+            {
+                return (AppShell)window.Content;
+            }
+            return null;
         }
 
         /// <summary>
         /// Gets the navigation frame instance.
         /// </summary>
         public Frame AppFrame => frame;
+
+        public NavigationView NavigationView
+        {
+            get { return NavView; }
+        }
+
+        public string AppTitleText
+        {
+            get
+            {
+#if DEBUG
+                return "Folder Icon Painter Dev";
+#else
+                return "Folder Icon Painter";
+#endif
+            }
+        }
 
         /// <summary>
         /// Default keyboard focus movement for any unhandled keyboarding
@@ -87,6 +118,7 @@ namespace FIP.App
                     break;
             }
 
+            
             if (direction != FocusNavigationDirection.None &&
                 FocusManager.FindNextFocusableElement(direction) is Control control)
             {

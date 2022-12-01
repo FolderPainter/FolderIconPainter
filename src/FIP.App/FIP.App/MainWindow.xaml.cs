@@ -25,36 +25,11 @@ namespace FIP.App
     /// <summary>
     /// An empty window that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainWindow : WindowEx
+    public sealed partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-
-            PersistenceId = "FilesMainWindow";
-
-            EnsureEarlyWindow();
         }
-
-        private void EnsureEarlyWindow()
-        {
-            // Set title
-            AppWindow.Title = "FolderIconPainter";
-
-            // Set icon
-            //AppWindow.SetIcon(Path.Combine(Package.Current.InstalledLocation.Path, Constants.AssetPaths.Logo));
-
-            // Extend title bar
-            AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-
-            // Set window buttons background to transparent
-            AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
-            AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-
-            // Set min size
-            base.MinHeight = 328;
-            base.MinWidth = 516;
-        }
-
     }
 }

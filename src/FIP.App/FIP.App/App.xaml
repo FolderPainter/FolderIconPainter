@@ -15,25 +15,35 @@
                         <ResourceDictionary>
                             <ResourceDictionary.ThemeDictionaries>
                                 <ResourceDictionary x:Key="Light">
-                                    <SolidColorBrush
-                                x:Key="AccentBackgroundColor"
-                                Color="LightSteelBlue" />
+                                    <SolidColorBrush x:Key="HomePageBackgroundBrush" Color="Transparent"/>
+                                    <SolidColorBrush x:Key="PageHeaderForegroundBrush" Color="Black"/>
+                                    <StaticResource x:Key="ControlExampleDisplayBrush" ResourceKey="SolidBackgroundFillColorBaseBrush" />
+                                    <SolidColorBrush x:Key="SearchBoxBorderBrush" Color="Transparent" />
+                                    <Thickness x:Key="SearchBoxBorderThickness">0</Thickness>
+                                    <Thickness x:Key="ControlExampleDisplayBorderThickness">0</Thickness>
+                                    <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="Transparent"/>
                                 </ResourceDictionary>
                                 <ResourceDictionary x:Key="Dark">
-                                    <SolidColorBrush
-                                x:Key="AccentBackgroundColor"
-                                Color="SteelBlue" />
+                                    <SolidColorBrush x:Key="HomePageBackgroundBrush" Color="Transparent"/>
+                                    <SolidColorBrush x:Key="PageHeaderForegroundBrush" Color="White"/>
+                                    <StaticResource x:Key="ControlExampleDisplayBrush" ResourceKey="SolidBackgroundFillColorBaseBrush" />
+                                    <SolidColorBrush x:Key="SearchBoxBorderBrush" Color="Transparent" />
+                                    <Thickness x:Key="SearchBoxBorderThickness">0</Thickness>
+                                    <Thickness x:Key="ControlExampleDisplayBorderThickness">0</Thickness>
+                                    <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="Transparent"/>
+                                </ResourceDictionary>
+                                <ResourceDictionary x:Key="HighContrast">
+                                    <SolidColorBrush x:Key="HomePageBackgroundBrush" Color="{ThemeResource SystemColorWindowColor}" />
+                                    <SolidColorBrush x:Key="PageHeaderForegroundBrush" Color="{ThemeResource SystemColorWindowTextColor}"/>
+                                    <SolidColorBrush x:Key="ControlExampleDisplayBrush" Color="{ThemeResource SystemColorWindowColor}" />
+                                    <SolidColorBrush x:Key="SearchBoxBorderBrush" Color="{ThemeResource SystemColorWindowTextColor}" />
+                                    <Thickness x:Key="SearchBoxBorderThickness">2</Thickness>
+                                    <Thickness x:Key="ControlExampleDisplayBorderThickness">1</Thickness>
+                                    <SolidColorBrush x:Key="NavigationViewExpandedPaneBackground" Color="Transparent"/>
                                 </ResourceDictionary>
                             </ResourceDictionary.ThemeDictionaries>
                         </ResourceDictionary>
                         <ResourceDictionary>
-                            <x:Double x:Key="HeaderHeight">32</x:Double>
-                            <GridLength x:Key="GridHeaderHeight">32</GridLength>
-
-                            <!--  window width adaptive snap points  -->
-                            <x:Double x:Key="MinWindowSnapPoint">0</x:Double>
-                            <x:Double x:Key="MediumWindowSnapPoint">641</x:Double>
-                            <x:Double x:Key="LargeWindowSnapPoint">1008</x:Double>
 
                             <Style
                         x:Key="PageTitleTextBlockStyle"
@@ -46,15 +56,14 @@
                                 <Setter Property="Margin" Value="0,4,0,0" />
                             </Style>
 
+                            <SolidColorBrush x:Key="WindowCaptionBackground">Transparent</SolidColorBrush>
+                            <SolidColorBrush x:Key="WindowCaptionBackgroundDisabled">Transparent</SolidColorBrush>
                         </ResourceDictionary>
                     </XamlControlsResources.MergedDictionaries>
                 </XamlControlsResources>
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
-            <SolidColorBrush x:Key="WindowCaptionBackground">Transparent</SolidColorBrush>
-            <SolidColorBrush x:Key="WindowCaptionBackgroundDisabled">Transparent</SolidColorBrush>
-            <SolidColorBrush x:Key="WindowCaptionForeground">Black</SolidColorBrush>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
