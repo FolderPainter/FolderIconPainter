@@ -55,7 +55,7 @@ namespace FIP.App
             AppShell shell = m_window.Content as AppShell ?? new AppShell();
             shell.Language = ApplicationLanguages.Languages[0];
             m_window.Content = shell;
-         
+
             if (shell.AppFrame.Content == null)
             {
                 // When the navigation stack isn't restored, navigate to the first page

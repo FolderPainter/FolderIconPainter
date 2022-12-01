@@ -17,11 +17,10 @@
                 Style="{StaticResource PageTitleTextBlockStyle}"
                 Text="Icon list" />
 
-
             <VariableSizedWrapGrid x:Name="dropZonesFrame" MaximumRowsOrColumns="4" 
                                    Orientation="Horizontal"
                                   HorizontalChildrenAlignment="Stretch">
-                
+
             </VariableSizedWrapGrid>
         </StackPanel>
     </Grid>

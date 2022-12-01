@@ -18,9 +18,9 @@
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AllowDrop="True"
                 Click="ZoneButton_Click" Drop="ZoneButton_Drop" DragOver="ZoneButton_DragOver">
             <TextBlock x:Name="ZoneTextBlock">
-                
+
             </TextBlock>
         </Button>
     </Border>
-    
+
 </UserControl>

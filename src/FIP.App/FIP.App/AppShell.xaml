@@ -20,6 +20,7 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="TitleBarStates">
                 <VisualState x:Name="WideLayout">
@@ -37,6 +38,7 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
+
         <Border x:Name="AppTitleBar"
                 Grid.Column="1"
                 Margin="48,0,0,0"
@@ -64,8 +66,8 @@
             ItemInvoked="NavigationView_ItemInvoked"
             BackRequested="NavigationView_BackRequested"
             IsBackEnabled="{x:Bind AppFrame.CanGoBack, Mode=OneWay}">
-            
-        <NavigationView.MenuItems>
+
+            <NavigationView.MenuItems>
                 <NavigationViewItem
                     x:Name="AllIconsMenuItem"
                     Content="{x:Bind AllIconsLabel}" 
@@ -84,20 +86,20 @@
                         <FontIcon Glyph="&#xf167;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-        </NavigationView.MenuItems>
+            </NavigationView.MenuItems>
 
-        <NavigationView.PaneFooter>
-            <StackPanel>
-                <NavigationViewItem
+            <NavigationView.PaneFooter>
+                <StackPanel>
+                    <NavigationViewItem
                         Content="View code"
                         ToolTipService.ToolTip="View code"
                         Tapped="ViewCodeNavPaneButton_Tapped">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE943;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-            </StackPanel>
-        </NavigationView.PaneFooter>
+                        <NavigationViewItem.Icon>
+                            <FontIcon Glyph="&#xE943;"/>
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
+                </StackPanel>
+            </NavigationView.PaneFooter>
 
             <!-- In OnNavigatingToPage, we synchronize the selected item in the NavigationView with the current page. -->
             <Frame 
@@ -114,8 +116,6 @@
                     </TransitionCollection>
                 </Frame.ContentTransitions>
             </Frame>
-            </NavigationView>
-
-       
+        </NavigationView>
     </Grid>
 </Page>

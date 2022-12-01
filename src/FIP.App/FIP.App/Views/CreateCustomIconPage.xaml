@@ -47,13 +47,13 @@
                         </Button>
                     </StackPanel>
                 </Border>
-                
+
                 <Border Grid.Column="2" Padding="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                     <Image Source="/Assets/logo.png" Margin="0 -48"/>
                 </Border>
             </Grid>
-                
+
         </StackPanel>
     </Grid>
 </Page>
