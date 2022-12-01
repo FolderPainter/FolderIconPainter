@@ -82,7 +82,7 @@
         </NavigationView.PaneFooter>
 
             <!-- In OnNavigatingToPage, we synchronize the selected item in the NavigationView with the current page. -->
-            <Frame
+            <Frame 
                 x:Name="frame"
                 Margin="20,0,0,0"
                 Navigating="OnNavigatingToPage">

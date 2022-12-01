@@ -8,16 +8,16 @@
     xmlns:local="using:FIP.App.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Name="dropZoneControl"
+    x:Name="DropZoneControl"
     mc:Ignorable="d">
-
-    <Border x:Name="mainBorder" CornerRadius="4" Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+    <Border x:Name="MainBorder" CornerRadius="4" Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
             Padding="8"
             MinWidth="150" MaxWidth="170"
             MinHeight="100" MaxHeight="120">
-        <Button x:Name="zoneButton" Background="{Binding ElementName=dropZoneControl, Path=Color}"
-                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-            <TextBlock Text="{Binding ElementName=zoneButton, Path=Background.Opacity}">
+        <Button x:Name="ZoneButton" Background="{Binding ElementName=DropZoneControl, Path=Color}"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AllowDrop="True"
+                Click="ZoneButton_Click" Drop="ZoneButton_Drop" DragOver="ZoneButton_DragOver">
+            <TextBlock x:Name="ZoneTextBlock">
                 
             </TextBlock>
         </Button>

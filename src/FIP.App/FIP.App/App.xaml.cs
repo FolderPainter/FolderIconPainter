@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation and Contributors.
 // Licensed under the MIT License.
 
+using FIP.App.Helpers;
 using FIP.App.Views;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -48,13 +49,13 @@ namespace FIP.App
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            m_window = new MainWindow();
+            m_window = WindowHelper.CreateWindow();
 
             // Prepare the app shell and window content.
             AppShell shell = m_window.Content as AppShell ?? new AppShell();
             shell.Language = ApplicationLanguages.Languages[0];
             m_window.Content = shell;
-
+         
             if (shell.AppFrame.Content == null)
             {
                 // When the navigation stack isn't restored, navigate to the first page
