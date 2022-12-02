@@ -35,6 +35,15 @@ namespace FIP.App.UserControls
         public static readonly DependencyProperty ShadowOpacityProperty =
             DependencyProperty.Register("ShadowOpacity", typeof(double), typeof(PageHeader), new PropertyMetadata(0.0));
 
+        public Visibility HeaderVisibility
+        {
+            get { return (Visibility)GetValue(HeaderVisibilityProperty); }
+            set { SetValue(HeaderVisibilityProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for HeaderVisibility.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty HeaderVisibilityProperty =
+            DependencyProperty.Register("HeaderVisibility", typeof(Visibility), typeof(PageHeader), new PropertyMetadata(Visibility.Collapsed));
 
         public PageHeader()
         {

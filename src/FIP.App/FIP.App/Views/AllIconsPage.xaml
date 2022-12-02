@@ -10,6 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:usercontrols="using:FIP.App.UserControls"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -20,16 +21,41 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid>
+    <!--  This grid acts as a root panel for the page.  -->
+    <Grid Background="{ThemeResource HomePageBackgroundBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <!--  Visual states reflect the application's window size  -->
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="WrapScrollParent.Padding" Value="0,0,0,36" />
+                        <Setter Target="WrapScrollParent.Margin" Value="0,-64,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <ScrollViewer x:Name="WrapScrollParent"
+                      Margin="31,0,0,0"
                       VerticalScrollBarVisibility="Auto"
                       VerticalScrollMode="Auto">
 
             <controls:AdaptiveGridView x:Name="AdaptiveGridViewControl"
+                                        Margin="12,39,43,0"
+                                       
                                        StretchContentForSingleRow="False"
                                        VerticalContentAlignment="Stretch"
                                        HorizontalContentAlignment="Stretch"
                                        OneRowModeEnabled="False"
+                                       SelectionMode="None"
                                        ItemHeight="160"
                                        DesiredWidth="220"
                                        ItemTemplate="{StaticResource WrapTemplate}"/>

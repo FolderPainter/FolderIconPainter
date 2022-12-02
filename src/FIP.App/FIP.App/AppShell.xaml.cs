@@ -165,6 +165,7 @@ namespace FIP.App
             {
                 AppFrame.Navigate(pageType);
                 NavView.Header = label;
+               
             }
         }
 
@@ -195,6 +196,19 @@ namespace FIP.App
                 }
             }
         }
+
+        private void OnRootFrameNavigated(object sender, NavigationEventArgs e)
+        {
+            if (e.SourcePageType == typeof(AllIconsPage))
+            {
+                NavView.AlwaysShowHeader = false;
+            }
+            else
+            {
+                NavView.AlwaysShowHeader = true;
+            }
+        }
+
 
         /// <summary>
         /// Invoked when the View Code button is clicked. Launches the repo on GitHub. 

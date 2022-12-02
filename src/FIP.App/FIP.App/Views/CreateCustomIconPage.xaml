@@ -8,31 +8,58 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    NavigationCacheMode="Enabled">
 
-    <Grid>
-        <StackPanel>
-            <Grid Margin="0 16 0 0" ColumnSpacing="16">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.2*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                
-                <Border Padding="8" CornerRadius="{StaticResource ControlCornerRadius}" 
+    <Grid Background="{ThemeResource HomePageBackgroundBrush}">
+        <!--  Visual states reflect the application's window size  -->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="LayoutVisualStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="NarrowLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="contentSV.Padding" Value="12,0,12,36" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <ScrollViewer x:Name="contentSV"
+                      Grid.Row="1"
+                      UseSystemFocusVisuals="False"
+                      VerticalScrollBarVisibility="Auto"
+                      VerticalScrollMode="Auto"
+                      Padding="48,12,12,36">
+
+            <VariableSizedWrapGrid Orientation="Horizontal" 
+                                   MaximumRowsOrColumns="3">
+
+
+                <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                     <ColorPicker x:Name="mainColorPicker"
-                                          ColorSpectrumShape="Box"
-                                          IsAlphaEnabled="True"
-                                          IsHexInputVisible="True" />
+                                 Color="Fuchsia"
+                                 ColorSpectrumShape="Box"
+                                 IsMoreButtonVisible="True"
+                                 IsColorSliderVisible="True"
+                                 IsColorChannelTextInputVisible="True"
+                                 IsHexInputVisible="True"
+                                 IsAlphaEnabled="True" />
                 </Border>
-                
-                <Border Grid.Column="1" Padding="8" CornerRadius="{StaticResource ControlCornerRadius}" 
+
+                <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                     <StackPanel Grid.Row="1" Spacing="16" Orientation="Vertical">
                         <TextBox Header="Enter folder icon name:" PlaceholderText="Name"
                                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                        <AutoSuggestBox Header="Select category for icon:" PlaceholderText="Name"
+                        <AutoSuggestBox Header="Select category for icon:" PlaceholderText="Category"
                                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                         <Button Content="Create folder icon"
                                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -43,11 +70,16 @@
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Column="2" Padding="8" CornerRadius="{StaticResource ControlCornerRadius}" 
+                <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                     <Image Source="/Assets/logo.png" Margin="0 -48"/>
                 </Border>
-            </Grid>
-        </StackPanel>
+
+                <Border Padding="8" Margin="8" VariableSizedWrapGrid.ColumnSpan="3" CornerRadius="{StaticResource ControlCornerRadius}" 
+                        Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
+                </Border>
+
+            </VariableSizedWrapGrid>
+        </ScrollViewer>
     </Grid>
 </Page>

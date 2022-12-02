@@ -11,6 +11,7 @@
     Background="Transparent"
     Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
     FontSize="24"
+    Visibility="{Binding ElementName=headerControl, Path=HeaderVisibility}"
     HighContrastAdjustment="Auto">
     <Grid>
         <VisualStateManager.VisualStateGroups>
