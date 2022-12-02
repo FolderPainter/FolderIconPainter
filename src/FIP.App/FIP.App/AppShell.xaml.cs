@@ -43,7 +43,6 @@ namespace FIP.App
 
             AutomationProperties.SetName(AllIconsMenuItem, AllIconsLabel);
 
-
             Loaded += delegate (object sender, RoutedEventArgs e)
             {
                 NavigationOrientationHelper.UpdateTitleBarForElement(NavigationOrientationHelper.IsLeftMode(), this);
@@ -52,6 +51,19 @@ namespace FIP.App
                 window.ExtendsContentIntoTitleBar = true;
                 window.SetTitleBar(this.AppTitleBar);
             };
+        }
+
+        // Wraps a call to rootFrame.Navigate to give the Page a way to know which NavigationRootPage is navigating.
+        // Please call this function rather than rootFrame.Navigate to navigate the rootFrame.
+        public void Navigate(
+            Type pageType,
+            object targetPageArguments = null,
+            Microsoft.UI.Xaml.Media.Animation.NavigationTransitionInfo navigationTransitionInfo = null)
+        {
+            NavigationRootPageArgs args = new NavigationRootPageArgs();
+            args.NavigationRootPage = this;
+            args.Parameter = targetPageArguments;
+            frame.Navigate(pageType, args, navigationTransitionInfo);
         }
 
         public static AppShell GetForElement(object obj)
@@ -201,5 +213,11 @@ namespace FIP.App
                 AppFrame.GoBack();
             }
         }
+    }
+
+    public class NavigationRootPageArgs
+    {
+        public AppShell NavigationRootPage;
+        public object Parameter;
     }
 }

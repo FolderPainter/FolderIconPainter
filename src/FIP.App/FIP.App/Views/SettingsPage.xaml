@@ -12,9 +12,7 @@
 
     <Grid>
         <StackPanel>
-            <TextBlock x:Name="PageTitle"
-                Style="{StaticResource PageTitleTextBlockStyle}"
-                Text="Settings" />
+          
         </StackPanel>
     </Grid>
 </Page>

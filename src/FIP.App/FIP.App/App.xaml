@@ -42,15 +42,6 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
-            <Style x:Key="PageTitleTextBlockStyle"
-                   BasedOn="{StaticResource TitleTextBlockStyle}"
-                   TargetType="TextBlock">
-                <Setter Property="FontSize" Value="28" />
-                <Setter Property="TextWrapping" Value="NoWrap" />
-                <Setter Property="HorizontalAlignment" Value="Left" />
-                <Setter Property="VerticalAlignment" Value="Top" />
-                <Setter Property="Margin" Value="0,4,0,0" />
-            </Style>
 
             <!-- L-Pattern Overwriting resources -->
             <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
