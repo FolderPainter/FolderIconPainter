@@ -5,16 +5,23 @@
     x:Class="FIP.App.AppShell"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:FIP.App"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:usercontrols="using:FIP.App.UserControls"
     KeyDown="AppShell_KeyDown"
     TabNavigation="Cycle"
     mc:Ignorable="d">
+
     <Page.Resources>
         <!--This top margin is the height of the custom TitleBar-->
         <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
+        <DataTemplate x:Key="NavigationViewHeaderTemplate">
+            <usercontrols:PageHeader
+                Title="{Binding }"
+                Background="Transparent"
+                BackgroundColorOpacity="1" />
+        </DataTemplate>
     </Page.Resources>
+
     <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -61,14 +68,16 @@
             x:Name="NavView"
             Grid.Column="1"
             AlwaysShowHeader="True"
+            Header=" "
+            HeaderTemplate="{StaticResource NavigationViewHeaderTemplate}"
             IsTabStop="False"
             IsTitleBarAutoPaddingEnabled="False"
             ItemInvoked="NavigationView_ItemInvoked"
             BackRequested="NavigationView_BackRequested"
             IsBackEnabled="{x:Bind AppFrame.CanGoBack, Mode=OneWay}">
-
             <NavigationView.MenuItems>
                 <NavigationViewItem
+                    AutomationProperties.Name="fsdfds"
                     x:Name="AllIconsMenuItem"
                     Content="{x:Bind AllIconsLabel}" 
                     ToolTipService.ToolTip="{x:Bind AllIconsLabel}"

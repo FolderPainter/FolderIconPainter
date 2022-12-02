@@ -4,6 +4,7 @@
 using CommunityToolkit.WinUI.Helpers;
 using FIP.App.Models;
 using FIP.App.UserControls;
+using FIP.App.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -28,18 +29,29 @@ namespace FIP.App.Views
     /// </summary>
     public sealed partial class AllIconsPage : Page
     {
+            public string Title { get; set; }
+
         public AllIconsPage()
         {
             this.InitializeComponent();
 
             var colors = DefaultColors.GetAllColors();
-            foreach (var item in colors)
+            var list = colors.Select(c => new DropZoneViewModel()
             {
-                dropZonesFrame.Children.Add(new DropZone() { 
-                    Color = new SolidColorBrush(ColorHelper.ToColor(item)),
-                    Margin = new Thickness(8)
-                });
-            }
+                HexColor = c,
+                Brush = new SolidColorBrush(ColorHelper.ToColor(c))
+            });
+
+            AdaptiveGridViewControl.ItemsSource = list;
+
+            //foreach (var item in colors)
+            //{
+            //    AdaptiveGridViewControl.ItemsSource.Add(new DropZone()
+            //    {
+            //        Color = new SolidColorBrush(ColorHelper.ToColor(item)),
+            //        Margin = new Thickness(8)
+            //    });
+            //}
 
         }
     }

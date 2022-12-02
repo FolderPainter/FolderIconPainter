@@ -2,8 +2,10 @@
 // Licensed under the MIT License.
 
 using FIP.App.Helpers;
+using FIP.App.UserControls;
 using FIP.App.Views;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -38,6 +40,9 @@ namespace FIP.App
             {
                 NavView.SelectedItem = AllIconsMenuItem;
             };
+
+            AutomationProperties.SetName(AllIconsMenuItem, AllIconsLabel);
+
 
             Loaded += delegate (object sender, RoutedEventArgs e)
             {
@@ -147,6 +152,7 @@ namespace FIP.App
             if (pageType != null && pageType != AppFrame.CurrentSourcePageType)
             {
                 AppFrame.Navigate(pageType);
+                NavView.Header = label;
             }
         }
 
@@ -162,14 +168,18 @@ namespace FIP.App
                 if (e.SourcePageType == typeof(AllIconsPage))
                 {
                     NavView.SelectedItem = AllIconsMenuItem;
+                    NavView.Header = AllIconsLabel;
                 }
                 else if (e.SourcePageType == typeof(CreateCustomIconPage))
                 {
                     NavView.SelectedItem = CreateCustomIconMenuItem;
+                    NavView.Header = CreateCustomIconLabel;
                 }
                 else if (e.SourcePageType == typeof(SettingsPage))
                 {
                     NavView.SelectedItem = NavView.SettingsItem;
+                    NavView.Header = AboutLabel;
+
                 }
             }
         }

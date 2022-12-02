@@ -1,4 +1,3 @@
-<!-- Copyright (c) Microsoft Corporation and Contributors. -->
 <!-- Licensed under the MIT License. -->
 
 <UserControl
@@ -10,17 +9,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     x:Name="DropZoneControl"
     mc:Ignorable="d">
-    <Border x:Name="MainBorder" CornerRadius="4" Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
-            Padding="8"
-            MinWidth="150" MaxWidth="170"
-            MinHeight="100" MaxHeight="120">
-        <Button x:Name="ZoneButton" Background="{Binding ElementName=DropZoneControl, Path=Color}"
+    <Viewbox MaxWidth="210" MaxHeight="150" Stretch="Fill">
+        <Border x:Name="MainBorder" CornerRadius="4" Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+            Padding="8" Width="210" Height="150">
+            <Button x:Name="ZoneButton" Background="{Binding ElementName=DropZoneControl, Path=Color}"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AllowDrop="True"
                 Click="ZoneButton_Click" Drop="ZoneButton_Drop" DragOver="ZoneButton_DragOver">
-            <TextBlock x:Name="ZoneTextBlock">
+                <TextBlock x:Name="ZoneTextBlock">
 
-            </TextBlock>
-        </Button>
-    </Border>
-
+                </TextBlock>
+            </Button>
+        </Border>
+    </Viewbox>
 </UserControl>

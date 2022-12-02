@@ -13,6 +13,7 @@
   <ItemGroup>
     <None Remove="AppShell.xaml" />
     <None Remove="UserControls\DropZone.xaml" />
+    <None Remove="UserControls\PageHeader.xaml" />
     <None Remove="Views\AboutPage.xaml" />
     <None Remove="Views\AllIconsPage.xaml" />
     <None Remove="Views\CreateCustomIconPage.xaml" />
@@ -30,7 +31,12 @@
 
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="UserControls\PageHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>

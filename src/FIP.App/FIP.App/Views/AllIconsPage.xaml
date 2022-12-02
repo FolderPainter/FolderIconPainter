@@ -9,19 +9,30 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:usercontrols="using:FIP.App.UserControls"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <DataTemplate x:Key="WrapTemplate">
+            <usercontrols:DropZone Color="{Binding Brush}" Margin="8">
+
+            </usercontrols:DropZone>
+        </DataTemplate>
+    </Page.Resources>
+
     <Grid>
-        <StackPanel>
-            <TextBlock x:Name="PageTitle"
-                Style="{StaticResource PageTitleTextBlockStyle}"
-                Text="Icon list" />
+        <ScrollViewer x:Name="WrapScrollParent"
+                      VerticalScrollBarVisibility="Auto"
+                      VerticalScrollMode="Auto">
 
-            <VariableSizedWrapGrid x:Name="dropZonesFrame" MaximumRowsOrColumns="4" 
-                                   Orientation="Horizontal"
-                                  HorizontalChildrenAlignment="Stretch">
-
-            </VariableSizedWrapGrid>
-        </StackPanel>
+            <controls:AdaptiveGridView x:Name="AdaptiveGridViewControl"
+                                       StretchContentForSingleRow="False"
+                                       VerticalContentAlignment="Stretch"
+                                       HorizontalContentAlignment="Stretch"
+                                       OneRowModeEnabled="False"
+                                       ItemHeight="160"
+                                       DesiredWidth="220"
+                                       ItemTemplate="{StaticResource WrapTemplate}"/>
+        </ScrollViewer>
     </Grid>
 </Page>
