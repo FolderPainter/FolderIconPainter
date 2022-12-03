@@ -10,6 +10,7 @@
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    Loading="Page_Loading"
     NavigationCacheMode="Enabled">
 
     <Grid Background="{ThemeResource HomePageBackgroundBrush}">
@@ -52,7 +53,8 @@
                                  IsColorSliderVisible="True"
                                  IsColorChannelTextInputVisible="True"
                                  IsHexInputVisible="True"
-                                 IsAlphaEnabled="True" />
+                                 IsAlphaEnabled="True" 
+                                 ColorChanged="mainColorPicker_ColorChanged"/>
                 </Border>
 
                 <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
@@ -71,14 +73,14 @@
                     </StackPanel>
                 </Border>
 
-                <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
+                <!--<Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                     <Image Source="/Assets/win11-folder-default.svg" Height="Auto"/>
-                </Border>
+                </Border>-->
                 
                 <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
-                    <canvas:CanvasControl x:Name="MyCanvas" Draw="CanvasControl_Draw"/>
+                    <canvas:CanvasControl x:Name="canvasControl" Draw="CanvasControl_Draw"/>
                 </Border>
                 
                 <Border Padding="8" Margin="8" VariableSizedWrapGrid.ColumnSpan="3" CornerRadius="{StaticResource ControlCornerRadius}" 

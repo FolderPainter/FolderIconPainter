@@ -22,6 +22,7 @@ using Windows.Storage;
 using Windows.UI;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
+using CommunityToolkit.WinUI.Helpers;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -33,38 +34,48 @@ namespace FIP.App.Views
     /// </summary>
     public sealed partial class CreateCustomIconPage : Page
     {
+        CanvasSvgDocument svgDocument;
+
+        Color defaultFolderColor = ColorHelper.ToColor("#FCBC19");
+
         public CreateCustomIconPage()
         {
             this.InitializeComponent();
-            mainColorPicker.Color = Color.FromArgb(100, 22, 22, 22);
+            mainColorPicker.Color = defaultFolderColor;
         }
-
 
         private void CanvasControl_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            Uri localUri = new Uri("ms-appx:///Assets/win11-folder-default.svg");
-
-            CanvasSvgDocument svgDocument = null;
-
-            GetImage().Wait();
-            async Task GetImage()
+            if (svgDocument == null)
             {
-                await Task.Run(async () =>
-                {
-                    var file = await StorageFile.GetFileFromApplicationUriAsync(localUri);
-                    IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read);
-
-                    svgDocument = new CanvasSvgDocument(sender);
-                    CanvasSvgNamedElement element = await svgDocument.LoadElementAsync(stream);
-
-                    CanvasSvgNamedElement gChild = element.FirstChild as CanvasSvgNamedElement;
-                    gChild.SetStringAttribute("fill", "#DC143C");
-                    svgDocument.Root.AppendChild(element);
-
-                }).ConfigureAwait(false);
+                canvasControl.Invalidate();
+                return;
             }
 
             args.DrawingSession.DrawSvg(svgDocument, sender.Size);
+        }
+
+        private async void mainColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
+        {
+            await Task.Run(() =>
+            {
+                if (svgDocument != null)
+                {
+                    CanvasSvgNamedElement backRect = svgDocument.FindElementById("BackRect");
+                    backRect.SetStringAttribute("fill", args.NewColor.ToHex().Remove(1, 2));
+                    canvasControl.Invalidate();
+                }
+            });
+        }
+
+        private async void Page_Loading(FrameworkElement sender, object args)
+        {
+            var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/win11-folder-default.svg"));
+            using (var fileStream = await file.OpenReadAsync())
+            {
+                svgDocument = await CanvasSvgDocument.LoadAsync(canvasControl, fileStream);
+                canvasControl.Invalidate();
+            }
         }
     }
 }
