@@ -43,16 +43,6 @@ namespace FIP.App.Views
             });
 
             AdaptiveGridViewControl.ItemsSource = list;
-
-            //foreach (var item in colors)
-            //{
-            //    AdaptiveGridViewControl.ItemsSource.Add(new DropZone()
-            //    {
-            //        Color = new SolidColorBrush(ColorHelper.ToColor(item)),
-            //        Margin = new Thickness(8)
-            //    });
-            //}
-
         }
     }
 }
