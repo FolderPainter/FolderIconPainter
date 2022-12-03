@@ -9,6 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     mc:Ignorable="d"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     NavigationCacheMode="Enabled">
 
     <Grid Background="{ThemeResource HomePageBackgroundBrush}">
@@ -72,9 +73,14 @@
 
                 <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
-                    <Image Source="/Assets/logo.png" Margin="0 -48"/>
+                    <Image Source="/Assets/win11-folder-default.svg" Height="Auto"/>
                 </Border>
-
+                
+                <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
+                        Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
+                    <canvas:CanvasControl x:Name="MyCanvas" Draw="CanvasControl_Draw"/>
+                </Border>
+                
                 <Border Padding="8" Margin="8" VariableSizedWrapGrid.ColumnSpan="3" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                 </Border>
