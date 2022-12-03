@@ -5,6 +5,7 @@ using CommunityToolkit.WinUI.Helpers;
 using FIP.App.Models;
 using FIP.App.UserControls;
 using FIP.App.ViewModels;
+using FIP.Backend.Helpers;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -19,6 +20,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -29,20 +31,32 @@ namespace FIP.App.Views
     /// </summary>
     public sealed partial class AllIconsPage : Page
     {
-            public string Title { get; set; }
+        public string Title { get; set; }
 
         public AllIconsPage()
         {
             this.InitializeComponent();
 
-            var colors = DefaultColors.GetAllColors();
-            var list = colors.Select(c => new DropZoneViewModel()
+            var fipHexColors = DefaultColors.GetAllColors().ToList();
+            var dropZoneViewModels = new List<DropZoneViewModel>();
+
+            fipHexColors.ForEach(c => 
             {
-                HexColor = c,
-                Brush = new SolidColorBrush(ColorHelper.ToColor(c))
+                var fipColor = new FIPColor(c);
+                var lightnessColor = fipColor.ColorLighten(0.15);
+                var darknessColor = fipColor.ColorDarken(0.15);
+              
+                dropZoneViewModels.Add(
+                    new DropZoneViewModel
+                    {
+                        HexColor = c,
+                        BackgroundColor = Color.FromArgb(fipColor.A, fipColor.R, fipColor.G, fipColor.B),
+                        BackgroundPointerOverColor = Color.FromArgb(darknessColor.A, darknessColor.R, darknessColor.G, darknessColor.B),
+                        BackgroundPressedColor = Color.FromArgb(lightnessColor.A, lightnessColor.R, lightnessColor.G, lightnessColor.B),
+                    });
             });
 
-            AdaptiveGridViewControl.ItemsSource = list;
+            AdaptiveGridViewControl.ItemsSource = dropZoneViewModels;
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿//// Copyright (c) Steven Coco
-//// https://stackoverflow.com/questions/4087581/creating-a-c-sharp-color-from-hsl-values/4087601#4087601
-//// Stripped and adapted by Meinrad Recheis and Benjamin Kappel for MudBlazor
-
-using System;
+﻿using System;
 using System.Globalization;
 
 namespace FIP.Backend.Helpers
@@ -61,15 +57,11 @@ namespace FIP.Backend.Helpers
         /// <param name="lightness">0..1 range lightness</param>
         /// <param name="alpha">0..1 alpha</param>
         /// <returns>The created <see cref="FIPColor"/>.</returns>
-        public FIPColor(double hue, double saturation, double lightness, double alpha = 1.0)
+        public FIPColor(double hue, double saturation, double lightness, int alpha)
         {
             if (hue < 0 || hue > 360)
             {
                 throw new ArgumentOutOfRangeException(nameof(hue));
-            }
-            else if (alpha < 0 || alpha > 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(alpha));
             }
 
             _valuesAsByte = new byte[4];
@@ -121,7 +113,7 @@ namespace FIP.Backend.Helpers
             _valuesAsByte[0] = (byte)(255 * (r1 + m)); // Red
             _valuesAsByte[1] = (byte)(255 * (g1 + m)); // Green
             _valuesAsByte[2] = (byte)(255 * (b1 + m)); // Blue
-            _valuesAsByte[3] = (byte)(255 * alpha); // Alpha
+            _valuesAsByte[3] = (byte)alpha; // Alpha
 
             H = Math.Round(hue, 0);
             S = Math.Round(saturation, 2);

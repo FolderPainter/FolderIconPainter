@@ -34,6 +34,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\FIP.Backend\FIP.Backend.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Update="UserControls\PageHeader.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>

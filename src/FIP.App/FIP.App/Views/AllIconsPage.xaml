@@ -15,7 +15,9 @@
 
     <Page.Resources>
         <DataTemplate x:Key="WrapTemplate">
-            <usercontrols:DropZone Color="{Binding Brush}" Margin="8">
+            <usercontrols:DropZone Margin="8" BackgroundColor="{Binding BackgroundColor}"
+                                   BackgroundPointerOverColor="{Binding BackgroundPointerOverColor}"
+                                   BackgroundPressedColor="{Binding BackgroundPressedColor}">
 
             </usercontrols:DropZone>
         </DataTemplate>

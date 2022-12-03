@@ -12,9 +12,17 @@
     <Viewbox MaxWidth="210" MaxHeight="150" Stretch="Fill">
         <Border x:Name="MainBorder" CornerRadius="4" Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
             Padding="8" Width="210" Height="150">
-            <Button x:Name="ZoneButton" Background="{Binding ElementName=DropZoneControl, Path=Color}"
+            <Button x:Name="ZoneButton"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AllowDrop="True"
                 Click="ZoneButton_Click" Drop="ZoneButton_Drop" DragOver="ZoneButton_DragOver">
+                <Button.Resources>
+                    <ResourceDictionary>
+                        <SolidColorBrush x:Key="ButtonBackground" Color="{Binding ElementName=DropZoneControl, Path=BackgroundColor}" />
+                        <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{Binding ElementName=DropZoneControl, Path=BackgroundPressedColor}" />
+                        <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{Binding ElementName=DropZoneControl, Path=BackgroundPointerOverColor}" />
+                        <SolidColorBrush x:Key="ButtonBackgroundFocused" Color="{Binding ElementName=DropZoneControl, Path=BackgroundColor}" />
+                    </ResourceDictionary>
+                </Button.Resources>
                 <TextBlock x:Name="ZoneTextBlock">
 
                 </TextBlock>
