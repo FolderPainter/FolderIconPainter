@@ -6,22 +6,22 @@
 <path id="BackRect" sodipodi:nodetypes="scccscccccccs" fill="#FCBC19" d="M12,0C5.4,0,0,5.4,0,12v11.8v139.7c0,6.6,5.4,12,12,12h200.8
 	c6.6,0,12-5.4,12-12V35.8c0-6.6-5.4-12-12-12H100.4c0,0-11.4-15.7-16.3-19.3C79.1,0.9,73.4,0,73.4,0H12z"/>
 
-<path id="FrontDarkRect" fill="url(#FromtRect_Gradient)" d="M100.2,27.8v11.9h-28C86,39.7,89.7,35.6,100.2,27.8z M100.2,27.8h112.6
+<linearGradient id="FrontDarkRect_Gradient" gradientUnits="userSpaceOnUse" x1="-177.0489" y1="167.7142" x2="-97.7589" y2="167.7142" gradientTransform="matrix(2.8346 0 0 -2.8316 501.8716 574.8989)">
+  <stop id="FrontDarkGradientFisrtStop" offset="0" stop-color="#FFEEBC"/>
+  <stop id="FrontDarkGradientSecondStop" offset="1" stop-color="#FFDA72"/>
+</linearGradient>
+
+<path id="FrontDarkRect" fill="url(#FrontDarkRect_Gradient)" d="M100.2,27.8v11.9h-28C86,39.7,89.7,35.6,100.2,27.8z M100.2,27.8h112.6
 	c6.6,0,12,5.3,12,11.9H100.2V27.8z M12,39.7h212.8v120.5c0,6.6-5.4,12-12,12c0,0,0,0,0,0H12c-6.6,0-12-5.4-12-12c0,0,0,0,0,0V51.7
 	C0,45.1,5.4,39.7,12,39.7L12,39.7L12,39.7z"/>
 
-<path id="FromtRect" sodipodi:nodetypes="cccccccccccsccssc" fill="url(#FrontDarkRect_Gradient)" d="M101.6,32.6v11.9h-28C87.4,44.4,91.1,40.4,101.6,32.6z
+<linearGradient id="FrontRect_Gradient" gradientUnits="userSpaceOnUse" x1="-144.2851" y1="188.0173" x2="-128.9763" y2="141.7201" gradientTransform="matrix(2.8346 0 0 -2.8346 501.7221 575.8779)">
+  <stop id="FrontGradientFisrtStop" offset="0" stop-color="#FFE088" stop-opacity="0.4"/>
+  <stop id="FrontGradientSecondStop" offset="1" stop-color="#FFC937" />
+</linearGradient>
+
+<path id="FrontRect" sodipodi:nodetypes="cccccccccccsccssc" fill="url(#FrontRect_Gradient)" d="M101.6,32.6v11.9h-28C87.4,44.4,91.1,40.4,101.6,32.6z
 	 M101.6,32.6h111.2c6.6,0,12,5.3,12,11.9H101.6V32.6z M12,44.5h212.8v115.7c0,6.6-5.4,12-12,12H12c-6.6,0-12-5.4-12-12V56.5
 	C0,49.8,5.4,44.5,12,44.5z"/>
-
-<linearGradient id="FrontDarkRect_Gradient" gradientUnits="userSpaceOnUse" x1="-144.2851" y1="188.0173" x2="-128.9763" y2="141.7201" gradientTransform="matrix(2.8346 0 0 -2.8346 501.7221 575.8779)">
-  <stop  offset="0" style="stop-color:#FFE088;stop-opacity:0.4"/>
-  <stop  offset="1" style="stop-color:#FFC937"/>
-</linearGradient>
-
-<linearGradient id="FromtRect_Gradient" gradientUnits="userSpaceOnUse" x1="-177.0489" y1="167.7142" x2="-97.7589" y2="167.7142" gradientTransform="matrix(2.8346 0 0 -2.8316 501.8716 574.8989)">
-  <stop  offset="0" style="stop-color:#FFEEBC"/>
-  <stop  offset="1" style="stop-color:#FFDA72"/>
-</linearGradient>
 
 </svg>

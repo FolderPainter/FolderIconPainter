@@ -11,6 +11,7 @@
     mc:Ignorable="d"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     Loading="Page_Loading"
+    x:Name="CreateCustomIconPageControl"
     NavigationCacheMode="Enabled">
 
     <Grid Background="{ThemeResource HomePageBackgroundBrush}">
@@ -53,10 +54,10 @@
                                  IsColorSliderVisible="True"
                                  IsColorChannelTextInputVisible="True"
                                  IsHexInputVisible="True"
-                                 IsAlphaEnabled="True" 
+                                 IsAlphaEnabled="False" 
                                  ColorChanged="mainColorPicker_ColorChanged"/>
                 </Border>
-
+               
                 <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                     <StackPanel Grid.Row="1" Spacing="16" Orientation="Vertical">
@@ -64,11 +65,14 @@
                                  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                         <AutoSuggestBox Header="Select category for icon:" PlaceholderText="Category"
                                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
-                        <Button Content="Create folder icon"
+                        <Button x:Name="createButton" Content="Create folder icon"
                                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                             <Button.Background>
                                 <SolidColorBrush Color="{x:Bind mainColorPicker.Color, Mode=OneWay}"/>
                             </Button.Background>
+                            <Button.Foreground>
+                                <SolidColorBrush Color="{Binding ElementName=CreateCustomIconPageControl, Path=ContrastColor}"/>
+                            </Button.Foreground>
                         </Button>
                     </StackPanel>
                 </Border>
@@ -77,12 +81,12 @@
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                     <Image Source="/Assets/win11-folder-default.svg" Height="Auto"/>
                 </Border>-->
-                
+
                 <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                     <canvas:CanvasControl x:Name="canvasControl" Draw="CanvasControl_Draw"/>
                 </Border>
-                
+
                 <Border Padding="8" Margin="8" VariableSizedWrapGrid.ColumnSpan="3" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                 </Border>

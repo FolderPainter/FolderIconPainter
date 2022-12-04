@@ -34,6 +34,8 @@ namespace FIP.Backend.Helpers
         private byte[] _valuesAsByte;
 
         public string Value => $"#{R:x2}{G:x2}{B:x2}{A:x2}";
+        public string ValueRGB => $"#{R:x2}{G:x2}{B:x2}";
+        public string RGB => $"rgb({R},\t{G},\t{B})";
 
         public byte R => _valuesAsByte[0];
         public byte G => _valuesAsByte[1];
@@ -65,6 +67,39 @@ namespace FIP.Backend.Helpers
             }
 
             _valuesAsByte = new byte[4];
+
+            //var q = lightness < .5D
+            //           ? lightness * (1D + saturation)
+            //           : (lightness + saturation) - (lightness * saturation);
+            //var p = (2D * lightness) - q;
+
+            //var hk = hue / 360D;
+            //var T = new double[3];
+            //T[0] = hk + (1D / 3D); // Tr
+            //T[1] = hk; // Tb
+            //T[2] = hk - (1D / 3D); // Tg
+
+            //for (var i = 0; i < 3; i++)
+            //{
+            //    if (T[i] < 0D)
+            //        T[i] += 1D;
+            //    if (T[i] > 1D)
+            //        T[i] -= 1D;
+
+            //    if ((T[i] * 6D) < 1D)
+            //        T[i] = p + ((q - p) * 6D * T[i]);
+            //    else if ((T[i] * 2D) < 1)
+            //        T[i] = q;
+            //    else if ((T[i] * 3D) < 2)
+            //        T[i] = p + ((q - p) * ((2D / 3D) - T[i]) * 6D);
+            //    else
+            //        T[i] = p;
+            //}
+
+            //_valuesAsByte[0] = (byte)Math.Round(T[0] * 255D);
+            //_valuesAsByte[1] = (byte)Math.Round(T[1] * 255D);
+            //_valuesAsByte[2] = (byte)Math.Round(T[2] * 255D);
+            //_valuesAsByte[3] = (byte)alpha;
 
             double chroma = (1 - Math.Abs((2 * lightness) - 1)) * saturation;
             double h1 = hue / 60;
