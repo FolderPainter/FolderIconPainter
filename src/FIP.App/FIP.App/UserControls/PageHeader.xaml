@@ -44,8 +44,10 @@
                 <Canvas x:Name="ShadowHost" Grid.RowSpan="2" Opacity="{x:Bind ShadowOpacity, Mode=OneWay}"/>
                 <TextBlock x:Name="TitleTextBlock"
                            Style="{StaticResource TitleTextBlockStyle}"
+                           VerticalAlignment="Center"
                            FontSize="{Binding ElementName=headerControl, Path=FontSize}"
                            Foreground="{Binding ElementName=headerControl, Path=Foreground}"
+                           Text="{x:Bind Title, Mode=OneWay}"
                            TextTrimming="CharacterEllipsis"
                            TextWrapping="NoWrap"/>
             </Grid>
