@@ -47,7 +47,6 @@
                 <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                     <ColorPicker x:Name="mainColorPicker"
-                                 Color="Fuchsia"
                                  ColorSpectrumShape="Box"
                                  IsMoreButtonVisible="True"
                                  IsColorSliderVisible="True"

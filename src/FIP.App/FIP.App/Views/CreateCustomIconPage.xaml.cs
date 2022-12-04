@@ -70,9 +70,8 @@ namespace FIP.App.Views
 
         private async void mainColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
         {
-            // Contsting button
+            // Contrasting button
             var fipColor = new FIPColor(args.NewColor.R, args.NewColor.G, args.NewColor.B, args.NewColor.A);
-
             if (fipColor.L > .7)
             {
                 ContrastColor = Microsoft.UI.Colors.Black;
@@ -87,8 +86,6 @@ namespace FIP.App.Views
             {
                 if (svgDocument != null)
                 {
-                    //var fipColor = new FIPColor(args.NewColor.R, args.NewColor.G, args.NewColor.B, args.NewColor.A);
-
                     // Fill BackRect 
                     CanvasSvgNamedElement backRect = svgDocument.FindElementById("BackRect");
                     backRect.SetStringAttribute("fill", fipColor.ToString(ColorOutputFormats.Hex));
