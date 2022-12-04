@@ -41,7 +41,7 @@ namespace FIP.App.UserControls
         // Using a DependencyProperty as the backing store for BackgroundPointerOverColor.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BackgroundPointerOverColorProperty =
             DependencyProperty.Register("BackgroundPointerOverColor", typeof(Color), typeof(DropZone), new PropertyMetadata(Colors.Aqua));
-        
+
         public Color BackgroundPressedColor
         {
             get { return (Color)GetValue(BackgroundPressedColorProperty); }
@@ -54,7 +54,6 @@ namespace FIP.App.UserControls
 
         private async void ZoneButton_Click(object sender, RoutedEventArgs e)
         {
-
             // Clear previous returned file name, if it exists, between iterations of this scenario
             ZoneButton.Content = "";
 
@@ -83,7 +82,6 @@ namespace FIP.App.UserControls
             {
                 ZoneButton.Content = "Operation cancelled.";
             }
-
         }
 
         private async void ZoneButton_Drop(object sender, DragEventArgs e)

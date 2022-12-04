@@ -16,38 +16,38 @@
     <Grid>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="TitleForegroundStates">
-                <VisualState x:Name="DefaultForeground" />
+                <VisualState x:Name="DefaultForeground"/>
                 <VisualState x:Name="AlternateForeground">
                     <VisualState.Setters>
-                        <Setter Target="TitleTextBlock.Foreground" Value="Transparent" />
+                        <Setter Target="TitleTextBlock.Foreground" Value="Transparent"/>
                         <Setter Target="ShadowHost.Opacity" Value="0"/>
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <Rectangle x:Name="NarrowBackground" Visibility="Collapsed" />
+        <Rectangle x:Name="NarrowBackground" Visibility="Collapsed"/>
 
-        <Rectangle x:Name="WideBackground" Fill="{Binding ElementName=headerControl, Path=Background}" Opacity="{Binding ElementName=headerControl, Path=BackgroundColorOpacity}" />
+        <Rectangle x:Name="WideBackground" 
+                   Fill="{Binding ElementName=headerControl, Path=Background}" 
+                   Opacity="{Binding ElementName=headerControl, Path=BackgroundColorOpacity}"/>
 
         <Grid x:Name="headerRoot" Padding="{Binding ElementName=headerControl, Path=Padding}" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Grid x:Name="pageTitle"
-                Background="Transparent"
-                RowDefinitions="Auto,Auto"
-                VerticalAlignment="Top">
+                  Background="Transparent"
+                  RowDefinitions="Auto,Auto"
+                  VerticalAlignment="Top">
                 <Canvas x:Name="ShadowHost" Grid.RowSpan="2" Opacity="{x:Bind ShadowOpacity, Mode=OneWay}"/>
                 <TextBlock x:Name="TitleTextBlock"
-                    Style="{StaticResource TitleTextBlockStyle}"
-                    VerticalAlignment="Center"
-                    FontSize="{Binding ElementName=headerControl, Path=FontSize}"
-                    Foreground="{Binding ElementName=headerControl, Path=Foreground}"
-                    Text="{x:Bind Title, Mode=OneWay}"
-                    TextTrimming="CharacterEllipsis"
-                    TextWrapping="NoWrap" />
+                           Style="{StaticResource TitleTextBlockStyle}"
+                           FontSize="{Binding ElementName=headerControl, Path=FontSize}"
+                           Foreground="{Binding ElementName=headerControl, Path=Foreground}"
+                           TextTrimming="CharacterEllipsis"
+                           TextWrapping="NoWrap"/>
             </Grid>
         </Grid>
     </Grid>

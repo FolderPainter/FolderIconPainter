@@ -43,7 +43,6 @@
             <VariableSizedWrapGrid Orientation="Horizontal" 
                                    MaximumRowsOrColumns="3">
 
-
                 <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                     <ColorPicker x:Name="mainColorPicker"
@@ -55,7 +54,7 @@
                                  IsAlphaEnabled="False" 
                                  ColorChanged="mainColorPicker_ColorChanged"/>
                 </Border>
-               
+
                 <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                     <StackPanel Grid.Row="1" Spacing="16" Orientation="Vertical">

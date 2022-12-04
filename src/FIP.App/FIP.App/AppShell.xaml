@@ -1,4 +1,3 @@
-<!-- Copyright (c) Microsoft Corporation and Contributors. -->
 <!-- Licensed under the MIT License. -->
 
 <Page
@@ -56,41 +55,35 @@
             <StackPanel Orientation="Horizontal">
                 <Image Width="18" Source="Images/Square44x44Logo.png"/>
                 <TextBlock x:Name="AppTitle"
-                       Text="{x:Bind AppTitleText}"
-                       VerticalAlignment="Center"
-                       Margin="16,0,0,0"
-                       Style="{StaticResource CaptionTextBlockStyle}" />
+                           Text="{x:Bind AppTitleText}"
+                           VerticalAlignment="Center"
+                           Margin="16,0,0,0"
+                           Style="{StaticResource CaptionTextBlockStyle}" />
             </StackPanel>
         </Border>
 
-        <NavigationView
-            Canvas.ZIndex="0"
-            x:Name="NavView"
-            Grid.Column="1"
-            AlwaysShowHeader="True"
-            Header=" "
-            HeaderTemplate="{StaticResource NavigationViewHeaderTemplate}"
-            IsTabStop="False"
-            IsTitleBarAutoPaddingEnabled="False"
-            ItemInvoked="NavigationView_ItemInvoked"
-            BackRequested="NavigationView_BackRequested"
-            IsBackEnabled="{x:Bind AppFrame.CanGoBack, Mode=OneWay}">
+        <NavigationView Canvas.ZIndex="0"
+                        x:Name="NavView"
+                        Grid.Column="1"
+                        AlwaysShowHeader="True"
+                        Header="  "
+                        HeaderTemplate="{StaticResource NavigationViewHeaderTemplate}"
+                        IsTitleBarAutoPaddingEnabled="False"
+                        ItemInvoked="NavigationView_ItemInvoked"
+                        BackRequested="NavigationView_BackRequested"
+                        IsBackEnabled="{x:Bind AppFrame.CanGoBack, Mode=OneWay}">
             <NavigationView.MenuItems>
-                <NavigationViewItem
-                    AutomationProperties.Name="fsdfds"
-                    x:Name="AllIconsMenuItem"
-                    Content="{x:Bind AllIconsLabel}" 
-                    ToolTipService.ToolTip="{x:Bind AllIconsLabel}"
-                    Icon="List"/>
-                <NavigationViewItem
-                    x:Name="CreateCustomIconMenuItem"
-                    Content="{x:Bind CreateCustomIconLabel}" 
-                    ToolTipService.ToolTip="{x:Bind CreateCustomIconLabel}"
-                    Icon="NewFolder"/>
-                <NavigationViewItem
-                    x:Name="AboutMenuItem"
-                    Content="{x:Bind AboutLabel}" 
-                    ToolTipService.ToolTip="{x:Bind AboutLabel}">
+                <NavigationViewItem x:Name="AllIconsMenuItem"
+                                    Content="{x:Bind AllIconsLabel}"
+                                    ToolTipService.ToolTip="{x:Bind AllIconsLabel}"
+                                    Icon="List"/>
+                <NavigationViewItem x:Name="CreateCustomIconMenuItem"
+                                    Content="{x:Bind CreateCustomIconLabel}"
+                                    ToolTipService.ToolTip="{x:Bind CreateCustomIconLabel}"
+                                    Icon="NewFolder"/>
+                <NavigationViewItem x:Name="AboutMenuItem"
+                                    Content="{x:Bind AboutLabel}" 
+                                    ToolTipService.ToolTip="{x:Bind AboutLabel}">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xf167;"/>
                     </NavigationViewItem.Icon>
@@ -99,10 +92,9 @@
 
             <NavigationView.PaneFooter>
                 <StackPanel>
-                    <NavigationViewItem
-                        Content="View code"
-                        ToolTipService.ToolTip="View code"
-                        Tapped="ViewCodeNavPaneButton_Tapped">
+                    <NavigationViewItem Content="View code" 
+                                        ToolTipService.ToolTip="View code"
+                                        Tapped="ViewCodeNavPaneButton_Tapped">
                         <NavigationViewItem.Icon>
                             <FontIcon Glyph="&#xE943;"/>
                         </NavigationViewItem.Icon>
@@ -111,10 +103,7 @@
             </NavigationView.PaneFooter>
 
             <!-- In OnNavigatingToPage, we synchronize the selected item in the NavigationView with the current page. -->
-            <Frame 
-                x:Name="frame"
-                Navigated="OnRootFrameNavigated"
-                Navigating="OnNavigatingToPage">
+            <Frame x:Name="frame" Navigated="OnRootFrameNavigated" Navigating="OnNavigatingToPage">
                 <Frame.ContentTransitions>
                     <TransitionCollection>
                         <NavigationThemeTransition>

@@ -2,29 +2,16 @@
 // Licensed under the MIT License.
 
 using Microsoft.Graphics.Canvas.Svg;
-using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Storage;
 using Windows.UI;
 using System.Threading.Tasks;
-using Windows.Storage.Streams;
 using CommunityToolkit.WinUI.Helpers;
 using FIP.Backend.Helpers;
-using Windows.UI.Core;
 using CommunityToolkit.WinUI;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -78,7 +65,7 @@ namespace FIP.App.Views
             }
             else
             {
-                ContrastColor = fipColor.H > 19 && fipColor.H < 191 ? 
+                ContrastColor = fipColor.H > 19 && fipColor.H < 191 ?
                     Microsoft.UI.Colors.Black : Microsoft.UI.Colors.White;
             }
 
@@ -132,20 +119,6 @@ namespace FIP.App.Views
         {
             Color color = (Color)value;
             HslColor hslColor = color.ToHsl();
-            if (parameter!= null)
-            {
-                switch (parameter)
-                {
-                    case "h":
-                        break;
-                    case "s":
-                        break;
-                    case "l":
-                        break;
-                    default:
-                        break;
-                }
-            }
             return $"{hslColor.H} | {hslColor.S} | {hslColor.L}";
         }
 

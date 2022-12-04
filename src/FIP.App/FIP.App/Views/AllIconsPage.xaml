@@ -51,8 +51,7 @@
                       VerticalScrollMode="Auto">
 
             <controls:AdaptiveGridView x:Name="AdaptiveGridViewControl"
-                                        Margin="12,39,43,0"
-                                       
+                                       Margin="12,39,43,0"
                                        StretchContentForSingleRow="False"
                                        VerticalContentAlignment="Stretch"
                                        HorizontalContentAlignment="Stretch"

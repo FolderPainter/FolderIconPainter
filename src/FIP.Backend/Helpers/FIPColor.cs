@@ -168,7 +168,7 @@ namespace FIP.Backend.Helpers
         }
 
         /// <summary>
-        /// initialize a new MudColor with new RGB values but keeps the hue value from the color
+        /// Initialize a new FIPColor with new RGB values but keeps the hue value from the color
         /// </summary>
         /// <param name="r">R</param>
         /// <param name="g">G</param>
@@ -350,7 +350,7 @@ namespace FIP.Backend.Helpers
         #region operators and object members
 
         public static implicit operator FIPColor(string input) => new(input);
-        //public static implicit operator string(MudColor input) => input == null ? string.Empty : input.Value;
+        //public static implicit operator string(FIPColor input) => input == null ? string.Empty : input.Value;
 
         public static explicit operator string(FIPColor color) => color == null ? string.Empty : color.Value;
 
