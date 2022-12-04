@@ -13,7 +13,6 @@
     Loading="Page_Loading"
     x:Name="CreateCustomIconPageControl"
     NavigationCacheMode="Enabled">
-
     <Grid Background="{ThemeResource HomePageBackgroundBrush}">
         <!--  Visual states reflect the application's window size  -->
         <VisualStateManager.VisualStateGroups>

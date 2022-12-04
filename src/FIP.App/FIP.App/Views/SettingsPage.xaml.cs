@@ -28,21 +28,9 @@ namespace FIP.App.Views
     /// </summary>
     public sealed partial class SettingsPage : Page
     {
-        public List<ColorGridItem> ColorGridItems { get; set; }
-
-        public FIPColor DefaultFIPColor { get; set; }
-
         public SettingsPage()
         {
             this.InitializeComponent();
-
-            ColorGridItems = new List<ColorGridItem>();
-            DefaultFIPColor = new FIPColor("#FCBC19");
-
-            for (double i = 0; i < 1; i += 0.001)
-            {
-                ColorGridItems.Add(new ColorGridItem { LightValue = i, LightColor = DefaultFIPColor.ColorLighten(i) });
-            }
         }
     }
 }

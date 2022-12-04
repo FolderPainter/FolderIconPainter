@@ -25,6 +25,7 @@ using Windows.Storage.Streams;
 using CommunityToolkit.WinUI.Helpers;
 using FIP.Backend.Helpers;
 using Windows.UI.Core;
+using CommunityToolkit.WinUI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -69,37 +70,51 @@ namespace FIP.App.Views
 
         private async void mainColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
         {
-            await Task.Run(async () =>
+            // Contsting button
+            var fipColor = new FIPColor(args.NewColor.R, args.NewColor.G, args.NewColor.B, args.NewColor.A);
+
+            if (fipColor.L > .7)
+            {
+                ContrastColor = Microsoft.UI.Colors.Black;
+            }
+            else
+            {
+                ContrastColor = fipColor.H > 19 && fipColor.H < 191 ? 
+                    Microsoft.UI.Colors.Black : Microsoft.UI.Colors.White;
+            }
+
+            await Task.Run(async Task<bool> () =>
             {
                 if (svgDocument != null)
                 {
-                    var fIPColor = new FIPColor(args.NewColor.R, args.NewColor.G, args.NewColor.B, args.NewColor.A);
+                    //var fipColor = new FIPColor(args.NewColor.R, args.NewColor.G, args.NewColor.B, args.NewColor.A);
 
                     // Fill BackRect 
                     CanvasSvgNamedElement backRect = svgDocument.FindElementById("BackRect");
-                    backRect.SetStringAttribute("fill", fIPColor.ToString(ColorOutputFormats.Hex));
+                    backRect.SetStringAttribute("fill", fipColor.ToString(ColorOutputFormats.Hex));
 
                     // New FrontRect_Gradient
-                    var frontFirstColor = fIPColor.ColorLighten(0.23);
+                    var frontFirstColor = fipColor.ColorLighten(0.23);
                     CanvasSvgNamedElement frontGradientFisrtStop = svgDocument.FindElementById("FrontGradientFisrtStop");
                     frontGradientFisrtStop.SetStringAttribute("stop-color", frontFirstColor.ToString(ColorOutputFormats.Hex));
 
-                    var frontSecondColor = fIPColor.ColorLighten(0.07);
+                    var frontSecondColor = fipColor.ColorLighten(0.07);
                     CanvasSvgNamedElement frontGradientSecondStop = svgDocument.FindElementById("FrontGradientSecondStop");
                     frontGradientSecondStop.SetStringAttribute("stop-color", frontSecondColor.ToString(ColorOutputFormats.Hex));
 
                     // New FrontDarkRect_Gradient
-                    var frontDarkFirstColor = fIPColor.ColorLighten(0.33);
+                    var frontDarkFirstColor = fipColor.ColorLighten(0.33);
                     CanvasSvgNamedElement frontDarkGradientFisrtStop = svgDocument.FindElementById("FrontDarkGradientFisrtStop");
                     frontDarkGradientFisrtStop.SetStringAttribute("stop-color", frontDarkFirstColor.ToString(ColorOutputFormats.Hex));
 
-                    var frontDarkSecondColor = fIPColor.ColorLighten(0.18);
+                    var frontDarkSecondColor = fipColor.ColorLighten(0.18);
                     CanvasSvgNamedElement frontDarkGradientSecondStop = svgDocument.FindElementById("FrontDarkGradientSecondStop");
                     frontDarkGradientSecondStop.SetStringAttribute("stop-color", frontDarkSecondColor.ToString(ColorOutputFormats.Hex));
 
                     // Draw refilled svg image
                     canvasControl.Invalidate();
                 }
+                return await Task.FromResult(true);
             });
         }
 
@@ -111,6 +126,35 @@ namespace FIP.App.Views
                 svgDocument = await CanvasSvgDocument.LoadAsync(canvasControl, fileStream);
                 canvasControl.Invalidate();
             }
+        }
+    }
+
+    public class ColorToHslStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            Color color = (Color)value;
+            HslColor hslColor = color.ToHsl();
+            if (parameter!= null)
+            {
+                switch (parameter)
+                {
+                    case "h":
+                        break;
+                    case "s":
+                        break;
+                    case "l":
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return $"{hslColor.H} | {hslColor.S} | {hslColor.L}";
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return ColorHelper.ToColor(((HslColor)value).ToString());
         }
     }
 }

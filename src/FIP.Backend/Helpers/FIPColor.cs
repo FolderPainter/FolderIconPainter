@@ -174,7 +174,7 @@ namespace FIP.Backend.Helpers
         /// <param name="g">G</param>
         /// <param name="b">B</param>
         /// <param name="color">Existing color to copy hue value from </param>
-        public FIPColor(byte r, byte g, byte b, FIPColor color) : this(r,g,b,color.A)
+        public FIPColor(byte r, byte g, byte b, FIPColor color) : this(r, g, b, color.A)
         {
             H = color.H;
         }
@@ -381,7 +381,7 @@ namespace FIP.Backend.Helpers
 
         public override int GetHashCode() => _valuesAsByte[0] + _valuesAsByte[1] + _valuesAsByte[2] + _valuesAsByte[3];
 
-        public static bool operator == (FIPColor lhs, FIPColor rhs)
+        public static bool operator ==(FIPColor lhs, FIPColor rhs)
         {
             var lhsIsNull = ReferenceEquals(null, lhs);
             var rhsIsNull = ReferenceEquals(null, rhs);
@@ -402,7 +402,7 @@ namespace FIP.Backend.Helpers
             }
         }
 
-        public static bool operator != (FIPColor lhs, FIPColor rhs) => !(lhs == rhs);
+        public static bool operator !=(FIPColor lhs, FIPColor rhs) => !(lhs == rhs);
 
         #endregion
     }
