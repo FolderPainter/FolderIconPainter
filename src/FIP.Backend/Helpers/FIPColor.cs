@@ -22,6 +22,10 @@ namespace FIP.Backend.Helpers
         /// </summary>
         RGBA,
         /// <summary>
+        /// Will output css like output for value. Example hsl(50 80% 40%)
+        /// </summary>
+        HSL,
+        /// <summary>
         /// Will output the color elements without any decorator and without alpha. Example 12,15,26
         /// </summary>
         ColorElements
@@ -44,8 +48,8 @@ namespace FIP.Backend.Helpers
         public double APercentage => Math.Round((A / 255.0), 2);
 
         public double H { get; private set; }
-        public double L { get; private set; }
         public double S { get; private set; }
+        public double L { get; private set; }
 
         #endregion
 
@@ -253,10 +257,10 @@ namespace FIP.Backend.Helpers
 
                 _valuesAsByte = new byte[]
                 {
-                    GetByteFromValuePart(value,0),
-                    GetByteFromValuePart(value,2),
-                    GetByteFromValuePart(value,4),
-                    GetByteFromValuePart(value,6),
+                    GetByteFromValuePart(value, 0),
+                    GetByteFromValuePart(value, 2),
+                    GetByteFromValuePart(value, 4),
+                    GetByteFromValuePart(value, 6),
                 };
 
                 CalculateHSL();
@@ -318,6 +322,8 @@ namespace FIP.Backend.Helpers
         public FIPColor SetAlpha(int a) => new(R, G, B, a);
         public FIPColor SetAlpha(double a) => new(R, G, B, a);
 
+        public FIPColor ChangeSL(double saturation, double light) => new(H, Math.Max(0, Math.Min(1, S + saturation)), Math.Max(0, Math.Min(1, L + light)), A);
+
         public FIPColor ChangeLightness(double amount) => new(H, S, Math.Max(0, Math.Min(1, L + amount)), A);
         public FIPColor ColorLighten(double amount) => ChangeLightness(+amount);
         public FIPColor ColorDarken(double amount) => ChangeLightness(-amount);
@@ -362,6 +368,7 @@ namespace FIP.Backend.Helpers
             ColorOutputFormats.HexA => Value,
             ColorOutputFormats.RGB => $"rgb({R},{G},{B})",
             ColorOutputFormats.RGBA => $"rgba({R},{G},{B},{(A / 255.0).ToString(CultureInfo.InvariantCulture)})",
+            ColorOutputFormats.HSL => $"hsl({Math.Round(H, 0)} {Math.Round(S * 100, 0)}% {Math.Round(L * 100, 0)}%)",
             ColorOutputFormats.ColorElements => $"{R},{G},{B}",
             _ => Value,
         };
@@ -381,7 +388,7 @@ namespace FIP.Backend.Helpers
 
         public override int GetHashCode() => _valuesAsByte[0] + _valuesAsByte[1] + _valuesAsByte[2] + _valuesAsByte[3];
 
-        public static bool operator ==(FIPColor lhs, FIPColor rhs)
+        public static bool operator == (FIPColor lhs, FIPColor rhs)
         {
             var lhsIsNull = ReferenceEquals(null, lhs);
             var rhsIsNull = ReferenceEquals(null, rhs);
@@ -402,7 +409,7 @@ namespace FIP.Backend.Helpers
             }
         }
 
-        public static bool operator !=(FIPColor lhs, FIPColor rhs) => !(lhs == rhs);
+        public static bool operator != (FIPColor lhs, FIPColor rhs) => !(lhs == rhs);
 
         #endregion
     }
