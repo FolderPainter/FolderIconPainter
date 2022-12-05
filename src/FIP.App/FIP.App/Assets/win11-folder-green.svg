@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1"
 	 id="Win11FolderIcon" inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)" sodipodi:docname="windows11 ordner.svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 300 300"
 	 style="enable-background:new 0 0 300 300;" xml:space="preserve">
-<linearGradient id="BackRect_Gradient" gradientUnits="userSpaceOnUse" x1="-82.4195" y1="224.0938" x2="-82.4195" y2="276.5667" gradientTransform="matrix(2.8346 0 0 2.8346 383.6264 -535.7275)">
+<linearGradient id="BackRect_Gradient" gradientUnits="userSpaceOnUse" x1="-178.8548" y1="174.5943" x2="-178.8548" y2="128.5576" gradientTransform="matrix(2.8346 0 0 -2.8346 656.9818 593.6771)">
 	<stop id="BackGradientFirstStop" offset="0" style="stop-color:#04805C"/>
 	<stop id="BackGradientSecondStop" offset="1" style="stop-color:#0A5D5E"/>
 </linearGradient>
-<path id="BackRect" sodipodi:nodetypes="scccscccccccs" style="fill:url(#BackRect_Gradient);" d="M16,32.6c-8.8,0-16,7.2-16,16v15.7v187
-	c0,8.8,7.2,16,16,16h268c8.8,0,16-7.2,16-16v-171c0-8.8-7.2-16-16-16H134c0,0-15.2-21-21.8-25.8c-6.5-4.8-14.3-6-14.3-6H16z"/>
-<linearGradient id="MiddleRect_Gradient" gradientUnits="userSpaceOnUse" x1="-135.3371" y1="247.7797" x2="-29.502" y2="247.7797" gradientTransform="matrix(2.8346 0 0 2.8316 383.6264 -535.532)">
+<path id="BackRect" sodipodi:nodetypes="scccscccccccs" style="fill:url(#BackRect_Gradient);" d="M35.7,40.1c-7.5,0-13.7,6.3-13.7,14
+	v13.8V232c0,7.7,6.1,14,13.7,14h228.7c7.5,0,13.7-6.3,13.7-14v-150c0-7.7-6.1-14-13.7-14h-128c0,0-13-18.4-18.6-22.6
+	c-5.5-4.2-12.2-5.3-12.2-5.3L35.7,40.1L35.7,40.1z"/>
+<linearGradient id="MiddleRect_Gradient" gradientUnits="userSpaceOnUse" x1="-224.0111" y1="153.7472" x2="-133.6985" y2="153.7472" gradientTransform="matrix(2.8346 0 0 -2.8316 656.9818 592.5196)">
 	<stop id="MiddleGradientFirstStop" offset="0" style="stop-color:#70DAB1"/>
 	<stop id="MiddleGradientSecondStop" offset="1" style="stop-color:#1AB19B"/>
 </linearGradient>
-<path id="MiddleRect" style="fill:url(#MiddleRect_Gradient);" d="M133.6,69.7v15.9H96.2C114.8,85.6,119.7,80.1,133.6,69.7z M133.6,69.7
-	h150.3c8.8,0,16,7.1,16,15.9H133.6V69.7z M16,85.6h284v160.8c0,8.8-7.2,16-16,16l0,0H16c-8.8,0-16-7.2-16-16l0,0V101.6
-	C0,92.8,7.1,85.6,16,85.6L16,85.6L16,85.6z"/>
-<linearGradient id="FrontRect_Gradient" gradientUnits="userSpaceOnUse" x1="-91.6433" y1="220.7122" x2="-71.2134" y2="282.4966" gradientTransform="matrix(2.8346 0 0 2.8346 383.4768 -535.7275)">
+<path id="MiddleRect" style="fill:url(#MiddleRect_Gradient);" d="M136,72.6v13.9h-31.9C120,86.6,124.1,81.8,136,72.6z M136,72.6h128.3
+	c7.5,0,13.7,6.2,13.7,13.9H136V72.6z M35.7,86.6H278v141.1c0,7.7-6.1,14-13.7,14l0,0H35.7c-7.5,0-13.7-6.3-13.7-14l0,0v-127
+	C22,92.9,28.1,86.6,35.7,86.6L35.7,86.6L35.7,86.6z"/>
+<linearGradient id="FrontRect_Gradient" gradientUnits="userSpaceOnUse" x1="-186.8485" y1="177.3049" x2="-169.0974" y2="123.6217" gradientTransform="matrix(2.8346 0 0 -2.8346 656.8322 593.6771)">
 	<stop id="FrontGradientFirstStop" offset="0" style="stop-color:#16C997"/>
 	<stop id="FrontGradientSecondStop" offset="1" style="stop-color:#0099A6;stop-opacity:0.7294"/>
 </linearGradient>
-<path id="FrontRect" sodipodi:nodetypes="cccccccccccsccssc" style="fill:url(#FrontRect_Gradient);" d="M135.5,76.1V92H98.1
-	C116.6,91.9,121.6,86.5,135.5,76.1z M135.5,76.1h148.4c8.8,0,16,7.1,16,15.9H135.5V76.1z M16,92h284v154.4c0,8.8-7.2,16-16,16H16
-	c-8.8,0-16-7.2-16-16V108C0,99.1,7.1,92,16,92z"/>
+<path id="FrontRect" sodipodi:nodetypes="cccccccccccsccssc" style="fill:url(#FrontRect_Gradient);" d="M137.6,78.3v13.9h-31.9
+	C121.5,92.1,125.8,87.4,137.6,78.3z M137.6,78.3h126.6c7.5,0,13.7,6.2,13.7,13.9H137.6V78.3z M35.7,92.2H278v135.5
+	c0,7.7-6.1,14-13.7,14H35.7c-7.5,0-13.7-6.3-13.7-14V106.2C22,98.4,28.1,92.2,35.7,92.2z"/>
 </svg>
