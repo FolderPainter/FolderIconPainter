@@ -1,0 +1,88 @@
+﻿@page "/"
+@using WpfClient.Shared.Components
+@using WpfClient.Models
+@using System
+@using System.IO
+
+<MudContainer Class="mt-5 px-4">
+    <MudGrid Class="d-flex mt-3">
+        @for (int i = 0; i < papers; i++)
+        {
+            int localindex = i;
+            bool disabled = !IconExists(localindex + 1);
+            string cardClass = disabled ? "hazard-background" : "";
+
+            <MudItem xl="@lgBreakpoint" lg="@lgBreakpoint" md="@(lgBreakpoint)" sm="@(lgBreakpoint)" xs="@(lgBreakpoint * 2)">
+                <MudCard Class="@cardClass">
+                    <MudCardContent>
+                        <DragDropZone Color="@colors[localindex]" Index="@(localindex + 1)" Disabled="@disabled"></DragDropZone>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+    <MudAppBar Color="Color.Inherit" Fixed="true" Bottom="true" Elevation="0" class="d-flex flex-column align-center justify-center flex-grow-1">
+        <MudPagination BoundaryCount="1" MiddleCount="1" Count="22" Size="Size.Large" Rectangular="true"/>
+    </MudAppBar>
+   
+</MudContainer>
+
+@inject IJSRuntime jsRuntime
+
+@code {
+    int lgBreakpoint = 3;
+    bool IconExists(int index)
+    {
+        try
+        {
+            string currentDir = Directory.GetCurrentDirectory();
+            string icoDefPath = Path.Combine(currentDir + $"\\wwwroot\\icons\\def\\{index}.ico");
+            string icoEmptyPath = Path.Combine(currentDir + $"\\wwwroot\\icons\\empty\\{index}.ico");
+
+            bool data = File.Exists(icoDefPath) && File.Exists(icoEmptyPath);
+            return data;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    int papers = 16;
+
+    int Papers
+    {
+        get => papers;
+        set => UpdatePapers(value);
+    }
+
+    string[] colors = FolderColors.GetAllColors().ToArray();
+    int[] breaks = new int[16] { 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 };
+
+    void UpdatePapers(int value)
+    {
+
+        int[] newbreaks = Enumerable.Repeat(3, value).ToArray();
+
+        for (int i = 0; i < newbreaks.Length; i++)
+        {
+            if (i < breaks.Length)
+            {
+                newbreaks[i] = breaks[i];
+            }
+        }
+
+        breaks = newbreaks;
+        papers = value;
+        StateHasChanged();
+    }
+
+    void UpdateBreaks(int index, int changeamount)
+    {
+        List<int> newbreaks = breaks.ToList();
+        newbreaks[index] = newbreaks[index] += changeamount;
+
+        breaks = newbreaks.ToArray();
+        StateHasChanged();
+    }
+}

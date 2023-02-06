@@ -1,0 +1,40 @@
+﻿.drag-drop-zone {
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .4s;
+    cursor: pointer;
+    padding: 20% 0;
+    max-height: 120px;
+    overflow: hidden;
+}
+
+.drag-enter {
+    box-shadow: var(--mud-elevation-10);
+}
+
+
+.custom-loader {
+    position: relative;
+    width: 100%;
+    z-index: 3;
+    cursor: default;
+    height: 100%;
+}
+
+/*
+.not-working:after {
+    content: "";
+    position: relative;
+    width: 100%;
+    z-index: 3;
+    cursor: default;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M100 0 L0 100 ' stroke='black' stroke-width='5'/><path d='M0 0 L100 100 ' stroke='black' stroke-width='5'/></svg>");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% 100%, auto;
+    height: 100%;
+    max-height: 120px;
+}
+*/
