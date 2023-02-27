@@ -1,0 +1,130 @@
+<!-- Copyright (c) Microsoft Corporation and Contributors. -->
+<!-- Licensed under the MIT License. -->
+
+<Page
+    x:Class="FIP.App.AppShell"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:usercontrols="using:FIP.App.UserControls"
+    KeyDown="AppShell_KeyDown"
+    TabNavigation="Cycle"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <!--This top margin is the height of the custom TitleBar-->
+        <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
+        <DataTemplate x:Key="NavigationViewHeaderTemplate">
+            <usercontrols:PageHeader
+                Title="{Binding }"
+                Background="Transparent"
+                BackgroundColorOpacity="1" />
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid x:Name="LayoutRoot" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="TitleBarStates">
+                <VisualState x:Name="WideLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="640" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="SmallLayout">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="AppTitleBar.Margin" Value="96,0,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <Border x:Name="AppTitleBar"
+                Grid.Column="1"
+                Margin="48,0,0,0"
+                IsHitTestVisible="True"
+                VerticalAlignment="Top"
+                Height="{Binding ElementName=NavView, Path=CompactPaneLength}"
+                Canvas.ZIndex="1">
+            <StackPanel Orientation="Horizontal">
+                <Image Width="18" Source="Images/Square44x44Logo.png"/>
+                <TextBlock x:Name="AppTitle"
+                       Text="{x:Bind AppTitleText}"
+                       VerticalAlignment="Center"
+                       Margin="16,0,0,0"
+                       Style="{StaticResource CaptionTextBlockStyle}" />
+            </StackPanel>
+        </Border>
+
+        <NavigationView
+            Canvas.ZIndex="0"
+            x:Name="NavView"
+            Grid.Column="1"
+            AlwaysShowHeader="True"
+            Header=" "
+            HeaderTemplate="{StaticResource NavigationViewHeaderTemplate}"
+            IsTabStop="False"
+            IsTitleBarAutoPaddingEnabled="False"
+            ItemInvoked="NavigationView_ItemInvoked"
+            BackRequested="NavigationView_BackRequested"
+            IsBackEnabled="{x:Bind AppFrame.CanGoBack, Mode=OneWay}">
+            <NavigationView.MenuItems>
+                <NavigationViewItem
+                    AutomationProperties.Name="fsdfds"
+                    x:Name="AllIconsMenuItem"
+                    Content="{x:Bind AllIconsLabel}" 
+                    ToolTipService.ToolTip="{x:Bind AllIconsLabel}"
+                    Icon="List"/>
+                <NavigationViewItem
+                    x:Name="CreateCustomIconMenuItem"
+                    Content="{x:Bind CreateCustomIconLabel}" 
+                    ToolTipService.ToolTip="{x:Bind CreateCustomIconLabel}"
+                    Icon="NewFolder"/>
+                <NavigationViewItem
+                    x:Name="AboutMenuItem"
+                    Content="{x:Bind AboutLabel}" 
+                    ToolTipService.ToolTip="{x:Bind AboutLabel}">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xf167;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+
+            <NavigationView.PaneFooter>
+                <StackPanel>
+                    <NavigationViewItem
+                        Content="View code"
+                        ToolTipService.ToolTip="View code"
+                        Tapped="ViewCodeNavPaneButton_Tapped">
+                        <NavigationViewItem.Icon>
+                            <FontIcon Glyph="&#xE943;"/>
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
+                </StackPanel>
+            </NavigationView.PaneFooter>
+
+            <!-- In OnNavigatingToPage, we synchronize the selected item in the NavigationView with the current page. -->
+            <Frame 
+                x:Name="frame"
+                Navigated="OnRootFrameNavigated"
+                Navigating="OnNavigatingToPage">
+                <Frame.ContentTransitions>
+                    <TransitionCollection>
+                        <NavigationThemeTransition>
+                            <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                                <EntranceNavigationTransitionInfo />
+                            </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                        </NavigationThemeTransition>
+                    </TransitionCollection>
+                </Frame.ContentTransitions>
+            </Frame>
+        </NavigationView>
+    </Grid>
+</Page>
