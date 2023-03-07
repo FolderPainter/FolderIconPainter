@@ -10,6 +10,7 @@
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
   </PropertyGroup>
+
   <ItemGroup>
     <None Remove="AppShell.xaml" />
     <None Remove="UserControls\DropZone.xaml" />
@@ -30,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\" />
+    <ProjectReference Include="..\..\FIP.Backend\FIP.Backend.csproj" />
   </ItemGroup>
 
   <ItemGroup>

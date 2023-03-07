@@ -1,29 +1,14 @@
-// Copyright (c) Microsoft Corporation and Contributors.
 // Licensed under the MIT License.
 
 using FIP.App.Helpers;
-using FIP.App.UserControls;
 using FIP.App.Views;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.System;
-using Windows.UI.ApplicationSettings;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace FIP.App
 {
@@ -135,7 +120,7 @@ namespace FIP.App
                     break;
             }
 
-            
+
             if (direction != FocusNavigationDirection.None &&
                 FocusManager.FindNextFocusableElement(direction) is Control control)
             {
@@ -165,10 +150,9 @@ namespace FIP.App
             {
                 AppFrame.Navigate(pageType);
                 NavView.Header = label;
-               
+
             }
         }
-
 
         /// <summary>
         /// Ensures the nav menu reflects reality when navigation is triggered outside of
@@ -199,16 +183,8 @@ namespace FIP.App
 
         private void OnRootFrameNavigated(object sender, NavigationEventArgs e)
         {
-            if (e.SourcePageType == typeof(AllIconsPage))
-            {
-                NavView.AlwaysShowHeader = false;
-            }
-            else
-            {
-                NavView.AlwaysShowHeader = true;
-            }
+            NavView.AlwaysShowHeader = e.SourcePageType != typeof(AllIconsPage);
         }
-
 
         /// <summary>
         /// Invoked when the View Code button is clicked. Launches the repo on GitHub. 
