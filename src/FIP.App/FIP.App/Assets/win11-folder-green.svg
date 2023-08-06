@@ -21,7 +21,7 @@
 	<stop id="FrontGradientFirstStop" offset="0" style="stop-color:#16C997"/>
 	<stop id="FrontGradientSecondStop" offset="1" style="stop-color:#0099A6;stop-opacity:0.7294"/>
 </linearGradient>
-<path id="FrontRect" sodipodi:nodetypes="cccccccccccsccssc" style="fill:url(#FrontRect_Gradient);" d="M137.6,78.3v13.9h-31.9
+<path id="FrontRect" visibility="hidden" sodipodi:nodetypes="cccccccccccsccssc" style="fill:url(#FrontRect_Gradient);" d="M137.6,78.3v13.9h-31.9
 	C121.5,92.1,125.8,87.4,137.6,78.3z M137.6,78.3h126.6c7.5,0,13.7,6.2,13.7,13.9H137.6V78.3z M35.7,92.2H278v135.5
 	c0,7.7-6.1,14-13.7,14H35.7c-7.5,0-13.7-6.3-13.7-14V106.2C22,98.4,28.1,92.2,35.7,92.2z"/>
 </svg>
