@@ -29,6 +29,7 @@ using Svg;
 using static System.Net.Mime.MediaTypeNames;
 using System.Drawing.Imaging;
 using FIP.App.Helpers;
+using System.Drawing.Drawing2D;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -63,7 +64,7 @@ namespace FIP.App.Views
             BackFirstOG.Text = tmpc.ToString(ColorOutputFormats.HSL);
             BackSecondOG.Text = new FIPColor("#0A5D5E").ToString(ColorOutputFormats.HSL);
 
-            MiddleFirstOG.Text = new FIPColor("#70DAB1").ToString(ColorOutputFormats.HSL);
+            MiddleFirstOG.Text = new FIPColor("#5CD1AC").ToString(ColorOutputFormats.HSL);
             MiddleSecondOG.Text = new FIPColor("#1AB19B").ToString(ColorOutputFormats.HSL);
 
             FrontFirstOG.Text = new FIPColor("#16C997").ToString(ColorOutputFormats.HSL);
@@ -87,12 +88,12 @@ namespace FIP.App.Views
             var fipColor = new FIPColor(args.NewColor.R, args.NewColor.G, args.NewColor.B, args.NewColor.A);
             if (fipColor.L > .7)
             {
-                ContrastColor = Microsoft.UI.Colors.Black;
+                ContrastColor = Colors.Black;
             }
             else
             {
                 ContrastColor = fipColor.H > 19 && fipColor.H < 191 ?
-                    Microsoft.UI.Colors.Black : Microsoft.UI.Colors.White;
+                    Colors.Black : Colors.White;
             }
             FIPColor backSecondColor = fipColor, middleFirstColor = fipColor, middleSecondColor = fipColor, frontFirstColor = fipColor, frontSecondColor = fipColor;
 
@@ -109,7 +110,7 @@ namespace FIP.App.Views
                     backGradientSecondStop.SetStringAttribute("stop-color", backSecondColor.ToString(ColorOutputFormats.Hex));
 
                     // Refill MiddleRect Gradient 
-                    middleFirstColor = fipColor.ChangeSL(-0.35, 0.39);
+                    middleFirstColor = fipColor.ChangeSL(-0.38, 0.33);
                     CanvasSvgNamedElement middleGradientFirstStop = svgDocument.FindElementById("MiddleGradientFirstStop");
                     middleGradientFirstStop.SetStringAttribute("stop-color", middleFirstColor.ToString(ColorOutputFormats.Hex));
 
@@ -145,11 +146,6 @@ namespace FIP.App.Views
             FrontSecond.Text = frontSecondColor.ToString(ColorOutputFormats.HSL);
         }
 
-        private async void Page_Loading(FrameworkElement sender, object args)
-        {
-
-        }
-
         private async void createButton_Click(object sender, RoutedEventArgs e)
         {
             if (svgDocument == null)
@@ -165,13 +161,29 @@ namespace FIP.App.Views
                 svgString = streamReader.ReadToEnd();
             }
 
+            //var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/win11-folder-green2.svg"));
+
             SvgDocument svg = SvgDocument.FromSvg<SvgDocument>(svgString);
             svg.ShapeRendering = SvgShapeRendering.Auto;
-            System.Drawing.Bitmap bitmap = svg.Draw(256, 0);
+            svg.Ppi = 272;
+
+            System.Drawing.Bitmap bitmap = svg.Draw(256, 256);
+            var g = System.Drawing.Graphics.FromImage(bitmap);
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.Default;
+            g.DrawImage(bitmap, 0, 0, 256, 256);
 
             StorageFolder storageFolder = KnownFolders.SavedPictures;
-            StorageFile storageFile = await storageFolder.CreateFileAsync($"sample{new Random().Next()}.ico");
+            StorageFile storageFile = await storageFolder.CreateFileAsync($"{NameBox.Text}.ico");
+            StorageFile storageFile33 = await storageFolder.CreateFileAsync($"{NameBox.Text}.png");
+            bitmap.Save(storageFile33.Path);
+
+            StorageFile storageFile2 = await storageFolder.CreateFileAsync($"{NameBox.Text}.svg");
+
             await ImageHelper.SaveBitmapAsIconAsync(bitmap, storageFile.Path);
+            using (StreamWriter outputFile = new StreamWriter(storageFile2.Path))
+            {
+                outputFile.WriteLine(svgString);
+            }
         }
 
         CanvasVirtualBitmap virtualBitmap;
@@ -205,7 +217,7 @@ namespace FIP.App.Views
 
         private async void canvasControl_CreateResources(CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
         {
-            var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/win11-folder-green.svg"));
+            var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/win11-folder-green2.svg"));
             using (var fileStream = await file.OpenReadAsync())
             {
                 svgDocument = await CanvasSvgDocument.LoadAsync(canvasControl, fileStream);
