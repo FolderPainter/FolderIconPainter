@@ -28,15 +28,15 @@ namespace FIP.App.Views
 
         Color defaultFolderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor("#04805C");
 
-        public Color ContrastColor
+        public Color ButtonTitleColor
         {
-            get { return (Color)GetValue(ContrastColorProperty); }
-            set { SetValue(ContrastColorProperty, value); }
+            get { return (Color)GetValue(ButtonTitleColorProperty); }
+            set { SetValue(ButtonTitleColorProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ContrastColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ContrastColorProperty =
-            DependencyProperty.Register("ContrastColor", typeof(Color), typeof(CreateCustomIconPage), new PropertyMetadata(Microsoft.UI.Colors.White));
+        // Using a DependencyProperty as the backing store for ButtonTitleColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ButtonTitleColorProperty =
+            DependencyProperty.Register("ButtonTitleColor", typeof(Color), typeof(CreateCustomIconPage), new PropertyMetadata(Microsoft.UI.Colors.White));
 
         public CreateCustomIconPage()
         {
@@ -71,11 +71,11 @@ namespace FIP.App.Views
             var fipColor = new FIPColor(args.NewColor.R, args.NewColor.G, args.NewColor.B, args.NewColor.A);
             if (fipColor.L > .7)
             {
-                ContrastColor = Colors.Black;
+                ButtonTitleColor = Colors.Black;
             }
             else
             {
-                ContrastColor = fipColor.H > 19 && fipColor.H < 191 ?
+                ButtonTitleColor = fipColor.H > 19 && fipColor.H < 191 ?
                     Colors.Black : Colors.White;
             }
             FIPColor backSecondColor = fipColor, middleFirstColor = fipColor, middleSecondColor = fipColor, frontFirstColor = fipColor, frontSecondColor = fipColor;

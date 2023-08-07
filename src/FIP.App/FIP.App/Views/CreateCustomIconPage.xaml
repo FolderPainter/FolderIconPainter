@@ -37,8 +37,7 @@
                       VerticalScrollMode="Auto"
                       Padding="48,12,12,36">
 
-            <VariableSizedWrapGrid Orientation="Horizontal" 
-                                   MaximumRowsOrColumns="3">
+            <VariableSizedWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3">
 
                 <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
@@ -70,7 +69,7 @@
                                 <SolidColorBrush Color="{x:Bind mainColorPicker.Color, Mode=OneWay}"/>
                             </Button.Background>
                             <Button.Foreground>
-                                <SolidColorBrush Color="{Binding ElementName=CreateCustomIconPageControl, Path=ContrastColor}"/>
+								<SolidColorBrush Color="{Binding ElementName=CreateCustomIconPageControl, Path=ButtonTitleColor}"/>
                             </Button.Foreground>
                         </Button>
                     </StackPanel>
@@ -118,8 +117,6 @@
                                 </StackPanel>
                             </StackPanel>
                         </Border>
-
-                      
                     </StackPanel>
                 </Border>
 
@@ -144,8 +141,6 @@
 
                 <Border Padding="8" Margin="8" VariableSizedWrapGrid.ColumnSpan="3" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
-
-                   
                 </Border>
 
             </VariableSizedWrapGrid>
