@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Reflection;
 
-namespace FIP.App.Models
+namespace FIP.App.Constants
 {
     /// <summary>
-    /// This class contains a folder colors properties
+    /// Default folder colors
     /// </summary>
     public static class DefaultColors
     {
