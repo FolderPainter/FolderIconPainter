@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1"
+	 id="Win11FolderIcon" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 300 300"
+	 style="enable-background:new 0 0 300 300;" xml:space="preserve">
+<linearGradient id="BackRectGradient" gradientUnits="userSpaceOnUse" x1="-769.0623" y1="3.5525" x2="-740.6016" y2="-54.8002" gradientTransform="matrix(2.8346 0 0 -2.8346 2297.114 99.6771)">
+	<stop id="BackGradientStop0" offset="0" style="stop-color:#FCBD18"/>
+	<stop id="BackGradientStop1" offset="0.2636" style="stop-color:#EEB122"/>
+	<stop id="BackGradientStop2" offset="0.6061" style="stop-color:#E3A72A"/>
+	<stop id="BackGradientStop3" offset="1" style="stop-color:#E0A42C"/>
+</linearGradient>
+<path id="BackRect" style="fill:url(#BackRectGradient);" shape-rendering="crispEdges" sodipodi:nodetypes="scccscccccccs" d="M33.1,40.1
+	c-7.7,0-14,6.3-14,14v13.8V232c0,7.7,6.2,14,14,14h233.8c7.7,0,14-6.3,14-14V82c0-7.7-6.2-14-14-14H136c0,0-13.3-18.4-19-22.6
+	c-5.6-4.2-12.5-5.3-12.5-5.3L33.1,40.1L33.1,40.1z"/>
+<radialGradient id="ShadowGradient" cx="77.9905" cy="11.3605" r="87.0198" fx="77.6635" fy="-16.0154" gradientTransform="matrix(1.017 -3.964315e-02 -7.798028e-03 -0.2175 2.1971 92.313)" gradientUnits="userSpaceOnUse">
+	<stop id="ShadowGradientStop0" offset="0" style="stop-color:#4F4F4F;stop-opacity:0.6"/>
+	<stop id="ShadowGradientStop1" offset="1" style="stop-color:#FCBD18;stop-opacity:0"/>
+</radialGradient>
+<path id="Shadow" style="opacity:0.9;fill:url(#ShadowGradient);enable-background:new;" d="M138,108.4H19.1V67.1h108.2c5.9,0,10.7,4.8,10.7,10.7V108.4z"/>
+<g id="File" style="display:none;">
+	<path id="FileRect" style="display:inline;fill:#F4F4F4;" d="M136,111.5H26.7V78.7c0-3.3,2.7-6,6-6H136V111.5z"/>
+	<linearGradient id="VGradRect_1_" gradientUnits="userSpaceOnUse" x1="81.35" y1="274.3" x2="81.35" y2="287.766" gradientTransform="matrix(1 0 0 1 0 -196)">
+		<stop offset="0" style="stop-color:#F4F4F4"/>
+		<stop offset="0.1272" style="stop-color:#EBEBEB"/>
+		<stop offset="0.3342" style="stop-color:#D3D3D3"/>
+		<stop offset="0.5952" style="stop-color:#ABABAB"/>
+		<stop offset="0.8971" style="stop-color:#757575"/>
+		<stop offset="1" style="stop-color:#616161"/>
+	</linearGradient>
+	<path id="VGradRect" style="display:inline;fill:url(#VGradRect_1_);" d="M136,91.8H26.7v-7.5c0-3.3,2.7-6,6-6H136V91.8z"/>
+	<linearGradient id="HGradRect_1_" gradientUnits="userSpaceOnUse" x1="26.7" y1="293.7" x2="137.0854" y2="293.7" gradientTransform="matrix(1 0 0 1 0 -196)">
+		<stop offset="0" style="stop-color:#F4F4F4"/>
+		<stop offset="0.1698" style="stop-color:#E9E9E9;stop-opacity:0.9151"/>
+		<stop offset="0.4278" style="stop-color:#E2E2E2;stop-opacity:0.7861"/>
+		<stop offset="1" style="stop-color:#E0E0E0;stop-opacity:0.5"/>
+	</linearGradient>
+	<path id="HGradRect" style="display:inline;fill:url(#HGradRect_1_);" d="M136,117.1H26.7V84.3c0-3.3,2.7-6,6-6H136V117.1z"/>
+</g>
+<linearGradient id="MiddleRectGradient" gradientUnits="userSpaceOnUse" x1="19.1" y1="-51.2" x2="280.9" y2="-51.2" gradientTransform="matrix(1 0 0 -1 0 106)">
+	<stop id="MiddleGradientStop0" offset="0" style="stop-color:#FFEEBC"/>
+	<stop id="MiddleGradientStop1" offset="1" style="stop-color:#FED972"/>
+</linearGradient>
+<path id="MiddleRect" style="fill:url(#MiddleRectGradient);" shape-rendering="crispEdges" d="M135.6,72.7v13.9H103C119.3,86.7,123.5,81.9,135.6,72.7z
+	 M135.6,72.7h131.3c7.7,0,14,6.2,14,13.9H135.6V72.7z M33.1,86.6h247.8v141.1c0,7.7-6.2,14-14,14l0,0H33.1c-7.7,0-14-6.3-14-14l0,0
+	v-127C19.1,92.9,25.3,86.6,33.1,86.6L33.1,86.6L33.1,86.6z"/>
+<linearGradient id="FrontRectGradient" gradientUnits="userSpaceOnUse" x1="112.3055" y1="118.0193" x2="194.3189" y2="-42.9412" gradientTransform="matrix(1 0 0 -1 0 204)">
+	<stop id="FrontGradientStop0" offset="0" style="stop-color:#FFE088;stop-opacity:0.7"/>
+	<stop id="FrontGradientStop1" offset="0.3287" style="stop-color:#FFD971;stop-opacity:0.7986"/>
+	<stop id="FrontGradientStop2" offset="1" style="stop-color:#FFC937"/>
+</linearGradient>
+<path id="FrontRect" style="fill:url(#FrontRectGradient);" shape-rendering="crispEdges" sodipodi:nodetypes="cccccccccccsccssc" d="M137.3,78.3v13.9h-32.6
+	C120.9,92.1,125.3,87.4,137.3,78.3z M137.3,78.3h129.6c7.7,0,14,6.2,14,13.9H137.3V78.3z M33.1,92.2h247.8v135.5c0,7.7-6.2,14-14,14
+	H33.1c-7.7,0-14-6.3-14-14V106.2C19.1,98.4,25.3,92.2,33.1,92.2z"/>
+</svg>

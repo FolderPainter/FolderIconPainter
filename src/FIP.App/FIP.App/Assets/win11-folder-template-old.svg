@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1"
+	 id="Win11FolderIcon" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 300 300"
+	 style="enable-background:new 0 0 300 300;" xml:space="preserve">
+<linearGradient id="BackRect_Gradient" gradientUnits="userSpaceOnUse" x1="-468.1606" y1="298.8215" x2="-468.1606" y2="344.8582" gradientTransform="matrix(2.8346 0 0 2.8346 1477.048 -748.2675)">
+	<stop id="BackGradientFirstStop" offset="0" style="stop-color:#04805C"/>
+	<stop id="BackGradientSecondStop" offset="1" style="stop-color:#0A5D5E"/>
+</linearGradient>
+<path id="BackRect" shape-rendering="geometricPrecision" sodipodi:nodetypes="scccscccccccs" style="fill:url(#BackRect_Gradient);" d="M33.1,40.1c-7.7,0-14,6.3-14,14v13.8
+	V232c0,7.7,6.2,14,14,14h233.8c7.7,0,14-6.3,14-14V82c0-7.7-6.2-14-14-14H136c0,0-13.3-18.4-19-22.6c-5.6-4.2-12.5-5.3-12.5-5.3
+	L33.1,40.1L33.1,40.1z"/>
+<g id="File" style="display:none;">
+	<path id="FileRect" style="display:inline;fill:#F4F4F4;" d="M136,111.5H26.7V78.7c0-3.3,2.7-6,6-6H136V111.5z"/>
+		<linearGradient id="VGradRect_1_" gradientUnits="userSpaceOnUse" x1="81.35" y1="223.7" x2="81.35" y2="210.234" gradientTransform="matrix(1 0 0 -1 0 302)">
+		<stop  offset="0" style="stop-color:#F4F4F4"/>
+		<stop  offset="0.1272" style="stop-color:#EBEBEB"/>
+		<stop  offset="0.3342" style="stop-color:#D3D3D3"/>
+		<stop  offset="0.5952" style="stop-color:#ABABAB"/>
+		<stop  offset="0.8971" style="stop-color:#757575"/>
+		<stop  offset="1" style="stop-color:#616161"/>
+	</linearGradient>
+	<path id="VGradRect" style="display:inline;fill:url(#VGradRect_1_);" d="M136,91.8H26.7v-7.5c0-3.3,2.7-6,6-6H136V91.8z"/>
+	<linearGradient id="HGradRect_1_" gradientUnits="userSpaceOnUse" x1="26.7" y1="204.3" x2="137.0854" y2="204.3" gradientTransform="matrix(1 0 0 -1 0 302)">
+		<stop  offset="0" style="stop-color:#F4F4F4"/>
+		<stop  offset="0.1698" style="stop-color:#E9E9E9;stop-opacity:0.9151"/>
+		<stop  offset="0.4278" style="stop-color:#E2E2E2;stop-opacity:0.7861"/>
+		<stop  offset="1" style="stop-color:#E0E0E0;stop-opacity:0.5"/>
+	</linearGradient>
+	<path id="HGradRect" style="display:inline;fill:url(#HGradRect_1_);" d="M136,117.1H26.7V84.3c0-3.3,2.7-6,6-6H136V117.1z"/>
+</g>
+<linearGradient id="MiddleRect_Gradient" gradientUnits="userSpaceOnUse" x1="19.0927" y1="255.2" x2="280.9073" y2="255.2" gradientTransform="matrix(1 0 0 1 0 -98)">
+	<stop id="MiddleGradientFirstStop" offset="0" style="stop-color:#5CD1AC"/>
+	<stop id="MiddleGradientSecondStop" offset="1" style="stop-color:#1AB19B"/>
+</linearGradient>
+<path id="MiddleRect" shape-rendering="geometricPrecision" style="fill:url(#MiddleRect_Gradient);" d="M135.6,72.7v13.9H103C119.3,86.7,123.5,81.9,135.6,72.7z M135.6,72.7
+	h131.3c7.7,0,14,6.2,14,13.9H135.6V72.7z M33.1,86.6h247.8v141.1c0,7.7-6.2,14-14,14l0,0H33.1c-7.7,0-14-6.3-14-14l0,0v-127
+	C19.1,92.9,25.3,86.6,33.1,86.6L33.1,86.6L33.1,86.6z"/>
+<linearGradient id="FrontRect_Gradient" gradientUnits="userSpaceOnUse" x1="127.029" y1="90.4865" x2="177.7419" y2="243.8535">
+	<stop id="FrontGradientFirstStop" offset="0" style="stop-color:#16C997"/>
+	<stop id="FrontGradientSecondStop" offset="1" style="stop-color:#0099A6;stop-opacity:0.7294"/>
+</linearGradient>
+<path id="FrontRect" shape-rendering="geometricPrecision" sodipodi:nodetypes="cccccccccccsccssc" style="fill:url(#FrontRect_Gradient);" d="M137.3,78.3v13.9h-32.6C120.9,92.1,125.3,87.4,137.3,78.3z M137.3,78.3h129.6
+	c7.7,0,14,6.2,14,13.9H137.3V78.3z M33.1,92.2h247.8v135.5c0,7.7-6.2,14-14,14H33.1c-7.7,0-14-6.3-14-14V106.2
+	C19.1,98.4,25.3,92.2,33.1,92.2z"/>
+</svg>
