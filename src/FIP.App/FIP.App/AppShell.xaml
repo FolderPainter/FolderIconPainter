@@ -92,6 +92,13 @@
 
             <NavigationView.PaneFooter>
                 <StackPanel>
+                    <NavigationViewItem Content="Open icons folder" 
+                                        ToolTipService.ToolTip="Opened icons folder"
+                                        Tapped="OpenFolderNavPaneButton_Tapped">
+                        <NavigationViewItem.Icon>
+                            <SymbolIcon Symbol="MoveToFolder"/>
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
                     <NavigationViewItem Content="View code" 
                                         ToolTipService.ToolTip="View code"
                                         Tapped="ViewCodeNavPaneButton_Tapped">

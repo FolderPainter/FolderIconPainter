@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Navigation;
 using System;
+using Windows.Storage;
 using Windows.System;
 
 namespace FIP.App
@@ -192,6 +193,13 @@ namespace FIP.App
         private async void ViewCodeNavPaneButton_Tapped(object sender, TappedRoutedEventArgs e) =>
             await Launcher.LaunchUriAsync(new Uri(
                 "https://github.com/FolderPainter/FolderIconPainter"));
+
+        /// <summary>
+        /// Invoked wgen the Open Icons folder is clicked. Launches the folder
+        /// </summary>
+        private async void OpenFolderNavPaneButton_Tapped(object sender, TappedRoutedEventArgs e) =>
+            await Launcher.LaunchFolderAsync(ApplicationData.Current.LocalFolder);
+
 
         /// <summary>
         /// Navigates the frame to the previous page.
