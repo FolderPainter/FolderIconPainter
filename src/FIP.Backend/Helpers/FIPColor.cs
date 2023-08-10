@@ -3,6 +3,14 @@ using System.Globalization;
 
 namespace FIP.Backend.Helpers
 {
+
+    public static class FIPColorConstants
+    {
+        Min
+
+    }
+
+
     public enum ColorOutputFormats
     {
         /// <summary>
@@ -322,7 +330,22 @@ namespace FIP.Backend.Helpers
         public FIPColor SetAlpha(int a) => new(R, G, B, a);
         public FIPColor SetAlpha(double a) => new(R, G, B, a);
 
-        public FIPColor ChangeSL(double saturation, double light) => new(H, Math.Max(0, Math.Min(1, S + saturation)), Math.Max(0, Math.Min(1, L + light)), A);
+        public FIPColor ChangeHSL(double hueAngle, double saturation, double light)
+        {
+            double newHue = H + hueAngle;
+            
+            // Hue Angle overflow logic 
+            if (0.0 > newHue)
+                newHue = 360.0 - hueAngle;
+            else if (newHue > 360.0)
+                newHue = 0.0 - (hueAngle - 360.0);
+
+            return new FIPColor(
+                newHue,
+                Math.Max(0, Math.Min(1, S + saturation)),
+                Math.Max(0, Math.Min(1, L + light)),
+                A);
+        }
 
         public FIPColor ChangeLightness(double amount) => new(H, S, Math.Max(0, Math.Min(1, L + amount)), A);
         public FIPColor ColorLighten(double amount) => ChangeLightness(+amount);
