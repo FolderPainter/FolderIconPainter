@@ -4,10 +4,15 @@ using System.Globalization;
 namespace FIP.Backend.Helpers
 {
 
-    public static class FIPColorConstants
+    public record FIPColorConstants
     {
-        Min
+        public static readonly double CommonMinValue = 0D;
 
+        public static readonly double MaxHueAngle = 360D;
+        public static readonly double MaxSaturation = 1D;
+        public static readonly double MaxLightness = 1D;
+
+        public static readonly double RGBMaxValue = 255D;
     }
 
 
@@ -53,7 +58,7 @@ namespace FIP.Backend.Helpers
         public byte G => _valuesAsByte[1];
         public byte B => _valuesAsByte[2];
         public byte A => _valuesAsByte[3];
-        public double APercentage => Math.Round((A / 255.0), 2);
+        public double APercentage => Math.Round((A / FIPColorConstants.RGBMaxValue), 2);
 
         public double H { get; private set; }
         public double S { get; private set; }
@@ -282,9 +287,9 @@ namespace FIP.Backend.Helpers
         private void CalculateHSL()
         {
             // normalize red, green, blue values
-            var r = R / 255D;
-            var g = G / 255D;
-            var b = B / 255D;
+            var r = R / FIPColorConstants.RGBMaxValue;
+            var g = G / FIPColorConstants.RGBMaxValue;
+            var b = B / FIPColorConstants.RGBMaxValue;
 
             var max = Math.Max(r, Math.Max(g, b));
             var min = Math.Min(r, Math.Min(g, b));
@@ -330,20 +335,20 @@ namespace FIP.Backend.Helpers
         public FIPColor SetAlpha(int a) => new(R, G, B, a);
         public FIPColor SetAlpha(double a) => new(R, G, B, a);
 
-        public FIPColor ChangeHSL(double hueAngle, double saturation, double light)
+        public FIPColor ChangeHSL(double hueAngle, double saturation, double lightness)
         {
             double newHue = H + hueAngle;
             
             // Hue Angle overflow logic 
-            if (0.0 > newHue)
-                newHue = 360.0 - hueAngle;
-            else if (newHue > 360.0)
-                newHue = 0.0 - (hueAngle - 360.0);
+            if (FIPColorConstants.CommonMinValue > newHue)
+                newHue = FIPColorConstants.MaxHueAngle - hueAngle;
+            else if (newHue > FIPColorConstants.MaxHueAngle)
+                newHue = FIPColorConstants.CommonMinValue - (hueAngle - FIPColorConstants.MaxHueAngle);
 
             return new FIPColor(
                 newHue,
                 Math.Max(0, Math.Min(1, S + saturation)),
-                Math.Max(0, Math.Min(1, L + light)),
+                Math.Max(0, Math.Min(1, L + lightness)),
                 A);
         }
 
@@ -353,7 +358,7 @@ namespace FIP.Backend.Helpers
         public FIPColor ColorRgbLighten() => ColorLighten(0.075);
         public FIPColor ColorRgbDarken() => ColorDarken(0.075);
 
-        #endregion*
+        #endregion
 
         #region Helper
 
