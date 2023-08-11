@@ -1,15 +1,10 @@
-// Copyright (c) Microsoft Corporation and Contributors.
-// Licensed under the MIT License.
-
-using FIP.App.Models;
+using FIP.App.Constants;
 using FIP.App.ViewModels;
 using FIP.Backend.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.UI;
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace FIP.App.Views
 {
