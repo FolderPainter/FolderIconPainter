@@ -1,11 +1,9 @@
 // Licensed under the MIT License.
 
 using FIP.App.Helpers;
-using FIP.Backend.Helpers;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 using System;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
