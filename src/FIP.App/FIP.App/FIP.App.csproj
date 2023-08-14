@@ -33,10 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\FIP.Backend\FIP.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Page Update="UserControls\PageHeader.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -80,6 +76,10 @@
 
   <ItemGroup>
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\FIP.Core\FIP.Core.csproj" />
   </ItemGroup>
 
 </Project>

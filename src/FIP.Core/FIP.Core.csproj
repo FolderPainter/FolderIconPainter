@@ -1,16 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net7.0-windows10.0.22621.0</TargetFramework>
-		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-		<RootNamespace>FIP.Core</RootNamespace>
-		<TargetFramework>net7.0</TargetFramework>
-		<UseWinUI>true</UseWinUI>
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
+  <PropertyGroup>
+	  <TargetFramework>net7.0-windows10.0.22621.0</TargetFramework>
+	  <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+	  <RootNamespace>FIP.Core</RootNamespace>
+	  <ApplicationManifest>app.manifest</ApplicationManifest>
+	  <Platforms>x86;x64;ARM64</Platforms>
+	  <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
+	  <UseWinUI>true</UseWinUI>
+  </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="System.Drawing.Common" Version="7.0.0" />
-	</ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.5.1" />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+  </ItemGroup>
 
 </Project>
