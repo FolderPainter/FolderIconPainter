@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FIP.Core", "src\FIP.Core\FIP.Core.csproj", "{79CBE5DC-9AE0-4182-882E-FC3D832C0156}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FIP.Core", "src\FIP.Core\FIP.Core.csproj", "{79CBE5DC-9AE0-4182-882E-FC3D832C0156}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,8 +97,8 @@ Global
 		{79CBE5DC-9AE0-4182-882E-FC3D832C0156}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79CBE5DC-9AE0-4182-882E-FC3D832C0156}.Debug|ARM64.ActiveCfg = Debug|Any CPU
 		{79CBE5DC-9AE0-4182-882E-FC3D832C0156}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{79CBE5DC-9AE0-4182-882E-FC3D832C0156}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{79CBE5DC-9AE0-4182-882E-FC3D832C0156}.Debug|x64.Build.0 = Debug|Any CPU
+		{79CBE5DC-9AE0-4182-882E-FC3D832C0156}.Debug|x64.ActiveCfg = Debug|x64
+		{79CBE5DC-9AE0-4182-882E-FC3D832C0156}.Debug|x64.Build.0 = Debug|x64
 		{79CBE5DC-9AE0-4182-882E-FC3D832C0156}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{79CBE5DC-9AE0-4182-882E-FC3D832C0156}.Debug|x86.Build.0 = Debug|Any CPU
 		{79CBE5DC-9AE0-4182-882E-FC3D832C0156}.Release|Any CPU.ActiveCfg = Release|Any CPU
