@@ -1,8 +1,8 @@
-﻿using FIP.App.Extensions;
+﻿using FIP.Core.Extensions;
 using System;
 using System.Globalization;
 
-namespace FIP.App.Models
+namespace FIP.Core.Models
 {
     public record FIPColorConstants
     {
@@ -162,15 +162,15 @@ namespace FIP.App.Models
         }
 
         public FIPColor(int r, int g, int b, double alpha) :
-         this(r, g, b, (byte)((alpha * FIPColorConstants.RGBMaxValue).EnsureRange(FIPColorConstants.RGBMaxValue)))
+         this(r, g, b, (byte)(alpha * FIPColorConstants.RGBMaxValue).EnsureRange(FIPColorConstants.RGBMaxValue))
         {
 
         }
 
         public FIPColor(int r, int g, int b, int alpha) :
-            this((byte)r.EnsureRange((int)FIPColorConstants.RGBMaxValue), 
-                (byte)g.EnsureRange((int)FIPColorConstants.RGBMaxValue), 
-                (byte)b.EnsureRange((int)FIPColorConstants.RGBMaxValue), 
+            this((byte)r.EnsureRange((int)FIPColorConstants.RGBMaxValue),
+                (byte)g.EnsureRange((int)FIPColorConstants.RGBMaxValue),
+                (byte)b.EnsureRange((int)FIPColorConstants.RGBMaxValue),
                 (byte)alpha.EnsureRange((int)FIPColorConstants.RGBMaxValue))
         {
 
