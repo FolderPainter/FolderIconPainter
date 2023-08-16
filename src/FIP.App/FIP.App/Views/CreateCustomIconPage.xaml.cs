@@ -8,7 +8,6 @@ using Windows.Storage;
 using Windows.UI;
 using System.Threading.Tasks;
 using CommunityToolkit.WinUI.Helpers;
-using FIP.Backend.Helpers;
 using CommunityToolkit.WinUI;
 using System.IO;
 using System.Text;
@@ -16,6 +15,7 @@ using Microsoft.UI;
 using Svg;
 using FIP.App.Helpers;
 using System.Drawing.Drawing2D;
+using FIP.Core.Models;
 
 namespace FIP.App.Views
 {
@@ -67,18 +67,11 @@ namespace FIP.App.Views
 
         private async void mainColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
         {
-            // Contrasting button
-            var fipColor = new FIPColor(args.NewColor.R, args.NewColor.G, args.NewColor.B, args.NewColor.A);
-            if (fipColor.L > .7)
-            {
-                ButtonTitleColor = Colors.Black;
-            }
-            else
-            {
-                ButtonTitleColor = fipColor.H > 19 && fipColor.H < 191 ?
-                    Colors.Black : Colors.White;
-            }
-            FIPColor backSecondColor = fipColor, middleFirstColor = fipColor, middleSecondColor = fipColor, frontFirstColor = fipColor, frontSecondColor = fipColor;
+            var colorFromPicker = new FIPColor(args.NewColor.R, args.NewColor.G, args.NewColor.B, args.NewColor.A);
+
+            SetUpButtonTitleColor(colorFromPicker);
+
+            FIPColor backSecondColor = colorFromPicker, middleFirstColor = colorFromPicker, middleSecondColor = colorFromPicker, frontFirstColor = colorFromPicker, frontSecondColor = colorFromPicker;
 
             await Task.Run(async Task<bool> () =>
             {
@@ -86,27 +79,27 @@ namespace FIP.App.Views
                 {
                     // Refill BackRect Gradient 
                     CanvasSvgNamedElement backGradientFirstStop = canvasSVG.FindElementById("BackGradientFirstStop");
-                    backGradientFirstStop.SetStringAttribute("stop-color", fipColor.ToString(ColorOutputFormats.Hex));
+                    backGradientFirstStop.SetStringAttribute("stop-color", colorFromPicker.ToString(ColorOutputFormats.Hex));
 
-                    backSecondColor = fipColor.ChangeSL(-0.13, -0.06);
+                    backSecondColor = colorFromPicker.ChangeSL(-0.13, -0.06);
                     CanvasSvgNamedElement backGradientSecondStop = canvasSVG.FindElementById("BackGradientSecondStop");
                     backGradientSecondStop.SetStringAttribute("stop-color", backSecondColor.ToString(ColorOutputFormats.Hex));
 
                     // Refill MiddleRect Gradient 
-                    middleFirstColor = fipColor.ChangeSL(-0.38, 0.33);
+                    middleFirstColor = colorFromPicker.ChangeSL(-0.38, 0.33);
                     CanvasSvgNamedElement middleGradientFirstStop = canvasSVG.FindElementById("MiddleGradientFirstStop");
                     middleGradientFirstStop.SetStringAttribute("stop-color", middleFirstColor.ToString(ColorOutputFormats.Hex));
 
-                    middleSecondColor = fipColor.ChangeSL(-0.2, 0.14);
+                    middleSecondColor = colorFromPicker.ChangeSL(-0.2, 0.14);
                     CanvasSvgNamedElement middleGradientSecondStop = canvasSVG.FindElementById("MiddleGradientSecondStop");
                     middleGradientSecondStop.SetStringAttribute("stop-color", middleSecondColor.ToString(ColorOutputFormats.Hex));
 
                     // Refill FrontRect Gradient 
-                    frontFirstColor = fipColor.ChangeSL(-0.14, 0.18);
+                    frontFirstColor = colorFromPicker.ChangeSL(-0.14, 0.18);
                     CanvasSvgNamedElement frontGradientFirstStop = canvasSVG.FindElementById("FrontGradientFirstStop");
                     frontGradientFirstStop.SetStringAttribute("stop-color", frontFirstColor.ToString(ColorOutputFormats.Hex));
 
-                    frontSecondColor = fipColor.ChangeSL(0.06, 0.07);
+                    frontSecondColor = colorFromPicker.ChangeSL(0.06, 0.07);
                     CanvasSvgNamedElement frontGradientSecondStop = canvasSVG.FindElementById("FrontGradientSecondStop");
                     frontGradientSecondStop.SetStringAttribute("stop-color", frontSecondColor.ToString(ColorOutputFormats.Hex));
 
@@ -117,7 +110,7 @@ namespace FIP.App.Views
             });
 
             //Test 
-            BackFirst.Text = fipColor.ToString(ColorOutputFormats.HSL);
+            BackFirst.Text = colorFromPicker.ToString(ColorOutputFormats.HSL);
             BackSecond.Text = backSecondColor.ToString(ColorOutputFormats.HSL);
 
             MiddleFirst.Text = middleFirstColor.ToString(ColorOutputFormats.HSL);
@@ -163,6 +156,29 @@ namespace FIP.App.Views
             {
                 canvasSVG = await CanvasSvgDocument.LoadAsync(canvasControl, fileStream);
                 canvasControl.Invalidate();
+            }
+        }
+
+        /// <summary>
+        /// Sets contrasted button font color by picked color
+        /// </summary>
+        /// <param name="colorFromPicker">Selected color from picker</param>
+        private void SetUpButtonTitleColor(FIPColor colorFromPicker) 
+        {
+            if (colorFromPicker is null)
+            {
+                ButtonTitleColor = Colors.Black;
+                return;
+            }
+
+            if (colorFromPicker.L > .7)
+            {
+                ButtonTitleColor = Colors.Black;
+            }
+            else
+            {
+                ButtonTitleColor = colorFromPicker.H > 19 && colorFromPicker.H < 191 ?
+                    Colors.Black : Colors.White;
             }
         }
     }

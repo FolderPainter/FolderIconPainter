@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Imaging;
+﻿using System.Drawing.Imaging;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace FIP.App.Helpers
@@ -95,7 +91,7 @@ namespace FIP.App.Helpers
         /// <param name="outputPath">The output path</param>
         /// <param name="size">The size (16x16 px by default)</param>
         /// <param name="preserveAspectRatio">Preserve the aspect ratio</param>
-        /// <returns>Wether or not the icon was succesfully generated</returns>
+        /// <returns>Whether or not the icon was successfully generated</returns>
         public async static Task<bool> SaveBitmapAsIconAsync(Bitmap inputBitmap, string outputPath, int size = 256, bool preserveAspectRatio = false)
         {
             using (FileStream outputStream = new FileStream(outputPath, FileMode.OpenOrCreate))
