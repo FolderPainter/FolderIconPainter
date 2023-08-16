@@ -75,10 +75,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\FIP.Core\FIP.Core.csproj" />
   </ItemGroup>
 
