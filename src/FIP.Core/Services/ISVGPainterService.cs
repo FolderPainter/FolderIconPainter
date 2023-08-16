@@ -1,18 +1,17 @@
-﻿using Microsoft.Graphics.Canvas.Svg;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FIP.Core.Models;
+using Microsoft.Graphics.Canvas.Svg;
 
-namespace FIP.Backend.Services
+namespace FIP.Core.Services
 {
     /// <summary>
-	/// Represents a service used for repaint svg gradients
-	/// </summary>
+    /// Represents a service used for repaint svg gradients
+    /// </summary>
     public interface ISVGPainterService
     {
-        CanvasSvgDocument CanvasSVG
+        CanvasSvgDocument CanvasSVG { get; set; }
 
+        void Initialize(CanvasSvgDocument canvasSVG);
+
+        void ApplyColorPalette(FIPColor color);
     }
 }
