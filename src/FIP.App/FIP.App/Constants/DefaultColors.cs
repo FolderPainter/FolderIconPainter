@@ -9,20 +9,20 @@ namespace FIP.App.Constants
     /// </summary>
     public static class DefaultColors
     {
-        public readonly static string Red = "#ff1818";
-        public readonly static string Lime = "#8aff3c";
-        public readonly static string Rose = "#ff29ed";
-        public readonly static string BrightTurquoise = "#11f8cf";
-        public readonly static string DarkTurquoise = "#29b79e";
-        public readonly static string Yellow = "#ffe849";
-        public readonly static string Green = "#38ae03";
-        public readonly static string CornflowerBlue = "#6677f4";
-        public readonly static string Orange = "#ffac5a";
-        public readonly static string Meganta = "#d748fb";
-        public readonly static string DarkMeganta = "#9c0597";
-        public readonly static string BrightCyan = "#32ffc1";
-        public readonly static string Malibu = "#74c2ff";
-        public readonly static string Gray = "#B5B5B5";
+        public readonly static string Red = "#C71313";
+        public readonly static string Lime = "#69D92A";
+        public readonly static string Rose = "#D122C2";
+        public readonly static string BrightTurquoise = "#0ECCAA";
+        public readonly static string DarkTurquoise = "#239C86";
+        public readonly static string Yellow = "#E0DE39";
+        public readonly static string Green = "#38AE03";
+        public readonly static string CornflowerBlue = "#5C6BDB";
+        public readonly static string Orange = "#EB8519";
+        public readonly static string Magenta = "#C943EB";
+        public readonly static string DarkMagenta = "#920FA8";
+        public readonly static string BrightCyan = "#2FEDB3";
+        public readonly static string Malibu = "#6AB1E8";
+        public readonly static string Gray = "#707070";
         public readonly static string BrightMagenta = "#FF269E";
         public readonly static string Blue = "#0D28EE";
 

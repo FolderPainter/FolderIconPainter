@@ -4,7 +4,7 @@ public static class PaletteConfiguration
 {
     public readonly static SVGGradientPalette BackRectGradient = new()
     {
-        GradientName = "BackRectGradient",
+        GradientName = "BackGradient",
         PaletteUnits = new()
         {
             new PaletteUnit
@@ -29,7 +29,7 @@ public static class PaletteConfiguration
             {
                 Number = 3,
                 H = -3,
-                S = -23,
+                S = -0.23,
                 L = -0.01
             }
         }
@@ -49,7 +49,7 @@ public static class PaletteConfiguration
 
     public readonly static SVGGradientPalette MiddleRectGradient = new()
     {
-        GradientName = "MiddleRectGradient",
+        GradientName = "MiddleGradient",
         PaletteUnits = new()
         {
             new PaletteUnit
@@ -71,7 +71,7 @@ public static class PaletteConfiguration
 
     public readonly static SVGGradientPalette FrontRectGradient = new()
     {
-        GradientName = "FrontRectGradient",
+        GradientName = "FrontGradient",
         PaletteUnits = new()
         {
             new PaletteUnit
