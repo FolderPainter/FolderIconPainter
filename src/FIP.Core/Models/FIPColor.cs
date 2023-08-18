@@ -308,9 +308,9 @@ namespace FIP.Core.Models
 
             // Hue Angle overflow logic 
             if (FIPColorConstants.CommonMinValue > newHue)
-                newHue = FIPColorConstants.MaxHueAngle - hueAngle;
+                newHue = FIPColorConstants.MaxHueAngle + hueAngle;
             else if (newHue > FIPColorConstants.MaxHueAngle)
-                newHue = FIPColorConstants.CommonMinValue - (hueAngle - FIPColorConstants.MaxHueAngle);
+                newHue = FIPColorConstants.CommonMinValue + (newHue - FIPColorConstants.MaxHueAngle);
 
             return new FIPColor(
                 newHue,
