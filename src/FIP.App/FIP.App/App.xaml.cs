@@ -1,5 +1,4 @@
-﻿// Licensed under the MIT License.
-
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using FIP.App.Helpers;
 using FIP.App.Views;
 using Microsoft.UI.Xaml;
@@ -43,6 +42,10 @@ namespace FIP.App
                     new SuppressNavigationTransitionInfo());
             }
             m_window.Activate();
+
+            // Configure the DI (dependency injection) container
+            var host = Startup.ConfigureHost();
+            Ioc.Default.ConfigureServices(host.Services);
         }
 
         /// <summary>
