@@ -68,7 +68,7 @@ namespace FIP.App.Services
 
         private void SetColorForStop(string gradientName, PaletteUnit paletteUnit, FIPColor mainColor)
         {
-            if (paletteUnit.IsMainColor())
+            if (!paletteUnit.IsMainColor())
                 mainColor = mainColor.ChangeHSL(paletteUnit.H, paletteUnit.S, paletteUnit.L);
 
             CanvasSvgNamedElement frontGradientSecondStop = CanvasSVG.FindElementById($"{gradientName}{paletteUnit.Number}");
