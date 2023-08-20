@@ -1,6 +1,6 @@
 using FIP.App.Constants;
-using FIP.App.Models;
 using FIP.App.ViewModels;
+using FIP.Core.Models;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.Generic;
 using System.Linq;

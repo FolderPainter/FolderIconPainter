@@ -16,6 +16,8 @@ using Svg;
 using FIP.App.Helpers;
 using System.Drawing.Drawing2D;
 using FIP.Core.Models;
+using FIP.Core.Services;
+using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace FIP.App.Views
 {
@@ -24,6 +26,10 @@ namespace FIP.App.Views
     /// </summary>
     public sealed partial class CreateCustomIconPage : Page
     {
+        // Dependency injections
+        private ISVGPainterService SVGPainterService { get; } = Ioc.Default.GetRequiredService<ISVGPainterService>();
+
+
         CanvasSvgDocument canvasSVG;
 
         Color defaultFolderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor("#04805C");
@@ -41,6 +47,7 @@ namespace FIP.App.Views
         public CreateCustomIconPage()
         {
             this.InitializeComponent();
+
             mainColorPicker.Color = defaultFolderColor;
 
             var tmpc = new FIPColor(defaultFolderColor.R, defaultFolderColor.G, defaultFolderColor.B, defaultFolderColor.A);
@@ -77,31 +84,8 @@ namespace FIP.App.Views
             {
                 if (canvasSVG != null)
                 {
-                    // Refill BackRect Gradient 
-                    CanvasSvgNamedElement backGradientFirstStop = canvasSVG.FindElementById("BackGradientFirstStop");
-                    backGradientFirstStop.SetStringAttribute("stop-color", colorFromPicker.ToString(ColorOutputFormats.Hex));
-
-                    backSecondColor = colorFromPicker.ChangeSL(-0.13, -0.06);
-                    CanvasSvgNamedElement backGradientSecondStop = canvasSVG.FindElementById("BackGradientSecondStop");
-                    backGradientSecondStop.SetStringAttribute("stop-color", backSecondColor.ToString(ColorOutputFormats.Hex));
-
-                    // Refill MiddleRect Gradient 
-                    middleFirstColor = colorFromPicker.ChangeSL(-0.38, 0.33);
-                    CanvasSvgNamedElement middleGradientFirstStop = canvasSVG.FindElementById("MiddleGradientFirstStop");
-                    middleGradientFirstStop.SetStringAttribute("stop-color", middleFirstColor.ToString(ColorOutputFormats.Hex));
-
-                    middleSecondColor = colorFromPicker.ChangeSL(-0.2, 0.14);
-                    CanvasSvgNamedElement middleGradientSecondStop = canvasSVG.FindElementById("MiddleGradientSecondStop");
-                    middleGradientSecondStop.SetStringAttribute("stop-color", middleSecondColor.ToString(ColorOutputFormats.Hex));
-
-                    // Refill FrontRect Gradient 
-                    frontFirstColor = colorFromPicker.ChangeSL(-0.14, 0.18);
-                    CanvasSvgNamedElement frontGradientFirstStop = canvasSVG.FindElementById("FrontGradientFirstStop");
-                    frontGradientFirstStop.SetStringAttribute("stop-color", frontFirstColor.ToString(ColorOutputFormats.Hex));
-
-                    frontSecondColor = colorFromPicker.ChangeSL(0.06, 0.07);
-                    CanvasSvgNamedElement frontGradientSecondStop = canvasSVG.FindElementById("FrontGradientSecondStop");
-                    frontGradientSecondStop.SetStringAttribute("stop-color", frontSecondColor.ToString(ColorOutputFormats.Hex));
+                    // Repaint SVG gradients
+                    SVGPainterService.ApplyColorPalette(colorFromPicker);
 
                     // Draw refilled svg image
                     canvasControl.Invalidate();
@@ -151,10 +135,11 @@ namespace FIP.App.Views
 
         private async void canvasControl_CreateResources(CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
         {
-            var svgFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/win11-folder-green2.svg"));
+            var svgFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/win11-folder-template.svg"));
             using (var fileStream = await svgFile.OpenReadAsync())
             {
                 canvasSVG = await CanvasSvgDocument.LoadAsync(canvasControl, fileStream);
+                SVGPainterService.Initialize(canvasSVG);
                 canvasControl.Invalidate();
             }
         }
