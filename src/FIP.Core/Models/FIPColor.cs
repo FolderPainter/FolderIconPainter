@@ -75,14 +75,28 @@ namespace FIP.Core.Models
         /// <param name="lightness">0..1 range lightness</param>
         /// <param name="alpha">0..1 alpha</param>
         /// <returns>The created <see cref="FIPColor"/>.</returns>
+        public FIPColor(double h, double s, double l, double a)
+        : this(h, s, l, (int)((a * 255.0).EnsureRange(255)))
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a <see cref="FIPColor"/> from the specified hue, saturation, lightness, and alpha values.
+        /// </summary>
+        /// <param name="hue">0..360 range hue</param>
+        /// <param name="saturation">0..1 range saturation</param>
+        /// <param name="lightness">0..1 range lightness</param>
+        /// <param name="alpha">0..255 alpha</param>
+        /// <returns>The created <see cref="FIPColor"/>.</returns>
         public FIPColor(double hue, double saturation, double lightness, int alpha)
         {
-            if (hue < FIPColorConstants.CommonMinValue || hue > FIPColorConstants.MaxHueAngle)
-            {
-                throw new ArgumentOutOfRangeException(nameof(hue));
-            }
-
             _valuesAsByte = new byte[4];
+
+            hue = Math.Round(hue.EnsureRange(360), 0);
+            saturation = Math.Round(saturation.EnsureRange(1), 2);
+            lightness = Math.Round(lightness.EnsureRange(1), 2);
+            alpha = alpha.EnsureRange(255);
 
             double chroma = (1 - Math.Abs(2 * lightness - 1)) * saturation;
             double h1 = hue / 60;
@@ -127,9 +141,9 @@ namespace FIP.Core.Models
                 b1 = x;
             }
 
-            _valuesAsByte[0] = (byte)(FIPColorConstants.RGBMaxValue * (r1 + m)); // Red
-            _valuesAsByte[1] = (byte)(FIPColorConstants.RGBMaxValue * (g1 + m)); // Green
-            _valuesAsByte[2] = (byte)(FIPColorConstants.RGBMaxValue * (b1 + m)); // Blue
+            _valuesAsByte[0] = ((int)Math.Round((r1 + m) * FIPColorConstants.RGBMaxValue)).EnsureRangeToByte(); // Red
+            _valuesAsByte[1] = ((int)Math.Round((g1 + m) * FIPColorConstants.RGBMaxValue)).EnsureRangeToByte(); // Green
+            _valuesAsByte[2] = ((int)Math.Round((b1 + m) * FIPColorConstants.RGBMaxValue)).EnsureRangeToByte(); // Blue
             _valuesAsByte[3] = (byte)alpha; // Alpha
 
             H = Math.Round(hue, 0);
@@ -286,9 +300,10 @@ namespace FIP.Core.Models
             double lightness = (max + min) / 2D;
             double saturation = chroma == 0 ? 0 : chroma / (1 - Math.Abs(2 * lightness - 1));
 
-            H = 60 * h1;
-            S = saturation;
-            L = lightness;
+            h1 = (60 * h1);
+            H = Math.Round(h1.EnsureRange(360), 0);
+            S = Math.Round(saturation.EnsureRange(1), 2);
+            L = Math.Round(lightness.EnsureRange(1), 2);
         }
 
         public FIPColor SetH(double h) => new(h, S, L, A);
