@@ -1,4 +1,5 @@
 ﻿using FIP.App.Services;
+using FIP.App.ViewModels;
 using FIP.Core.Services;
 using FIP.Shared;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,10 @@ namespace FIP.App.Helpers
                 .ConfigureServices(services => services
                     // Services
                     .AddSingleton<ISVGPainterService, SVGPainterService>()
-        
+                    .AddSingleton<ICategoryStorageService, CategoryStorageService>()
+                    .AddSingleton<ICustomIconStorageService, CustomIconStorageService>()
+                    // ViewModels
+                    .AddTransient<CreateCustomIconViewModel>()
                 ).Build();
         }
 
