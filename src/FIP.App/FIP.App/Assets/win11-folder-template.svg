@@ -13,7 +13,7 @@
 	c-7.7,0-14,6.3-14,14v13.8V232c0,7.7,6.2,14,14,14h233.8c7.7,0,14-6.3,14-14V82c0-7.7-6.2-14-14-14H136c0,0-13.3-18.4-19-22.6
 	c-5.6-4.2-12.5-5.3-12.5-5.3L33.1,40.1L33.1,40.1z"/>
 <radialGradient id="ShadowGradient" cx="77.9905" cy="11.3605" r="87.0198" fx="77.6635" fy="-16.0154" gradientTransform="matrix(1.017 -3.964315e-02 -7.798028e-03 -0.2175 2.1971 92.313)" gradientUnits="userSpaceOnUse">
-	<stop id="ShadowGradientStop0" offset="0" style="stop-color:#4F4F4F;stop-opacity:0.6"/>
+	<stop id="ShadowGradientStop0" offset="0" style="stop-color:#2e2e2e;stop-opacity:0.5"/>
 	<stop id="ShadowGradientStop1" offset="1" style="stop-color:#FCBD18;stop-opacity:0"/>
 </radialGradient>
 <path id="Shadow" style="opacity:0.9;fill:url(#ShadowGradient);enable-background:new;" d="M138,108.4H19.1V67.1h108.2c5.9,0,10.7,4.8,10.7,10.7V108.4z"/>
