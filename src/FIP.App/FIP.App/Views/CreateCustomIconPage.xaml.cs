@@ -18,6 +18,11 @@ using System.Drawing.Drawing2D;
 using FIP.Core.Models;
 using FIP.Core.Services;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using FIP.App.Constants;
+using FIP.App.ViewModels;
+using System.Collections.Generic;
+using FIP.Core.ViewModels;
+using System.Linq;
 
 namespace FIP.App.Views
 {
@@ -28,6 +33,10 @@ namespace FIP.App.Views
     {
         // Dependency injections
         private ISVGPainterService SVGPainterService { get; } = Ioc.Default.GetRequiredService<ISVGPainterService>();
+        private ICategoryStorageService CategoryStorageService { get; } = Ioc.Default.GetRequiredService<ICategoryStorageService>();
+        private ICustomIconStorageService CustomIconStorageService { get; } = Ioc.Default.GetRequiredService<ICustomIconStorageService>();
+
+        private CreateCustomIconViewModel ViewModel { get; } = Ioc.Default.GetRequiredService<CreateCustomIconViewModel>();
 
 
         CanvasSvgDocument canvasSVG;
@@ -42,23 +51,13 @@ namespace FIP.App.Views
 
         // Using a DependencyProperty as the backing store for ButtonTitleColor.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ButtonTitleColorProperty =
-            DependencyProperty.Register("ButtonTitleColor", typeof(Color), typeof(CreateCustomIconPage), new PropertyMetadata(Microsoft.UI.Colors.White));
+            DependencyProperty.Register("ButtonTitleColor", typeof(Color), typeof(CreateCustomIconPage), new PropertyMetadata(Colors.White));
 
         public CreateCustomIconPage()
         {
             this.InitializeComponent();
 
             mainColorPicker.Color = defaultFolderColor;
-
-            var tmpc = new FIPColor(defaultFolderColor.R, defaultFolderColor.G, defaultFolderColor.B, defaultFolderColor.A);
-            BackFirstOG.Text = tmpc.ToString(ColorOutputFormats.HSL);
-            BackSecondOG.Text = new FIPColor("#0A5D5E").ToString(ColorOutputFormats.HSL);
-
-            MiddleFirstOG.Text = new FIPColor("#5CD1AC").ToString(ColorOutputFormats.HSL);
-            MiddleSecondOG.Text = new FIPColor("#1AB19B").ToString(ColorOutputFormats.HSL);
-
-            FrontFirstOG.Text = new FIPColor("#16C997").ToString(ColorOutputFormats.HSL);
-            FrontSecondOG.Text = new FIPColor("#0099A6").ToString(ColorOutputFormats.HSL);
         }
 
         private void CanvasControl_Draw(CanvasControl sender, CanvasDrawEventArgs args)
@@ -78,8 +77,6 @@ namespace FIP.App.Views
 
             SetUpButtonTitleColor(colorFromPicker);
 
-            FIPColor backSecondColor = colorFromPicker, middleFirstColor = colorFromPicker, middleSecondColor = colorFromPicker, frontFirstColor = colorFromPicker, frontSecondColor = colorFromPicker;
-
             await Task.Run(async Task<bool> () =>
             {
                 if (canvasSVG != null)
@@ -92,16 +89,6 @@ namespace FIP.App.Views
                 }
                 return await Task.FromResult(true);
             });
-
-            //Test 
-            BackFirst.Text = colorFromPicker.ToString(ColorOutputFormats.HSL);
-            BackSecond.Text = backSecondColor.ToString(ColorOutputFormats.HSL);
-
-            MiddleFirst.Text = middleFirstColor.ToString(ColorOutputFormats.HSL);
-            MiddleSecond.Text = middleSecondColor.ToString(ColorOutputFormats.HSL);
-
-            FrontFirst.Text = frontFirstColor.ToString(ColorOutputFormats.HSL);
-            FrontSecond.Text = frontSecondColor.ToString(ColorOutputFormats.HSL);
         }
 
         // Saves created image
@@ -110,6 +97,7 @@ namespace FIP.App.Views
             if (canvasSVG == null)
                 return;
 
+            //.getxml();
             var svgString = "";
             using (var stream = new MemoryStream())
             {
@@ -129,13 +117,13 @@ namespace FIP.App.Views
             svgBitmapGraphics.DrawImage(svgBitmap, 0, 0, 256, 256);
 
             StorageFolder iconsFolder = KnownFolders.SavedPictures;
-            StorageFile newIconFile = await iconsFolder.CreateFileAsync($"{NameBox.Text}.ico");
+            StorageFile newIconFile = await iconsFolder.CreateFileAsync($"{ViewModel.NewCustomIcon.Name}.ico");
             await ImageHelper.SaveBitmapAsIconAsync(svgBitmap, newIconFile.Path);
         }
 
         private async void canvasControl_CreateResources(CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
         {
-            var svgFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/win11-folder-template.svg"));
+            var svgFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(AppConstants.AssetPaths.SVGFolderIconTemplate));
             using (var fileStream = await svgFile.OpenReadAsync())
             {
                 canvasSVG = await CanvasSvgDocument.LoadAsync(canvasControl, fileStream);
@@ -166,20 +154,55 @@ namespace FIP.App.Views
                     Colors.Black : Colors.White;
             }
         }
-    }
 
-    public class ColorToHslStringConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, string language)
+        private void CategorySearchBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-            Color color = (Color)value;
-            HslColor hslColor = color.ToHsl();
-            return $"{hslColor.H} | {hslColor.S} | {hslColor.L}";
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                var querySplit = sender.Text.ToLower().Split(" ");
+                var suggestions = CategoryStorageService.Categories.Where(
+                        item =>
+                        {
+                            bool flag = true;
+                            foreach (string queryToken in querySplit)
+                            {
+                                // Check if token is not in string
+                                if (item.Name.ToLower().IndexOf(queryToken, StringComparison.CurrentCultureIgnoreCase) < 0)
+                                {
+                                    // Token is not in string, so we ignore this item.
+                                    flag = false;
+                                }
+                            }
+                            return flag;
+                        });
+                 
+                if (suggestions.Count() > 0)
+                {
+                    CategorySearchBox.ItemsSource = suggestions.OrderByDescending(i => i.Name.StartsWith(sender.Text, StringComparison.CurrentCultureIgnoreCase)).ThenBy(i => i.Name);
+                }
+                else
+                {
+                    CategorySearchBox.ItemsSource = new [] { new CategoryViewModel { Name = sender.Text } };
+                }
+            }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        private void CategorySearchBoxQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            return CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(((HslColor)value).ToString());
+            if (args.ChosenSuggestion != null && args.ChosenSuggestion is CategoryViewModel)
+            {
+                var category = args.ChosenSuggestion as CategoryViewModel;
+            }
+        }
+
+        private void CategorySearchBoxSuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+        {
+            if (args.SelectedItem != null && args.SelectedItem is CategoryViewModel)
+            {
+                var category = args.SelectedItem as CategoryViewModel;
+
+                ViewModel.CurrentCategory = category;
+            }
         }
     }
 }
