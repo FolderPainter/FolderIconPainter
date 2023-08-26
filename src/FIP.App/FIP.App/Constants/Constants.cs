@@ -20,7 +20,7 @@
         {
             public const string DefaultFolderColor = "#FCBD18";
 
-            public const double MaxContrastLightness = 0.7D;
+            public const double MinContrastLightness = 0.7D;
 
             public const double MinContrastHueAngle = 19D;
 
