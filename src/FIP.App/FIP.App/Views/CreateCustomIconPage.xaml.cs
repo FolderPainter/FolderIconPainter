@@ -23,6 +23,8 @@ using FIP.App.ViewModels;
 using System.Collections.Generic;
 using FIP.Core.ViewModels;
 using System.Linq;
+using System.Collections.ObjectModel;
+using Bitmap = System.Drawing.Bitmap;
 
 namespace FIP.App.Views
 {
@@ -38,10 +40,11 @@ namespace FIP.App.Views
 
         private CreateCustomIconViewModel ViewModel { get; } = Ioc.Default.GetRequiredService<CreateCustomIconViewModel>();
 
+        ObservableCollection<CustomIconViewModel> CustomIconViewModels = new ObservableCollection<CustomIconViewModel>();
 
         CanvasSvgDocument canvasSVG;
 
-        Color defaultFolderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor("#04805C");
+        Color defaultFolderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(AppConstants.ColorSettings.DefaultFolderColor);
 
         public Color ButtonTitleColor
         {
@@ -55,7 +58,7 @@ namespace FIP.App.Views
 
         public CreateCustomIconPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             mainColorPicker.Color = defaultFolderColor;
         }
@@ -83,6 +86,8 @@ namespace FIP.App.Views
                 {
                     // Repaint SVG gradients
                     SVGPainterService.ApplyColorPalette(colorFromPicker);
+                    
+                    ViewModel.NewCustomIcon.Color = args.NewColor.ToHex();  
 
                     // Draw refilled svg image
                     canvasControl.Invalidate();
@@ -97,28 +102,42 @@ namespace FIP.App.Views
             if (canvasSVG == null)
                 return;
 
-            //.getxml();
-            var svgString = "";
-            using (var stream = new MemoryStream())
-            {
-                await canvasSVG.SaveAsync(stream.AsRandomAccessStream());
-
-                stream.Position = 0;
-                var streamReader = new StreamReader(stream, Encoding.UTF8);
-                svgString = streamReader.ReadToEnd();
-            }
+            var svgString = canvasSVG.GetXml();
 
             SvgDocument newSVG = SvgDocument.FromSvg<SvgDocument>(svgString);
-            newSVG.ShapeRendering = SvgShapeRendering.Auto;
-            newSVG.Ppi = 72;
-            System.Drawing.Bitmap svgBitmap = newSVG.Draw(256, 256);
+            var svgBitmap = SaveSvgDocumentToBitmap(newSVG);
+
+            StorageFolder iconsFolder = KnownFolders.SavedPictures;
+            StorageFile newIconFile = await iconsFolder.CreateFileAsync($"{ViewModel.NewCustomIcon.Name}.ico");
+            bool iconCreated = await ImageHelper.SaveBitmapAsIconAsync(svgBitmap, newIconFile.Path);
+
+            if (iconCreated)
+            {
+                Guid categoryId = Guid.NewGuid();
+
+                ViewModel.CurrentCategory.Id = categoryId;
+                CategoryStorageService.AddCategory(ViewModel.CurrentCategory);
+
+                ViewModel.NewCustomIcon.CategoryId = categoryId;
+                ViewModel.NewCustomIcon.Id = Guid.NewGuid();
+                CustomIconStorageService.AddCustomIcon(ViewModel.NewCustomIcon);
+            }
+        }
+
+        private Bitmap SaveSvgDocumentToBitmap(SvgDocument svgDocument)
+        {
+            if (svgDocument is null)
+                return new Bitmap(0, 0);
+
+            svgDocument.ShapeRendering = SvgShapeRendering.Auto;
+            svgDocument.Ppi = 72;
+            Bitmap svgBitmap = svgDocument.Draw(256, 256);
+
             var svgBitmapGraphics = System.Drawing.Graphics.FromImage(svgBitmap);
             svgBitmapGraphics.SmoothingMode = SmoothingMode.Default;
             svgBitmapGraphics.DrawImage(svgBitmap, 0, 0, 256, 256);
 
-            StorageFolder iconsFolder = KnownFolders.SavedPictures;
-            StorageFile newIconFile = await iconsFolder.CreateFileAsync($"{ViewModel.NewCustomIcon.Name}.ico");
-            await ImageHelper.SaveBitmapAsIconAsync(svgBitmap, newIconFile.Path);
+            return svgBitmap;
         }
 
         private async void canvasControl_CreateResources(CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
@@ -136,7 +155,7 @@ namespace FIP.App.Views
         /// Sets contrasted button font color by picked color
         /// </summary>
         /// <param name="colorFromPicker">Selected color from picker</param>
-        private void SetUpButtonTitleColor(FIPColor colorFromPicker) 
+        private void SetUpButtonTitleColor(FIPColor colorFromPicker)
         {
             if (colorFromPicker is null)
             {
@@ -144,13 +163,14 @@ namespace FIP.App.Views
                 return;
             }
 
-            if (colorFromPicker.L > .7)
+            if (colorFromPicker.L > AppConstants.ColorSettings.MinContrastLightness)
             {
                 ButtonTitleColor = Colors.Black;
             }
             else
             {
-                ButtonTitleColor = colorFromPicker.H > 19 && colorFromPicker.H < 191 ?
+                ButtonTitleColor = colorFromPicker.H > AppConstants.ColorSettings.MinContrastHueAngle &&
+                    colorFromPicker.H < AppConstants.ColorSettings.MaxContrastHueAngle ?
                     Colors.Black : Colors.White;
             }
         }
@@ -161,28 +181,28 @@ namespace FIP.App.Views
             {
                 var querySplit = sender.Text.ToLower().Split(" ");
                 var suggestions = CategoryStorageService.Categories.Where(
-                        item =>
+                    item =>
+                    {
+                        bool flag = true;
+                        foreach (string queryToken in querySplit)
                         {
-                            bool flag = true;
-                            foreach (string queryToken in querySplit)
+                            // Check if token is not in string
+                            if (item.Name.ToLower().IndexOf(queryToken, StringComparison.CurrentCultureIgnoreCase) < 0)
                             {
-                                // Check if token is not in string
-                                if (item.Name.ToLower().IndexOf(queryToken, StringComparison.CurrentCultureIgnoreCase) < 0)
-                                {
-                                    // Token is not in string, so we ignore this item.
-                                    flag = false;
-                                }
+                                // Token is not in string, so we ignore this item.
+                                flag = false;
                             }
-                            return flag;
-                        });
-                 
+                        }
+                        return flag;
+                    });
+
                 if (suggestions.Count() > 0)
                 {
                     CategorySearchBox.ItemsSource = suggestions.OrderByDescending(i => i.Name.StartsWith(sender.Text, StringComparison.CurrentCultureIgnoreCase)).ThenBy(i => i.Name);
                 }
                 else
                 {
-                    CategorySearchBox.ItemsSource = new [] { new CategoryViewModel { Name = sender.Text } };
+                    CategorySearchBox.ItemsSource = new[] { new CategoryViewModel { Name = sender.Text } };
                 }
             }
         }
@@ -202,6 +222,14 @@ namespace FIP.App.Views
                 var category = args.SelectedItem as CategoryViewModel;
 
                 ViewModel.CurrentCategory = category;
+
+                CustomIconViewModels.Clear();
+
+                var icons = CustomIconStorageService.GetCustomIconsByCategoryId(category.Id);
+                foreach (var icon in icons)
+                {
+                    CustomIconViewModels.Add(icon);
+                }
             }
         }
     }
