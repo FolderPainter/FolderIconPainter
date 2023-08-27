@@ -30,7 +30,7 @@ namespace FIP.App.Services
             {
                 _categories = value;
                 SetAllValues(value);
-                OnCategoriesUpdated.Invoke(this, EventArgs.Empty);
+                OnCategoriesUpdated?.Invoke(this, EventArgs.Empty);
             }
         }
 

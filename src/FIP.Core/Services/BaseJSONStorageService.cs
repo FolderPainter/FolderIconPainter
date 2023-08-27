@@ -38,19 +38,33 @@ namespace FIP.Core.Services
 
         public virtual IEnumerable<TValue> GetAllValues<TValue>() 
         {
-            string jsonString = File.ReadAllText(_filePath);
-            return JsonSerializer.Deserialize<IEnumerable<TValue>>(jsonString, JsonSerializerOptions);
+            try
+            {
+                string jsonString = File.ReadAllText(_filePath);
+                return JsonSerializer.Deserialize<IEnumerable<TValue>>(jsonString, JsonSerializerOptions);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public virtual bool SetAllValues<TValue>(IEnumerable<TValue> values)
         {
-           string jsonString = JsonSerializer.Serialize(values, JsonSerializerOptions);
-            if (!String.IsNullOrEmpty(jsonString))
+            try
             {
-                File.WriteAllText(_filePath, jsonString);
-                return true;
+                string jsonString = JsonSerializer.Serialize(values, JsonSerializerOptions);
+                if (!String.IsNullOrEmpty(jsonString))
+                {
+                    File.WriteAllText(_filePath, jsonString);
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

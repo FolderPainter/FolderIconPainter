@@ -30,7 +30,7 @@ namespace FIP.App.Services
             {
                 _customIcons = value;
                 SetAllValues(value);
-                OnCustomIconsUpdated.Invoke(this, EventArgs.Empty);
+                OnCustomIconsUpdated?.Invoke(this, EventArgs.Empty);
             }
         }
 
