@@ -1,42 +1,59 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using FIP.Core.Models;
 using System;
 
 namespace FIP.Core.ViewModels
 {
     [Serializable]
-    public class CustomIconViewModel : ObservableObject, IEquatable<CustomIconViewModel>
+    public class CustomIconViewModel : ObservableObject
     {
-        private string name;
-        private string infoTip;
-        private string color;
+        public CustomIconViewModel(CustomIcon model = null) => Model = model ?? new CustomIcon();
 
-        public Guid Id { get; set; }
+        private CustomIcon model;
 
-        public Guid CategoryId { get; set; }
+        /// <summary>
+        /// Gets or sets the underlying Customer object.
+        /// </summary>
+        public CustomIcon Model
+        {
+            get => model;
+            set
+            {
+                if (model != value)
+                {
+                    model = value;
+
+                    // Raise the PropertyChanged event for all properties.
+                    OnPropertyChanged(string.Empty);
+                }
+            }
+        }
+
+        public Guid CategoryId
+        {
+            get => Model.CategoryId;
+            set => SetProperty(Model.CategoryId, value, Model, (u, n) => u.CategoryId = n);
+        }
 
         public string Name
         {
-            get => name;
-            set => SetProperty(ref name, value);
+            get => Model.Name;
+            set => SetProperty(Model.Name, value, Model, (u, n) => u.Name = n);
         }
 
-        public string InfoTip 
-        { 
-            get => infoTip; 
-            set => SetProperty(ref infoTip, value);
+        public string InfoTip
+        {
+            get => Model.InfoTip;
+            set => SetProperty(Model.InfoTip, value, Model, (u, n) => u.InfoTip = n);
         }
 
         /// <summary>
         /// HEX formatted color.
         /// </summary>
-        public string Color 
-        { 
-            get => color; 
-            set => SetProperty(ref color, value); 
+        public string Color
+        {
+            get => Model.Color;
+            set => SetProperty(Model.Color, value, Model, (u, n) => u.Color = n);
         }
-
-        public bool Equals(CustomIconViewModel other) =>
-            Name == other.Name &&
-            Color == other.Color;
     }
 }

@@ -1,24 +1,48 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
+using FIP.Core.Models;
 
 namespace FIP.Core.ViewModels
 {
-    [Serializable]
     public class CategoryViewModel : ObservableObject
     {
-        private string name;
+        public CategoryViewModel(Category model = null) => Model = model ?? new Category();
 
-        public Guid Id { get; set; }
+        private Category model;
+        private bool isNewCategory;
+
+        /// <summary>
+        /// Gets or sets the underlying Category object.
+        /// </summary>
+        public Category Model
+        {
+            get => model;
+            set
+            {
+                if (model != value)
+                {
+                    model = value;
+
+                    // Raise the PropertyChanged event for all properties.
+                    OnPropertyChanged(string.Empty);
+                }
+            }
+        }
 
         public string Name
         {
-            get => name;
-            set => SetProperty(ref name, value);
+            get => Model.Name;
+            set => SetProperty(Model.Name, value, Model, (u, n) => u.Name = n);
+        }
+
+        public bool IsNewCategory 
+        { 
+            get => isNewCategory;
+            set => SetProperty(ref isNewCategory, value); 
         }
 
         public override string ToString()
         {
-            return this.Name;
+            return IsNewCategory ? Name + " (New)" : Name;
         }
     }
 }
