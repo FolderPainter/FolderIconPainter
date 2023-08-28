@@ -1,4 +1,4 @@
-﻿using FIP.Core.ViewModels;
+﻿using FIP.Core.Models;
 using System;
 using System.Collections.Generic;
 
@@ -8,11 +8,11 @@ namespace FIP.Core.Services
     {
         event EventHandler OnCategoriesUpdated;
 
-        IEnumerable<CategoryViewModel> Categories { get; set; }
+        IEnumerable<Category> Categories { get; set; }
 
-        CategoryViewModel GetCategoryById(Guid id);
+        Category GetCategoryById(Guid id);
 
-        void AddCategory(CategoryViewModel category);
+        Category AddCategory(Category category);
 
         void DeleteCategoryById(Guid id);
     }

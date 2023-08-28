@@ -1,4 +1,4 @@
-﻿using FIP.Core.ViewModels;
+﻿using FIP.Core.Models;
 using System;
 using System.Collections.Generic;
 
@@ -8,13 +8,13 @@ namespace FIP.Core.Services
     {
         event EventHandler OnCustomIconsUpdated;
 
-        IEnumerable<CustomIconViewModel> CustomIcons { get; set; }
+        IEnumerable<CustomIcon> CustomIcons { get; set; }
 
-        CustomIconViewModel GetCustomIconById(Guid id);
+        CustomIcon GetCustomIconById(Guid id);
 
-        IEnumerable<CustomIconViewModel> GetCustomIconsByCategoryId(Guid categoryId);
+        IEnumerable<CustomIcon> GetCustomIconsByCategoryId(Guid categoryId);
 
-        void AddCustomIcon(CustomIconViewModel category);
+        void AddCustomIcon(CustomIcon category);
 
         void DeleteCustomIconById(Guid id);
 

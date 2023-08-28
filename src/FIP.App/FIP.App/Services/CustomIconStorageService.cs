@@ -1,6 +1,6 @@
 ﻿using FIP.App.Constants;
+using FIP.Core.Models;
 using FIP.Core.Services;
-using FIP.Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,7 +11,7 @@ namespace FIP.App.Services
 {
     public class CustomIconStorageService : BaseJSONStorageService, ICustomIconStorageService
     {
-        private IEnumerable<CustomIconViewModel> _customIcons;
+        private IEnumerable<CustomIcon> _customIcons;
 
         public event EventHandler OnCustomIconsUpdated;
 
@@ -20,10 +20,10 @@ namespace FIP.App.Services
             Initialize(Path.Combine(ApplicationData.Current.LocalFolder.Path,
                 AppConstants.StorageSettings.StorageFolderName, AppConstants.StorageSettings.FolderIconsStorageFileName));
 
-            _customIcons = GetAllValues<CustomIconViewModel>();
+            _customIcons = GetAllValues<CustomIcon>();
         }
 
-        public IEnumerable<CustomIconViewModel> CustomIcons
+        public IEnumerable<CustomIcon> CustomIcons
         {
             get => _customIcons;
             set
@@ -34,17 +34,17 @@ namespace FIP.App.Services
             }
         }
 
-        public CustomIconViewModel GetCustomIconById(Guid id)
+        public CustomIcon GetCustomIconById(Guid id)
         {
             return CustomIcons.SingleOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<CustomIconViewModel> GetCustomIconsByCategoryId(Guid categoryId)
+        public IEnumerable<CustomIcon> GetCustomIconsByCategoryId(Guid categoryId)
         {
             return CustomIcons.Where(x => x.CategoryId == categoryId);
         }
 
-        public void AddCustomIcon(CustomIconViewModel customIcon)
+        public void AddCustomIcon(CustomIcon customIcon)
         {
             var customIcons = CustomIcons.ToList();
             customIcons.Add(customIcon);
@@ -54,7 +54,7 @@ namespace FIP.App.Services
         public void DeleteCustomIconById(Guid id)
         {
             var customIcons = CustomIcons.ToList();
-            customIcons.RemoveAll(category => category.Id == id);
+            customIcons.RemoveAll(customIcon => customIcon.Id == id);
             CustomIcons = customIcons;
         }
 
