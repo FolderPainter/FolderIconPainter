@@ -6,11 +6,35 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:models="using:FIP.Core.ViewModels"
+    xmlns:appVm="using:FIP.App.ViewModels"
 	DataContext="{x:Bind ViewModel, Mode=OneWay}"
     mc:Ignorable="d"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     x:Name="CreateCustomIconPageControl"
     NavigationCacheMode="Enabled">
+	<Page.Resources>
+		<DataTemplate x:Key="CustomIconItem" x:DataType="models:CustomIconViewModel">
+			<Border CornerRadius="4" Padding="8" Width="210" Height="150"
+Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
+				<Grid>
+					<Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+						<Button.Resources>
+							<ResourceDictionary>
+								<SolidColorBrush x:Key="ButtonBackground" Color="{x:Bind Color}"/>
+							</ResourceDictionary>
+						</Button.Resources>
+					</Button>
+					<StackPanel Orientation="Vertical" Height="50" VerticalAlignment="Bottom" CornerRadius="0,0,4,4"
+						Background="LightGray" Opacity=".75">
+						<TextBlock FontSize="24" TextAlignment="Center" Foreground="#121212"
+								   VerticalAlignment="Center" Text="{x:Bind Name}"/>
+					</StackPanel>
+				</Grid>
+			</Border>
+		</DataTemplate>
+	</Page.Resources>
+	
     <Grid Background="{ThemeResource HomePageBackgroundBrush}">
 		<!--  Visual states reflect the application's window size  -->
         <VisualStateManager.VisualStateGroups>
@@ -74,8 +98,7 @@
 						<AutoSuggestBox x:Name="CategorySearchBox" Header="Select category for icon:" PlaceholderText="Category"
                                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 										TextChanged="CategorySearchBoxTextChanged" 
-										QuerySubmitted="CategorySearchBoxQuerySubmitted"
-										SuggestionChosen="CategorySearchBoxSuggestionChosen"/>
+										QuerySubmitted="CategorySearchBoxQuerySubmitted"/>
 						
                         <Button x:Name="createButton" Content="Create folder icon"
                                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
@@ -87,7 +110,10 @@
 								<SolidColorBrush Color="{Binding ElementName=CreateCustomIconPageControl, Path=ButtonTitleColor}"/>
                             </Button.Foreground>
                         </Button>
-                    </StackPanel>
+						<Button x:Name="DeleteButton" Style="{StaticResource AccentButtonStyle}" Content="Delete Selected Icons" 
+								VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+								IsEnabled="{x:Bind appVm:Converters.IsNotNull(SelectedCustomIcon), Mode=OneWay}" Click="DeleteButton_Click" />
+					</StackPanel>
                 </Border>
 
                 <!--<Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
@@ -103,8 +129,12 @@
 
                 <Border Padding="8" Margin="8" VariableSizedWrapGrid.ColumnSpan="3" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
+					<GridView x:Name="IconsGridView" ItemTemplate="{StaticResource CustomIconItem}"
+							  ItemsSource="{x:Bind CustomIconViewModels, Mode=TwoWay}" SelectionChanged="IconsGridView_SelectionChanged"
+							  IsItemClickEnabled="False" SelectionMode="Multiple" FlowDirection="LeftToRight">
+						
+					</GridView>
                 </Border>
-
             </VariableSizedWrapGrid>
         </ScrollViewer>
     </Grid>
