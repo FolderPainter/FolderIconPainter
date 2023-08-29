@@ -16,12 +16,24 @@ namespace FIP.Core.Models
         /// </summary>
         public string Color { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as CustomIcon);
+        }
+
         public bool Equals(CustomIcon other) =>
+            other != null &&
             Id == other.Id &&
             CategoryId == other.CategoryId &&
             Name == other.Name &&
             InfoTip == other.InfoTip &&
             Color == other.Color;
+
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, CategoryId, Name, InfoTip, Color);
+        }
 
         //public static bool operator ==(CustomIcon obj1, CustomIcon obj2)
         //{

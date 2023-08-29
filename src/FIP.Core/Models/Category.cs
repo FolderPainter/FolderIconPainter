@@ -11,9 +11,19 @@ namespace FIP.Core.Models
         {
             return Name;
         }
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as Category);
+        }
 
         public bool Equals(Category other) =>
+            other != null &&
             Id == other.Id &&
             Name == other.Name;
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Name);
+        }
     }
 }
