@@ -11,6 +11,8 @@
         {
             public const string StorageFolderName = "LocalStorage";
 
+            public const string IconsFolderName = "FolderIcons";
+
             public const string CategoriesStorageFileName = "categories.json";
 
             public const string FolderIconsStorageFileName = "folderIcons.json";
@@ -26,5 +28,13 @@
 
             public const double MaxContrastHueAngle = 191D;
         }
+
+        public static class IconSettings
+        {
+            public const int DefaultIconSize = 256;
+
+            public const int SVGRenderingPpi = 72;
+        }
+        
     }
 }
