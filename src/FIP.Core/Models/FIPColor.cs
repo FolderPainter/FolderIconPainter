@@ -1,6 +1,7 @@
 ﻿using FIP.Core.Extensions;
 using System;
 using System.Globalization;
+using Windows.UI;
 
 namespace FIP.Core.Models
 {
@@ -186,6 +187,11 @@ namespace FIP.Core.Models
                 (byte)g.EnsureRange((int)FIPColorConstants.RGBMaxValue),
                 (byte)b.EnsureRange((int)FIPColorConstants.RGBMaxValue),
                 (byte)alpha.EnsureRange((int)FIPColorConstants.RGBMaxValue))
+        {
+
+        }
+
+        public FIPColor(Color color) : this(color.R, color.G, color.B, color.A)
         {
 
         }

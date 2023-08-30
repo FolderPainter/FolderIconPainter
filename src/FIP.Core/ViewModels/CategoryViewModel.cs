@@ -30,7 +30,7 @@ namespace FIP.Core.ViewModels
 
         public string Name
         {
-            get => Model.Name;
+            get => Model.Name ?? "No category";
             set => SetProperty(Model.Name, value, Model, (u, n) => u.Name = n);
         }
 
