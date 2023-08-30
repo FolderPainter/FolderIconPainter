@@ -21,6 +21,7 @@ namespace FIP.App.Helpers
                 .ConfigureServices(services => services
                     // Services
                     .AddSingleton<ISVGPainterService, SVGPainterService>()
+                    .AddSingleton<IFolderIconService, FolderIconService>()
                     .AddSingleton<ICategoryStorageService, CategoryStorageService>()
                     .AddSingleton<ICustomIconStorageService, CustomIconStorageService>()
                     // ViewModels
