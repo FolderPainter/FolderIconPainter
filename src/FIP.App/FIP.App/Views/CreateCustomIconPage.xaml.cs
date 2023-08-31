@@ -6,21 +6,14 @@ using System;
 using Windows.Storage;
 using Windows.UI;
 using System.Threading.Tasks;
-using System.IO;
 using Microsoft.UI;
-using Svg;
-using FIP.App.Helpers;
-using System.Drawing.Drawing2D;
 using FIP.Core.Models;
 using FIP.Core.Services;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using FIP.App.Constants;
 using FIP.App.ViewModels;
-using System.Collections.Generic;
 using FIP.Core.ViewModels;
 using System.Linq;
-using System.Collections.ObjectModel;
-using Bitmap = System.Drawing.Bitmap;
 using Microsoft.UI.Xaml.Navigation;
 
 namespace FIP.App.Views
@@ -32,30 +25,10 @@ namespace FIP.App.Views
     {
         // Dependency injections
         private ISVGPainterService SVGPainterService { get; } = Ioc.Default.GetRequiredService<ISVGPainterService>();
-        private ICategoryStorageService CategoryStorageService { get; } = Ioc.Default.GetRequiredService<ICategoryStorageService>();
-        private ICustomIconStorageService CustomIconStorageService { get; } = Ioc.Default.GetRequiredService<ICustomIconStorageService>();
 
         private CreateCustomIconViewModel ViewModel { get; } = Ioc.Default.GetRequiredService<CreateCustomIconViewModel>();
 
-        ObservableCollection<CustomIconViewModel> CustomIconViewModels = new ObservableCollection<CustomIconViewModel>();
-
-        List<CustomIconViewModel> SelectedCustomIcon;
-
-        CanvasSvgDocument canvasSVG;
-
         Color defaultFolderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(AppConstants.ColorSettings.DefaultFolderColor);
-
-        bool isDeleteButtonEnabled = false;
-
-        public Color ButtonTitleColor
-        {
-            get { return (Color)GetValue(ButtonTitleColorProperty); }
-            set { SetValue(ButtonTitleColorProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for ButtonTitleColor.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ButtonTitleColorProperty =
-            DependencyProperty.Register("ButtonTitleColor", typeof(Color), typeof(CreateCustomIconPage), new PropertyMetadata(Colors.White));
 
         public CreateCustomIconPage()
         {
@@ -63,29 +36,29 @@ namespace FIP.App.Views
 
             mainColorPicker.Color = defaultFolderColor;
             ViewModel.NewCustomIcon.Color = AppConstants.ColorSettings.DefaultFolderColor;
-            CategorySearchBox.ItemsSource = CategoryStorageService.Categories;
+            CategorySearchBox.ItemsSource = ViewModel.Categories;
         }
 
         private void CanvasControl_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            if (canvasSVG == null)
+            if (ViewModel.CanvasSVG == null)
             {
                 canvasControl.Invalidate();
                 return;
             }
 
-            args.DrawingSession.DrawSvg(canvasSVG, sender.Size);
+            args.DrawingSession.DrawSvg(ViewModel.CanvasSVG, sender.Size);
         }
 
         private async void mainColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
         {
-            var colorFromPicker = new FIPColor(args.NewColor.R, args.NewColor.G, args.NewColor.B, args.NewColor.A);
+            var colorFromPicker = new FIPColor(args.NewColor);
 
             SetUpButtonTitleColor(colorFromPicker);
 
             await Task.Run(async Task<bool> () =>
             {
-                if (canvasSVG != null)
+                if (ViewModel.CanvasSVG != null)
                 {
                     // Repaint SVG gradients
                     SVGPainterService.ApplyColorPalette(colorFromPicker);
@@ -102,51 +75,8 @@ namespace FIP.App.Views
         // Saves created image
         private async void createButton_Click(object sender, RoutedEventArgs e)
         {
-            if (canvasSVG == null)
-                return;
-
-            var svgString = canvasSVG.GetXml();
-            SvgDocument newSVG = SvgDocument.FromSvg<SvgDocument>(svgString);
-            var svgBitmap = SaveSvgDocumentToBitmap(newSVG);
-
-            StorageFolder iconsFolder = KnownFolders.SavedPictures;
-
-            string iconFIleName = String.IsNullOrEmpty(ViewModel.NewCustomIcon.Name) ?
-                ViewModel.NewCustomIcon.Model.Id.ToString() : ViewModel.NewCustomIcon.Name;
-            StorageFile newIconFile = await iconsFolder.CreateFileAsync($"{iconFIleName}.ico");
-            bool isIconCreated = await ImageHelper.SaveBitmapAsIconAsync(svgBitmap, newIconFile.Path);
-
-            if (isIconCreated)
-            {
-                if (ViewModel.CurrentCategory.IsNewCategory)
-                {
-                    CategoryStorageService.AddCategory(ViewModel.CurrentCategory.Model);
-                    ViewModel.CurrentCategory.IsNewCategory = false;
-                }
-                else
-                    ViewModel.NewCustomIcon.CategoryId = Guid.Empty;
-
-                CustomIconStorageService.AddCustomIcon(ViewModel.NewCustomIcon.Model);
-                CustomIconViewModels.Add(ViewModel.NewCustomIcon);
-
-                ViewModel.NewCustomIcon = new CustomIconViewModel();
-            }
-        }
-
-        private Bitmap SaveSvgDocumentToBitmap(SvgDocument svgDocument)
-        {
-            if (svgDocument is null)
-                return new Bitmap(0, 0);
-
-            svgDocument.ShapeRendering = SvgShapeRendering.Auto;
-            svgDocument.Ppi = 72;
-            Bitmap svgBitmap = svgDocument.Draw(256, 256);
-
-            var svgBitmapGraphics = System.Drawing.Graphics.FromImage(svgBitmap);
-            svgBitmapGraphics.SmoothingMode = SmoothingMode.Default;
-            svgBitmapGraphics.DrawImage(svgBitmap, 0, 0, 256, 256);
-
-            return svgBitmap;
+            await ViewModel.CreateCustomIconAsync();
+            CategorySearchBox.Text = ViewModel.CurrentCategory.Name;
         }
 
         private async void canvasControl_CreateResources(CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
@@ -154,8 +84,8 @@ namespace FIP.App.Views
             var svgFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(AppConstants.AssetPaths.SVGFolderIconTemplate));
             using (var fileStream = await svgFile.OpenReadAsync())
             {
-                canvasSVG = await CanvasSvgDocument.LoadAsync(canvasControl, fileStream);
-                SVGPainterService.Initialize(canvasSVG);
+                ViewModel.CanvasSVG = await CanvasSvgDocument.LoadAsync(canvasControl, fileStream);
+                SVGPainterService.Initialize(ViewModel.CanvasSVG);
                 canvasControl.Invalidate();
             }
         }
@@ -168,31 +98,26 @@ namespace FIP.App.Views
         {
             if (colorFromPicker is null)
             {
-                ButtonTitleColor = Colors.Black;
+                ViewModel.ButtonTitleColor = Colors.Black;
                 return;
             }
 
             if (colorFromPicker.L > AppConstants.ColorSettings.MinContrastLightness)
             {
-                ButtonTitleColor = Colors.Black;
+                ViewModel.ButtonTitleColor = Colors.Black;
             }
             else
             {
-                ButtonTitleColor = colorFromPicker.H > AppConstants.ColorSettings.MinContrastHueAngle &&
+                ViewModel.ButtonTitleColor = colorFromPicker.H > AppConstants.ColorSettings.MinContrastHueAngle &&
                     colorFromPicker.H < AppConstants.ColorSettings.MaxContrastHueAngle ?
                     Colors.Black : Colors.White;
             }
         }
 
-        protected async override void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             ViewModel.CurrentCategory = new CategoryViewModel(new Category { Id = Guid.Empty });
-            var icons = CustomIconStorageService.GetCustomIconsByCategoryId(ViewModel.CurrentCategory.Model.Id);
-            CustomIconViewModels.Clear();
-            foreach (var icon in icons)
-            {
-                CustomIconViewModels.Add(new CustomIconViewModel(icon));
-            }
+            ViewModel.RefreshCustomIconViewModels();
         }
 
         private void CategorySearchBoxTextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
@@ -201,43 +126,25 @@ namespace FIP.App.Views
             {
                 if (String.IsNullOrEmpty(sender.Text))
                 {
-                    ViewModel.CurrentCategory = new CategoryViewModel(new Category { Id = Guid.Empty, Name = sender.Text });
                     sender.ItemsSource = null;
-                    CustomIconViewModels.Clear();
-
-                    var icons = CustomIconStorageService.GetCustomIconsByCategoryId(ViewModel.CurrentCategory.Model.Id);
-                    foreach (var icon in icons)
-                    {
-                        CustomIconViewModels.Add(new CustomIconViewModel(icon));
-                    }
-
+                    ViewModel.CurrentCategory = new CategoryViewModel(new Category { Id = Guid.Empty });
                     return;
                 }
 
                 var querySplit = sender.Text.ToLower().Split(" ");
-                var suggestions = CategoryStorageService.Categories.Where(
-                    item =>
-                    {
-                        bool flag = true;
-                        foreach (string queryToken in querySplit)
-                        {
-                            // Check if token is not in string
-                            if (item.Name?.ToLower().IndexOf(queryToken, StringComparison.CurrentCultureIgnoreCase) < 0)
-                            {
-                                // Token is not in string, so we ignore this item.
-                                flag = false;
-                            }
-                        }
-                        return flag;
-                    }).Select(category => new CategoryViewModel(category));
+                var suggestions = ViewModel.Categories
+                    .Where(item => querySplit.All(queryToken => item.Name?.IndexOf(queryToken, StringComparison.CurrentCultureIgnoreCase) >= 0))
+                    .Select(category => new CategoryViewModel(category));
 
-                if (suggestions.Count() > 0)
+                if (!suggestions.Any(s => s.Name == sender.Text))
                 {
-                    suggestions = suggestions.OrderByDescending(i => i.Name.StartsWith(sender.Text, StringComparison.CurrentCultureIgnoreCase)).ThenBy(i => i.Name);
+                    var category = new CategoryViewModel(new Category { Name = sender.Text });
+                    category.IsNewCategory = true;
+                    suggestions = suggestions.Append(category);
                 }
-                var category = new CategoryViewModel(new Category { Name = sender.Text });
-                category.IsNewCategory = true;
-                suggestions = suggestions.Append(category);
+
+                suggestions = suggestions.OrderByDescending(i => i.Name.StartsWith(sender.Text, StringComparison.CurrentCultureIgnoreCase)).ThenBy(i => i.Name);
+
                 sender.ItemsSource = suggestions;
             }
         }
@@ -251,18 +158,10 @@ namespace FIP.App.Views
                     var category = args.ChosenSuggestion as CategoryViewModel;
                     ViewModel.CurrentCategory = category;
 
-                    if (category.Model.Id != Guid.Empty || !String.IsNullOrEmpty(category.Name))
+                    if (ViewModel.CurrentCategory.IsNewCategory)
                     {
-                        CustomIconViewModels.Clear();
-
-                        var icons = CustomIconStorageService.GetCustomIconsByCategoryId(category.Model.Id);
-                        foreach (var icon in icons)
-                        {
-                            CustomIconViewModels.Add(new CustomIconViewModel(icon));
-                        }
+                        ViewModel.SelectedCustomIcon = null;
                     }
-                    else
-                        CustomIconViewModels.Clear();
                 }
                 catch (Exception e)
                 {
@@ -277,11 +176,11 @@ namespace FIP.App.Views
             {
                 if (gridView.SelectedItems.Count > 0)
                 {
-                    SelectedCustomIcon = gridView.SelectedItems.Select(i => i as CustomIconViewModel).ToList();
+                    ViewModel.SelectedCustomIcon = gridView.SelectedItems.Select(i => i as CustomIconViewModel).ToList();
                 }
                 else
                 {
-                    SelectedCustomIcon = null;
+                    ViewModel.SelectedCustomIcon = null;
                 }
             }
         }
@@ -290,25 +189,7 @@ namespace FIP.App.Views
         {
             try
             {
-                StorageFolder iconsFolder = KnownFolders.SavedPictures;
-
-                foreach (var item in SelectedCustomIcon)
-                {
-                    CustomIconStorageService.DeleteCustomIconById(item.Model.Id);
-
-                    string iconFIleName = String.IsNullOrEmpty(item.Name) ?
-                        item.Model.Id.ToString() : item.Name;
-
-                    File.Delete(Path.Combine(iconsFolder.Path, $"{iconFIleName}.ico"));
-                }
-                SelectedCustomIcon = null;
-                CustomIconViewModels.Clear();
-
-                var icons = CustomIconStorageService.GetCustomIconsByCategoryId(ViewModel.CurrentCategory.Model.Id);
-                foreach (var icon in icons)
-                {
-                    CustomIconViewModels.Add(new CustomIconViewModel(icon));
-                }
+                await ViewModel.DeleteSelectedCustomIcons();
             }
             catch (Exception ex)
             {

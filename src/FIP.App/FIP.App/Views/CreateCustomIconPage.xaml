@@ -10,18 +10,20 @@
     xmlns:appVm="using:FIP.App.ViewModels"
 	DataContext="{x:Bind ViewModel, Mode=OneWay}"
     mc:Ignorable="d"
+    HighContrastAdjustment="None"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     x:Name="CreateCustomIconPageControl"
     NavigationCacheMode="Enabled">
 	<Page.Resources>
 		<DataTemplate x:Key="CustomIconItem" x:DataType="models:CustomIconViewModel">
 			<Border CornerRadius="4" Padding="8" Width="210" Height="150"
-Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
+				Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
 				<Grid>
 					<Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 						<Button.Resources>
 							<ResourceDictionary>
 								<SolidColorBrush x:Key="ButtonBackground" Color="{x:Bind Color}"/>
+								<Thickness x:Key="BorderThickness">0</Thickness>
 							</ResourceDictionary>
 						</Button.Resources>
 					</Button>
@@ -34,39 +36,39 @@ Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
 			</Border>
 		</DataTemplate>
 	</Page.Resources>
-	
-    <Grid Background="{ThemeResource HomePageBackgroundBrush}">
-		<!--  Visual states reflect the application's window size  -->
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="LayoutVisualStates">
-                <VisualState x:Name="WideLayout">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <VisualState x:Name="NarrowLayout">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="contentSV.Padding" Value="12,0,12,36" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
 
-        <ScrollViewer x:Name="contentSV"
+	<Grid Background="{ThemeResource HomePageBackgroundBrush}">
+		<!--  Visual states reflect the application's window size  -->
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="LayoutVisualStates">
+				<VisualState x:Name="WideLayout">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="{StaticResource Breakpoint640Plus}" />
+					</VisualState.StateTriggers>
+				</VisualState>
+				<VisualState x:Name="NarrowLayout">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="contentSV.Padding" Value="12,0,12,36" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+
+		<ScrollViewer x:Name="contentSV"
                       Grid.Row="1"
                       UseSystemFocusVisuals="False"
                       VerticalScrollBarVisibility="Auto"
                       VerticalScrollMode="Auto"
                       Padding="48,12,12,36">
 
-            <VariableSizedWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3">
+			<VariableSizedWrapGrid Orientation="Horizontal" MaximumRowsOrColumns="3">
 
-                <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
+				<Border Padding="16" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
-                    <ColorPicker x:Name="mainColorPicker"
+					<ColorPicker x:Name="mainColorPicker"
                                  ColorSpectrumShape="Box"
                                  IsMoreButtonVisible="True"
                                  IsColorSliderVisible="True"
@@ -74,18 +76,18 @@ Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                                  IsHexInputVisible="True"
                                  IsAlphaEnabled="False" 
                                  ColorChanged="mainColorPicker_ColorChanged"/>
-                </Border>
+				</Border>
 
-                <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
+				<Border Padding="16" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
-                    <StackPanel Grid.Row="1" Spacing="16" Orientation="Vertical">
-                        <TextBox x:Name="NameBox" Header="Enter folder icon name:" PlaceholderText="Icon name"
+					<StackPanel Grid.Row="1" Spacing="16" Orientation="Vertical">
+						<TextBox x:Name="NameBox" Header="Enter folder icon name:" PlaceholderText="Icon name"
                                  MaxLength="30" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 								 Text="{x:Bind ViewModel.NewCustomIcon.Name, Mode=TwoWay}">
-                            <TextBox.SelectionHighlightColor>
-                                <SolidColorBrush Color="{x:Bind mainColorPicker.Color, Mode=OneWay}"/>
-                            </TextBox.SelectionHighlightColor>
-                        </TextBox>
+							<TextBox.SelectionHighlightColor>
+								<SolidColorBrush Color="{x:Bind mainColorPicker.Color, Mode=OneWay}"/>
+							</TextBox.SelectionHighlightColor>
+						</TextBox>
 
 						<TextBox x:Name="InfoTip" Header="Enter folder information tip:" PlaceholderText="Info tip"
 								 MaxLength="30" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
@@ -99,43 +101,44 @@ Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
                                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 										TextChanged="CategorySearchBoxTextChanged" 
 										QuerySubmitted="CategorySearchBoxQuerySubmitted"/>
-						
-                        <Button x:Name="createButton" Content="Create folder icon"
+
+						<Button x:Name="createButton" Content="Create folder icon"
                                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                                 Click="createButton_Click">
-                            <Button.Background>
-                                <SolidColorBrush Color="{x:Bind mainColorPicker.Color, Mode=OneWay}"/>
-                            </Button.Background>
-                            <Button.Foreground>
-								<SolidColorBrush Color="{Binding ElementName=CreateCustomIconPageControl, Path=ButtonTitleColor}"/>
-                            </Button.Foreground>
-                        </Button>
+							<Button.Background>
+								<SolidColorBrush Color="{x:Bind mainColorPicker.Color, Mode=OneWay}"/>
+							</Button.Background>
+							<Button.Foreground>
+								<SolidColorBrush Color="{x:Bind ViewModel.ButtonTitleColor}"/>
+							</Button.Foreground>
+						</Button>
 						<Button x:Name="DeleteButton" Style="{StaticResource AccentButtonStyle}" Content="Delete Selected Icons" 
 								VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
-								IsEnabled="{x:Bind appVm:Converters.IsNotNull(SelectedCustomIcon), Mode=OneWay}" Click="DeleteButton_Click" />
+								IsEnabled="{x:Bind appVm:Converters.IsNotNull(ViewModel.SelectedCustomIcon), Mode=OneWay}" Click="DeleteButton_Click" />
 					</StackPanel>
-                </Border>
+				</Border>
 
-                <!--<Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
+				<Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
-                    <Image Source="/Assets/windows11-folder-downloadai.svg" Height="Auto"/>
-                </Border>-->
-
-                <Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
-                        Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
-                    <canvas:CanvasControl x:Name="canvasControl" Draw="CanvasControl_Draw"
+					<canvas:CanvasControl x:Name="canvasControl" Draw="CanvasControl_Draw"
                                           CreateResources="canvasControl_CreateResources"/>
-                </Border>
+				</Border>
 
-                <Border Padding="8" Margin="8" VariableSizedWrapGrid.ColumnSpan="3" CornerRadius="{StaticResource ControlCornerRadius}" 
+				<Border Padding="16" Margin="8" VariableSizedWrapGrid.ColumnSpan="3" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
-					<GridView x:Name="IconsGridView" ItemTemplate="{StaticResource CustomIconItem}"
-							  ItemsSource="{x:Bind CustomIconViewModels, Mode=TwoWay}" SelectionChanged="IconsGridView_SelectionChanged"
+					<GridView x:Name="IconsGridView" ItemTemplate="{StaticResource CustomIconItem}" 
+							  ItemsSource="{x:Bind ViewModel.CustomIconViewModels, Mode=TwoWay}" SelectionChanged="IconsGridView_SelectionChanged"
 							  IsItemClickEnabled="False" SelectionMode="Multiple" FlowDirection="LeftToRight">
-						
+						<GridView.Header>
+							<TextBlock
+								Margin="0,0,0,8"
+								AutomationProperties.HeadingLevel="Level1"
+								Style="{StaticResource SubtitleTextBlockStyle}"
+								Text="{x:Bind ViewModel.CurrentCategory.Name, Mode=TwoWay}" />
+						</GridView.Header>
 					</GridView>
-                </Border>
-            </VariableSizedWrapGrid>
-        </ScrollViewer>
-    </Grid>
+				</Border>
+			</VariableSizedWrapGrid>
+		</ScrollViewer>
+	</Grid>
 </Page>
