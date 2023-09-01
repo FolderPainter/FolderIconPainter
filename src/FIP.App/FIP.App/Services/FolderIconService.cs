@@ -3,11 +3,8 @@ using FIP.App.Helpers;
 using FIP.Core.Models;
 using FIP.Core.Services;
 using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Windows.Storage;
 using Bitmap = System.Drawing.Bitmap;
 
@@ -43,9 +40,9 @@ namespace FIP.App.Services
 
             try
             {
-                string newIconPath = Path.Combine(_folderPath, customIcon.CategoryId.ToString());
-                Directory.CreateDirectory(newIconPath);
-                StorageFolder iconsFolder = await StorageFolder.GetFolderFromPathAsync(newIconPath);
+                string newIconFolderPath = Path.Combine(_folderPath, customIcon.CategoryId.ToString());
+                Directory.CreateDirectory(newIconFolderPath);
+                StorageFolder iconsFolder = await StorageFolder.GetFolderFromPathAsync(newIconFolderPath);
                 StorageFile newIconFile = await iconsFolder.CreateFileAsync($"{customIcon.Id}.ico");
 
                 return await ImageHelper.SaveBitmapAsIconAsync(bitmap, newIconFile.Path);
@@ -62,18 +59,38 @@ namespace FIP.App.Services
 
             try
             {
-                string iconPath = Path.Combine(_folderPath, customIcon.CategoryId.ToString());
-                StorageFolder iconsFolder = await StorageFolder.GetFolderFromPathAsync(iconPath);
-                StorageFile iconFile = await iconsFolder.GetFileAsync($"{customIcon.Id}.ico");
-                await iconFile.DeleteAsync();
-                return !File.Exists(iconFile.Path);
-                //File.Delete(Path.Combine(iconsFolder.Path, $"{customIcon.Id}.ico"));
-                //return await ImageHelper.SaveBitmapAsIconAsync(bitmap, newIconFile.Path);
+                string iconFolderPath = Path.Combine(_folderPath, customIcon.CategoryId.ToString());
+             
+                if (File.Exists(Path.Combine(iconFolderPath, $"{customIcon.Id}.ico")))
+                {
+                    StorageFolder iconsFolder = await StorageFolder.GetFolderFromPathAsync(iconFolderPath);
+                    StorageFile iconFile = await iconsFolder.GetFileAsync($"{customIcon.Id}.ico");
+                    await iconFile.DeleteAsync();
+                    return !File.Exists(iconFile.Path);
+                }
+
+                return true;
             }
             catch (Exception)
             {
                 throw;
             }
+        }
+
+        public bool FolderIconExists(CustomIcon customIcon)
+        {
+            ArgumentNullException.ThrowIfNull(customIcon);
+
+            try
+            {
+                string iconFolderPath = Path.Combine(_folderPath, customIcon.CategoryId.ToString());
+                return File.Exists(Path.Combine(iconFolderPath, $"{customIcon.Id}.ico"));
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+       
         }
     }
 }

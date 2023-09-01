@@ -11,5 +11,7 @@ namespace FIP.Core.Services
         public Task<bool> CreateFolderIconAsync(CustomIcon customIcon, Bitmap bitmap);
 
         public Task<bool> DeleteFolderIconAsync(CustomIcon customIcon);
+
+        public bool FolderIconExists(CustomIcon customIcon);
     }
 }
