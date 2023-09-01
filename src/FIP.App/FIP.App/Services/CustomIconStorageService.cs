@@ -46,9 +46,35 @@ namespace FIP.App.Services
 
         public void AddCustomIcon(CustomIcon customIcon)
         {
+            ArgumentNullException.ThrowIfNull(customIcon);
+
             var customIcons = CustomIcons.ToList();
             customIcons.Add(customIcon);
             CustomIcons = customIcons;
+        }
+
+        public void UpdateCustomIcon(CustomIcon customIcon)
+        {
+            ArgumentNullException.ThrowIfNull(customIcon);
+
+            var customIcons = CustomIcons.ToList();
+            customIcons.RemoveAll(ci => ci.Id == customIcon.Id);
+            customIcons.Add(customIcon);
+            CustomIcons = customIcons;
+        }
+
+        public void PostCustomIcon(CustomIcon customIcon)
+        {
+            ArgumentNullException.ThrowIfNull(customIcon);
+
+            if (CustomIcons.Any(ci => ci.Id == customIcon.Id))
+            {
+                UpdateCustomIcon(customIcon);
+            }
+            else
+            {
+                AddCustomIcon(customIcon);
+            }
         }
 
         public void DeleteCustomIconById(Guid id)

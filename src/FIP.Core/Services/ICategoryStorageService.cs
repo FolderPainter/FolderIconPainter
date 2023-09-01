@@ -14,6 +14,10 @@ namespace FIP.Core.Services
 
         Category AddCategory(Category category);
 
+        void UpdateCategory(Category category);
+
+        void PostCategory(Category category);
+
         void DeleteCategoryById(Guid id);
     }
 }

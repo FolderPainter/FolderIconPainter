@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using Windows.Storage;
 using FIP.Core.Models;
+using CommunityToolkit.WinUI.UI;
 
 namespace FIP.App.Services
 {
@@ -41,6 +42,8 @@ namespace FIP.App.Services
 
         public Category AddCategory(Category category)
         {
+            ArgumentException.ThrowIfNullOrEmpty(category.Name);
+
             var categories = Categories.ToList();
             categories.Add(category);
             Categories = categories;
@@ -53,6 +56,35 @@ namespace FIP.App.Services
             var categories = Categories.ToList();
             categories.RemoveAll(category => category.Id == id);
             Categories = categories;
+        }
+
+        public void UpdateCategory(Category category)
+        {
+            ArgumentNullException.ThrowIfNull(category);
+
+            var categories = Categories.ToList();
+            categories.RemoveAll(ci => ci.Id == category.Id);
+            categories.Add(category);
+            Categories = categories;
+        }
+
+        public void PostCategory(Category category)
+        {
+            ArgumentNullException.ThrowIfNull(category);
+
+            if (Categories.Any(ci => ci.Id == category.Id))
+            {
+                UpdateCategory(category);
+            }
+            else 
+            {
+                if (category.Id == Guid.Empty)
+                {
+                    category.Id = Guid.NewGuid();
+                }
+
+                AddCategory(category);
+            }
         }
     }
 }

@@ -14,7 +14,11 @@ namespace FIP.Core.Services
 
         IEnumerable<CustomIcon> GetCustomIconsByCategoryId(Guid categoryId);
 
-        void AddCustomIcon(CustomIcon category);
+        void AddCustomIcon(CustomIcon customIcon);
+
+        void UpdateCustomIcon(CustomIcon customIcon);
+
+        void PostCustomIcon(CustomIcon customIcon);
 
         void DeleteCustomIconById(Guid id);
 
