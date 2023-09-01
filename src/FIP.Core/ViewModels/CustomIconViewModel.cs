@@ -7,9 +7,21 @@ namespace FIP.Core.ViewModels
     [Serializable]
     public class CustomIconViewModel : ObservableObject
     {
-        public CustomIconViewModel(CustomIcon model = null) => Model = model ?? new CustomIcon();
+        public CustomIconViewModel(CustomIcon model = null)
+        {
+            Model = model ?? new CustomIcon();
+
+            PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(Color))
+                {
+                    IsColorChanged = true;
+                }
+            };
+        }
 
         private CustomIcon model;
+        private bool isNewCustomIcon;
 
         /// <summary>
         /// Gets or sets the underlying Customer object.
@@ -40,6 +52,14 @@ namespace FIP.Core.ViewModels
             get => Model.Name;
             set => SetProperty(Model.Name, value, Model, (u, n) => u.Name = n);
         }
+
+        public bool IsNewCustomIcon
+        {
+            get => isNewCustomIcon;
+            set => SetProperty(ref isNewCustomIcon, value);
+        }
+
+        public bool IsColorChanged { get; set; }
 
         public string InfoTip
         {
