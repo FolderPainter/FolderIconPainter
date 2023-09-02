@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI;
@@ -36,7 +37,10 @@ namespace FIP.App.ViewModels
         private CategoryViewModel currentCategory = new();
         private CustomIconViewModel newCustomIcon = new();
         private Color buttonTitleColor;
-        private List<CustomIconViewModel> selectedCustomIcon;
+        private Color pickedColor;
+        private List<CustomIconViewModel> selectedCustomIcons;
+
+        private CustomIconViewModel selectedCustomIcon;
 
         public CreateCustomIconViewModel()
         {
@@ -45,6 +49,8 @@ namespace FIP.App.ViewModels
 
             PropertyChanged += CreateCustomIconPropertyChanged;
         }
+
+        public string CreateOrEditButtonContent => NewCustomIcon.IsNewCustomIcon ? "Create folder icon" : "Edit folder icon";
 
         public CategoryViewModel CurrentCategory
         {
@@ -55,21 +61,36 @@ namespace FIP.App.ViewModels
         public CustomIconViewModel NewCustomIcon
         {
             get => newCustomIcon;
-            set => SetProperty(ref newCustomIcon, value);
+            set
+            {
+                SetProperty(ref newCustomIcon, value);
+                OnPropertyChanged(nameof(CreateOrEditButtonContent));
+            }
         }
 
-        public Color ButtonTitleColor 
-        { 
-            get => buttonTitleColor; 
+        public Color PickedColor
+        {
+            get => pickedColor;
+            set => SetProperty(ref pickedColor, value);
+        }
+
+        public Color ButtonTitleColor
+        {
+            get => buttonTitleColor;
             set => SetProperty(ref buttonTitleColor, value);
         }
 
-        public List<CustomIconViewModel> SelectedCustomIcon 
-        { 
-            get => selectedCustomIcon; 
-            set => SetProperty(ref selectedCustomIcon, value);
+        public List<CustomIconViewModel> SelectedCustomIcons
+        {
+            get => selectedCustomIcons;
+            set => SetProperty(ref selectedCustomIcons, value);
         }
 
+        public CustomIconViewModel SelectedCustomIcon
+        {
+            get => selectedCustomIcon;
+            set => SetProperty(ref selectedCustomIcon, value);
+        }
 
         private void CreateCustomIconPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
@@ -93,6 +114,29 @@ namespace FIP.App.ViewModels
             }
         }
 
+        public void ClearSelectedCustomIcons()
+        {
+            SelectedCustomIcons.Clear();
+            OnPropertyChanged(nameof(SelectedCustomIcons));
+        }
+
+        public void RefreshCurrentCategoryName()
+        {
+            if (CurrentCategory.Model.Id == Guid.Empty)
+            {
+                CurrentCategory.Name = String.Empty;
+            }
+            else
+            {
+                CurrentCategory.Name = CategoryStorageService.GetCategoryById(CurrentCategory.Model.Id).Name;
+            }
+        }
+
+        public void RenameCurrentCategory()
+        {
+            CategoryStorageService.PostCategory(CurrentCategory.Model);
+        }
+
         private Bitmap SaveSvgDocumentToBitmap(SvgDocument svgDocument)
         {
             if (svgDocument is null)
@@ -104,37 +148,82 @@ namespace FIP.App.ViewModels
 
             var svgBitmapGraphics = System.Drawing.Graphics.FromImage(svgBitmap);
             svgBitmapGraphics.SmoothingMode = SmoothingMode.Default;
-            svgBitmapGraphics.DrawImage(svgBitmap, 0, 0, 
+            svgBitmapGraphics.DrawImage(svgBitmap, 0, 0,
                 AppConstants.IconSettings.DefaultIconSize,
                 AppConstants.IconSettings.DefaultIconSize);
 
             return svgBitmap;
         }
 
-        public async Task CreateCustomIconAsync()
+        private async Task<bool> CreateFolderIconAsync()
         {
             if (CanvasSVG == null)
-                return;
+                return false;
 
-            var svgString = CanvasSVG.GetXml();
-            SvgDocument newSVG = SvgDocument.FromSvg<SvgDocument>(svgString);
-            var svgBitmap = SaveSvgDocumentToBitmap(newSVG);
+            if (NewCustomIcon.IsColorChanged || NewCustomIcon.IsNewCustomIcon)
+            {
+                var svgString = CanvasSVG.GetXml();
+                SvgDocument newSVG = SvgDocument.FromSvg<SvgDocument>(svgString);
+                var svgBitmap = SaveSvgDocumentToBitmap(newSVG);
 
-            bool isIconCreated = await FolderIconService.CreateFolderIconAsync(NewCustomIcon.Model, svgBitmap);
+                if (FolderIconService.FolderIconExists(NewCustomIcon.Model))
+                {
+                    await FolderIconService.DeleteFolderIconAsync(NewCustomIcon.Model);
+                }
 
-            if (isIconCreated)
+                return await FolderIconService.CreateFolderIconAsync(NewCustomIcon.Model, svgBitmap);
+            }
+            return true;
+        }
+
+        public async Task CreateCustomIconAsync()
+        {
+            if (await CreateFolderIconAsync())
             {
                 if (CurrentCategory.IsNewCategory)
                 {
                     CurrentCategory = new CategoryViewModel(CategoryStorageService.AddCategory(CurrentCategory.Model));
                 }
                 else
+                {
                     NewCustomIcon.CategoryId = Guid.Empty;
+                }
 
-                CustomIconStorageService.AddCustomIcon(NewCustomIcon.Model);
-                CustomIconViewModels.Add(NewCustomIcon);
+                CustomIconStorageService.PostCustomIcon(NewCustomIcon.Model);
 
-                NewCustomIcon = new CustomIconViewModel();
+                if (NewCustomIcon.IsNewCustomIcon)
+                {
+                    NewCustomIcon.IsNewCustomIcon = false;
+                    CustomIconViewModels.Add(NewCustomIcon);
+                }
+                else
+                {
+                    CustomIconViewModels.Insert(CustomIconViewModels.IndexOf(NewCustomIcon), new CustomIconViewModel
+                    {
+                        Model = new CustomIcon
+                        {
+                            Id = NewCustomIcon.Model.Id,
+                            Name = NewCustomIcon.Name,
+                            InfoTip = NewCustomIcon.InfoTip,
+                            Color = NewCustomIcon.Color,
+                            CategoryId = NewCustomIcon.CategoryId,
+                        }
+                    });
+                    CustomIconViewModels.Remove(NewCustomIcon);
+                    //RefreshCustomIconViewModels();
+                }
+
+                NewCustomIcon = new CustomIconViewModel
+                {
+                    IsNewCustomIcon = true,
+                    Model = new CustomIcon
+                    {
+                        Name = NewCustomIcon.Name,
+                        InfoTip = NewCustomIcon.InfoTip,
+                        Color = NewCustomIcon.Color,
+                        CategoryId = NewCustomIcon.CategoryId,
+                    }
+                };
             }
         }
 
@@ -142,14 +231,13 @@ namespace FIP.App.ViewModels
         {
             try
             {
-                foreach (var item in SelectedCustomIcon)
+                foreach (var item in SelectedCustomIcons)
                 {
                     if (await FolderIconService.DeleteFolderIconAsync(item.Model))
                     {
                         CustomIconStorageService.DeleteCustomIconById(item.Model.Id);
                     }
                 }
-                SelectedCustomIcon = null;
                 RefreshCustomIconViewModels();
             }
             catch (Exception)
