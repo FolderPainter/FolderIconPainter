@@ -25,7 +25,7 @@ namespace FIP.App.Helpers
                     .AddSingleton<ICategoryStorageService, CategoryStorageService>()
                     .AddSingleton<ICustomIconStorageService, CustomIconStorageService>()
                     // ViewModels
-                    .AddTransient<CreateCustomIconViewModel>()
+                    .AddSingleton<CreateCustomIconViewModel>()
                 ).Build();
         }
 

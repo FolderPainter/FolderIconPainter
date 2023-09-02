@@ -1,4 +1,4 @@
-﻿using Microsoft.UI.Xaml;
+﻿using System.Collections;
 
 namespace FIP.App.ViewModels
 {
@@ -15,6 +15,11 @@ namespace FIP.App.ViewModels
         /// <summary>
         /// Returns true if the specified value is not null; otherwise, returns false.
         /// </summary>
-        public static bool IsNotNull(object value) => value != null;
+        public static bool IsNotNull(object value) => value is not null;
+
+        /// <summary>
+        /// Returns true if the specified <see cref="IList"/> value is not null or empty; otherwise, returns false.
+        /// </summary>
+        public static bool IsNotNullOrEmpty(IList value) => !(value is null or []);
     }
 }
