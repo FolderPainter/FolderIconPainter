@@ -15,6 +15,8 @@ using FIP.App.ViewModels;
 using FIP.Core.ViewModels;
 using System.Linq;
 using Microsoft.UI.Xaml.Navigation;
+using FIP.App.Views.Dialogs;
+using Microsoft.UI.Xaml.Data;
 
 namespace FIP.App.Views
 {
@@ -34,9 +36,14 @@ namespace FIP.App.Views
         {
             InitializeComponent();
 
-            mainColorPicker.Color = defaultFolderColor;
-            ViewModel.NewCustomIcon.Color = AppConstants.ColorSettings.DefaultFolderColor;
+            InitializeFolderIcon();
             CategorySearchBox.ItemsSource = ViewModel.Categories;
+        }
+
+        private void InitializeFolderIcon()
+        {
+            ViewModel.NewCustomIcon = new CustomIconViewModel { IsNewCustomIcon = true };
+            ViewModel.PickedColor = defaultFolderColor;
         }
 
         private void CanvasControl_Draw(CanvasControl sender, CanvasDrawEventArgs args)
@@ -50,7 +57,12 @@ namespace FIP.App.Views
             args.DrawingSession.DrawSvg(ViewModel.CanvasSVG, sender.Size);
         }
 
-        private async void mainColorPicker_ColorChanged(ColorPicker sender, ColorChangedEventArgs args)
+        private void MainColorPickerLoaded(object sender, RoutedEventArgs e)
+        {
+            ViewModel.PickedColor = defaultFolderColor;
+        }
+
+        private async void MainColorPickerColorChanged(ColorPicker sender, ColorChangedEventArgs args)
         {
             var colorFromPicker = new FIPColor(args.NewColor);
 
@@ -73,7 +85,7 @@ namespace FIP.App.Views
         }
 
         // Saves created image
-        private async void createButton_Click(object sender, RoutedEventArgs e)
+        private async void CreateEditButtonClick(object sender, RoutedEventArgs e)
         {
             await ViewModel.CreateCustomIconAsync();
             CategorySearchBox.Text = ViewModel.CurrentCategory.Name;
@@ -160,12 +172,12 @@ namespace FIP.App.Views
 
                     if (ViewModel.CurrentCategory.IsNewCategory)
                     {
-                        ViewModel.SelectedCustomIcon = null;
+                        ViewModel.SelectedCustomIcons.Clear();
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    throw e;
+                    throw;
                 }
             }
         }
@@ -174,13 +186,25 @@ namespace FIP.App.Views
         {
             if (sender is GridView gridView)
             {
-                if (gridView.SelectedItems.Count > 0)
+                if (gridView.SelectedItems.Any())
                 {
-                    ViewModel.SelectedCustomIcon = gridView.SelectedItems.Select(i => i as CustomIconViewModel).ToList();
+                    if (gridView.SelectedItems.Count == 1)
+                    {
+                        var selectedModel = gridView.SelectedItems.First() as CustomIconViewModel;
+                        ViewModel.NewCustomIcon = selectedModel;
+                        ViewModel.PickedColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(selectedModel.Color);
+                    }
+                    else
+                    {
+                        InitializeFolderIcon();
+                    }
+
+                    ViewModel.SelectedCustomIcons = gridView.SelectedItems.Select(i => i as CustomIconViewModel).ToList();
                 }
                 else
                 {
-                    ViewModel.SelectedCustomIcon = null;
+                    InitializeFolderIcon();
+                    ViewModel.ClearSelectedCustomIcons();
                 }
             }
         }
@@ -195,7 +219,7 @@ namespace FIP.App.Views
             {
                 var dialog = new ContentDialog()
                 {
-                    Title = "Unable to delete order",
+                    Title = $"Unable to delete selected Custom Icons\"",
                     Content = $"There was an error when we tried to delete " +
                         $"invoice #:\n{ex.Message}",
                     PrimaryButtonText = "OK"
@@ -203,7 +227,29 @@ namespace FIP.App.Views
                 dialog.XamlRoot = App.Window.Content.XamlRoot;
                 await dialog.ShowAsync();
             }
+        }
 
+        private async void CategoryRenameButtonClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var dialog = new RenameCategoryDialog(ViewModel.Categories.Select(c => c.Name));
+                dialog.XamlRoot = App.Window.Content.XamlRoot;
+
+                var result = await dialog.ShowAsync();
+            }
+            catch (Exception ex)
+            {
+                var dialog = new ContentDialog()
+                {
+                    Title = $"Unable to delete selected Custom Icons\"",
+                    Content = $"There was an error when we tried to delete " +
+                       $"invoice #:\n{ex.Message}",
+                    PrimaryButtonText = "OK"
+                };
+                dialog.XamlRoot = App.Window.Content.XamlRoot;
+                await dialog.ShowAsync();
+            }
         }
     }
 }
