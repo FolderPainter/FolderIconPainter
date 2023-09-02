@@ -18,6 +18,7 @@
     <None Remove="Views\AboutPage.xaml" />
     <None Remove="Views\AllIconsPage.xaml" />
     <None Remove="Views\CreateCustomIconPage.xaml" />
+    <None Remove="Views\Dialogs\RenameCategoryDialog.xaml" />
     <None Remove="Views\SettingsPage.xaml" />
   </ItemGroup>
 
@@ -76,10 +77,16 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\FIP.Core\FIP.Core.csproj" />
-    <ProjectReference Include="..\..\FIP.Shared\FIP.Shared.csproj" />
-  </ItemGroup>
+	
+	<ItemGroup>
+		<Page Update="Views\Dialogs\RenameCategoryDialog.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\..\FIP.Core\FIP.Core.csproj" />
+		<ProjectReference Include="..\..\FIP.Shared\FIP.Shared.csproj" />
+	</ItemGroup>
 
 </Project>
