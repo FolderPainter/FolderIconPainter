@@ -1,6 +1,7 @@
 ﻿using FIP.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FIP.Core.Services
 {
@@ -22,6 +23,10 @@ namespace FIP.Core.Services
 
         void DeleteCustomIconById(Guid id);
 
-        void DeleteCustomIconByCategoryId(Guid categoryId);
+        void DeleteCustomIconsByCategoryId(Guid categoryId);
+
+        void MoveCustomIconsToOtherCategory(Guid categoryId, Guid otherCategoryId);
+
+        void MoveCustomIconsToOtherCategory(IEnumerable<CustomIcon> customIcons, Guid otherCategoryId);
     }
 }

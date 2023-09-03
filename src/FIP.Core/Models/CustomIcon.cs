@@ -35,6 +35,11 @@ namespace FIP.Core.Models
             return HashCode.Combine(Id, CategoryId, Name, InfoTip, Color);
         }
 
+        public CustomIcon ShallowCopy()
+        {
+            return (CustomIcon)this.MemberwiseClone();
+        }
+
         //public static bool operator ==(CustomIcon obj1, CustomIcon obj2)
         //{
         //    if (ReferenceEquals(obj1, obj2))
