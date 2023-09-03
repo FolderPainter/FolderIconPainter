@@ -58,7 +58,7 @@ namespace FIP.App.Services
             Categories = categories;
         }
 
-        public void UpdateCategory(Category category)
+        public Category UpdateCategory(Category category)
         {
             ArgumentNullException.ThrowIfNull(category);
 
@@ -66,15 +66,17 @@ namespace FIP.App.Services
             categories.RemoveAll(ci => ci.Id == category.Id);
             categories.Add(category);
             Categories = categories;
+
+            return category;
         }
 
-        public void PostCategory(Category category)
+        public Category PostCategory(Category category)
         {
             ArgumentNullException.ThrowIfNull(category);
 
             if (Categories.Any(ci => ci.Id == category.Id))
             {
-                UpdateCategory(category);
+                return UpdateCategory(category);
             }
             else 
             {
@@ -83,7 +85,7 @@ namespace FIP.App.Services
                     category.Id = Guid.NewGuid();
                 }
 
-                AddCategory(category);
+                return AddCategory(category);
             }
         }
     }
