@@ -19,7 +19,7 @@
     <Page Update="Views\AboutPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\CreateCustomIconPage.xaml">
+    <Page Update="Views\CustomIconsPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AllIconsPage.xaml">

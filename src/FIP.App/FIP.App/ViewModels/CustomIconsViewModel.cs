@@ -22,7 +22,7 @@ using Bitmap = System.Drawing.Bitmap;
 
 namespace FIP.App.ViewModels
 {
-    public class CreateCustomIconViewModel : ObservableObject
+    public class CustomIconsViewModel : ObservableObject
     {
         private ICategoryStorageService CategoryStorageService { get; } = Ioc.Default.GetRequiredService<ICategoryStorageService>();
 
@@ -42,7 +42,7 @@ namespace FIP.App.ViewModels
 
         private CustomIconViewModel selectedCustomIcon;
 
-        public CreateCustomIconViewModel()
+        public CustomIconsViewModel()
         {
             CurrentCategory = new CategoryViewModel(new Category { Id = Guid.Empty });
             CustomIconViewModels = new ObservableCollection<CustomIconViewModel>();

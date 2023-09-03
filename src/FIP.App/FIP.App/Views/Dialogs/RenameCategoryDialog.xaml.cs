@@ -10,7 +10,7 @@ namespace FIP.App.Views.Dialogs
 {
     public sealed partial class RenameCategoryDialog : ContentDialog
     {
-        private CreateCustomIconViewModel ViewModel { get; } = Ioc.Default.GetRequiredService<CreateCustomIconViewModel>();
+        private CustomIconsViewModel ViewModel { get; } = Ioc.Default.GetRequiredService<CustomIconsViewModel>();
 
         private IEnumerable<string> existingNames;
 

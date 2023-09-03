@@ -132,7 +132,7 @@ namespace FIP.App
 
         public readonly string AllIconsLabel = "All icons";
 
-        public readonly string CreateCustomIconLabel = "Create custom icon";
+        public readonly string CustomIconsLabel = "Manage Custom Icons";
 
         public readonly string AboutLabel = "About";
 
@@ -145,7 +145,7 @@ namespace FIP.App
             var pageType =
                 args.IsSettingsInvoked ? typeof(SettingsPage) :
                 label == AllIconsLabel ? typeof(AllIconsPage) :
-                label == CreateCustomIconLabel ? typeof(CreateCustomIconPage) :
+                label == CustomIconsLabel ? typeof(CustomIconsPage) :
                 label == AboutLabel ? typeof(AboutPage) : null;
             if (pageType != null && pageType != AppFrame.CurrentSourcePageType)
             {
@@ -168,10 +168,10 @@ namespace FIP.App
                     NavView.SelectedItem = AllIconsMenuItem;
                     NavView.Header = AllIconsLabel;
                 }
-                else if (e.SourcePageType == typeof(CreateCustomIconPage))
+                else if (e.SourcePageType == typeof(CustomIconsPage))
                 {
                     NavView.SelectedItem = CreateCustomIconMenuItem;
-                    NavView.Header = CreateCustomIconLabel;
+                    NavView.Header = CustomIconsLabel;
                 }
                 else if (e.SourcePageType == typeof(SettingsPage))
                 {

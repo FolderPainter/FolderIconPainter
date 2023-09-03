@@ -17,7 +17,7 @@
     <None Remove="UserControls\PageHeader.xaml" />
     <None Remove="Views\AboutPage.xaml" />
     <None Remove="Views\AllIconsPage.xaml" />
-    <None Remove="Views\CreateCustomIconPage.xaml" />
+    <None Remove="Views\CustomIconsPage.xaml" />
     <None Remove="Views\Dialogs\RenameCategoryDialog.xaml" />
     <None Remove="Views\SettingsPage.xaml" />
   </ItemGroup>
@@ -55,7 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Views\CreateCustomIconPage.xaml">
+    <Page Update="Views\CustomIconsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

@@ -21,18 +21,18 @@ using Microsoft.UI.Xaml.Data;
 namespace FIP.App.Views
 {
     /// <summary>
-    /// Page for create custom icon
+    /// Page for create, edit custom icons and manage categories
     /// </summary>
-    public sealed partial class CreateCustomIconPage : Page
+    public sealed partial class CustomIconsPage : Page
     {
         // Dependency injections
         private ISVGPainterService SVGPainterService { get; } = Ioc.Default.GetRequiredService<ISVGPainterService>();
 
-        private CreateCustomIconViewModel ViewModel { get; } = Ioc.Default.GetRequiredService<CreateCustomIconViewModel>();
+        private CustomIconsViewModel ViewModel { get; } = Ioc.Default.GetRequiredService<CustomIconsViewModel>();
 
         Color defaultFolderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(AppConstants.ColorSettings.DefaultFolderColor);
 
-        public CreateCustomIconPage()
+        public CustomIconsPage()
         {
             InitializeComponent();
 
