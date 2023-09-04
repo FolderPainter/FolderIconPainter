@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using FIP.Core.Models;
+using FIP.Core.Services;
 using System;
 
 namespace FIP.Core.ViewModels
@@ -7,6 +9,8 @@ namespace FIP.Core.ViewModels
     [Serializable]
     public class CustomIconViewModel : ObservableObject
     {
+        private IFolderIconService FolderIconService { get; } = Ioc.Default.GetRequiredService<IFolderIconService>();
+
         public CustomIconViewModel(CustomIcon model = null)
         {
             Model = model ?? new CustomIcon();
@@ -37,6 +41,7 @@ namespace FIP.Core.ViewModels
 
                     // Raise the PropertyChanged event for all properties.
                     OnPropertyChanged(string.Empty);
+                    OnPropertyChanged(nameof(SvgIconPath));
                 }
             }
         }
@@ -75,5 +80,9 @@ namespace FIP.Core.ViewModels
             get => Model.Color;
             set => SetProperty(Model.Color, value, Model, (u, n) => u.Color = n);
         }
+
+        public string IconPath => FolderIconService.GetFolderIconPath(Model);
+
+        public string SvgIconPath => FolderIconService.GetSvgFolderIconPath(Model);
     }
 }

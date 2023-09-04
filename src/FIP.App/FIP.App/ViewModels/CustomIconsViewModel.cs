@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using FIP.App.Constants;
-using FIP.App.Helpers;
 using FIP.Core.Models;
 using FIP.Core.Services;
 using FIP.Core.ViewModels;
@@ -12,11 +11,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing.Drawing2D;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
-using Windows.Storage;
 using Windows.UI;
 using Bitmap = System.Drawing.Bitmap;
 
@@ -32,6 +28,8 @@ namespace FIP.App.ViewModels
 
         public IEnumerable<Category> Categories { get => CategoryStorageService.Categories; }
 
+        Color DefaultFolderColor => CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(AppConstants.ColorSettings.DefaultFolderColor); 
+
         public ObservableCollection<CustomIconViewModel> CustomIconViewModels;
         public CanvasSvgDocument CanvasSVG;
         private CategoryViewModel currentCategory = new();
@@ -39,8 +37,6 @@ namespace FIP.App.ViewModels
         private Color buttonTitleColor;
         private Color pickedColor;
         private List<CustomIconViewModel> selectedCustomIcons;
-
-        private CustomIconViewModel selectedCustomIcon;
 
         public CustomIconsViewModel()
         {
@@ -86,12 +82,6 @@ namespace FIP.App.ViewModels
             set => SetProperty(ref selectedCustomIcons, value);
         }
 
-        public CustomIconViewModel SelectedCustomIcon
-        {
-            get => selectedCustomIcon;
-            set => SetProperty(ref selectedCustomIcon, value);
-        }
-
         private void CreateCustomIconPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName is nameof(CurrentCategory))
@@ -99,6 +89,12 @@ namespace FIP.App.ViewModels
                 RefreshCustomIconViewModels();
                 NewCustomIcon.CategoryId = CurrentCategory.Model.Id;
             }
+        }
+
+        public void InitializeFolderIcon()
+        {
+            NewCustomIcon = new CustomIconViewModel { IsNewCustomIcon = true };
+            PickedColor = DefaultFolderColor;
         }
 
         public void RefreshCustomIconViewModels()
@@ -134,7 +130,14 @@ namespace FIP.App.ViewModels
 
         public void RenameCurrentCategory()
         {
-            CategoryStorageService.PostCategory(CurrentCategory.Model);
+            var oldCategoryId = CurrentCategory.Model.Id;
+            var newCategory = CategoryStorageService.PostCategory(CurrentCategory.Model);
+
+            if (oldCategoryId == Guid.Empty)
+            {
+                CustomIconStorageService.MoveCustomIconsToOtherCategory(Guid.Empty, newCategory.Id);
+                FolderIconService.MoveFolderIconsAsync(CustomIconViewModels.Select(ci => ci.Model), newCategory);
+            }
         }
 
         private Bitmap SaveSvgDocumentToBitmap(SvgDocument svgDocument)
@@ -166,12 +169,7 @@ namespace FIP.App.ViewModels
                 SvgDocument newSVG = SvgDocument.FromSvg<SvgDocument>(svgString);
                 var svgBitmap = SaveSvgDocumentToBitmap(newSVG);
 
-                if (FolderIconService.FolderIconExists(NewCustomIcon.Model))
-                {
-                    await FolderIconService.DeleteFolderIconAsync(NewCustomIcon.Model);
-                }
-
-                return await FolderIconService.CreateFolderIconAsync(NewCustomIcon.Model, svgBitmap);
+                return await FolderIconService.ForceCreateAsync(NewCustomIcon.Model, svgBitmap, svgString);
             }
             return true;
         }
@@ -210,20 +208,9 @@ namespace FIP.App.ViewModels
                         }
                     });
                     CustomIconViewModels.Remove(NewCustomIcon);
-                    //RefreshCustomIconViewModels();
                 }
 
-                NewCustomIcon = new CustomIconViewModel
-                {
-                    IsNewCustomIcon = true,
-                    Model = new CustomIcon
-                    {
-                        Name = NewCustomIcon.Name,
-                        InfoTip = NewCustomIcon.InfoTip,
-                        Color = NewCustomIcon.Color,
-                        CategoryId = NewCustomIcon.CategoryId,
-                    }
-                };
+                InitializeFolderIcon();
             }
         }
 
@@ -233,12 +220,19 @@ namespace FIP.App.ViewModels
             {
                 foreach (var item in SelectedCustomIcons)
                 {
-                    if (await FolderIconService.DeleteFolderIconAsync(item.Model))
+                    if (await FolderIconService.DeleteAsync(item.Model))
                     {
                         CustomIconStorageService.DeleteCustomIconById(item.Model.Id);
                     }
                 }
-                RefreshCustomIconViewModels();
+
+                var deletedCustomIcons = new List<CustomIconViewModel>(SelectedCustomIcons);
+                ClearSelectedCustomIcons();
+
+                foreach (var item in deletedCustomIcons)
+                {
+                    CustomIconViewModels.Remove(item);
+                }
             }
             catch (Exception)
             {
