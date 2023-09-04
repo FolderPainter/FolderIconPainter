@@ -4,8 +4,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using Windows.Storage;
-using Windows.UI;
-using System.Threading.Tasks;
 using Microsoft.UI;
 using FIP.Core.Models;
 using FIP.Core.Services;
@@ -16,7 +14,6 @@ using FIP.Core.ViewModels;
 using System.Linq;
 using Microsoft.UI.Xaml.Navigation;
 using FIP.App.Views.Dialogs;
-using Microsoft.UI.Xaml.Data;
 
 namespace FIP.App.Views
 {
@@ -30,75 +27,64 @@ namespace FIP.App.Views
 
         private CustomIconsViewModel ViewModel { get; } = Ioc.Default.GetRequiredService<CustomIconsViewModel>();
 
-        Color defaultFolderColor = CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(AppConstants.ColorSettings.DefaultFolderColor);
-
         public CustomIconsPage()
         {
             InitializeComponent();
-
-            InitializeFolderIcon();
-            CategorySearchBox.ItemsSource = ViewModel.Categories;
         }
 
-        private void InitializeFolderIcon()
+        private void IconCanvasDraw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            ViewModel.NewCustomIcon = new CustomIconViewModel { IsNewCustomIcon = true };
-            ViewModel.PickedColor = defaultFolderColor;
-        }
-
-        private void CanvasControl_Draw(CanvasControl sender, CanvasDrawEventArgs args)
-        {
-            if (ViewModel.CanvasSVG == null)
+            if (ViewModel.CanvasSVG != null)
             {
-                canvasControl.Invalidate();
-                return;
+                args.DrawingSession.DrawSvg(ViewModel.CanvasSVG, sender.Size);
             }
-
-            args.DrawingSession.DrawSvg(ViewModel.CanvasSVG, sender.Size);
+            else
+            {
+                sender.Invalidate();
+            }
         }
 
         private void MainColorPickerLoaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.PickedColor = defaultFolderColor;
+            ViewModel.InitializeFolderIcon();
         }
 
-        private async void MainColorPickerColorChanged(ColorPicker sender, ColorChangedEventArgs args)
+        private void CategorySearchBoxLoaded(object sender, RoutedEventArgs e)
+        {
+            CategorySearchBox.ItemsSource = ViewModel.Categories;
+        }
+
+        private void MainColorPickerColorChanged(ColorPicker sender, ColorChangedEventArgs args)
         {
             var colorFromPicker = new FIPColor(args.NewColor);
+            ViewModel.NewCustomIcon.Color = colorFromPicker.ToString(ColorOutputFormats.Hex);
 
-            SetUpButtonTitleColor(colorFromPicker);
-
-            await Task.Run(async Task<bool> () =>
+            if (ViewModel.CanvasSVG != null)
             {
-                if (ViewModel.CanvasSVG != null)
-                {
-                    // Repaint SVG gradients
-                    SVGPainterService.ApplyColorPalette(colorFromPicker);
+                SetUpButtonTitleColor(colorFromPicker);
 
-                    ViewModel.NewCustomIcon.Color = colorFromPicker.ToString(ColorOutputFormats.Hex);
+                // Repaint SVG gradients
+                SVGPainterService.ApplyColorPalette(colorFromPicker);
 
-                    // Draw refilled svg image
-                    canvasControl.Invalidate();
-                }
-                return await Task.FromResult(true);
-            });
+                // Draw refilled svg image
+                IconCanvas.Invalidate();
+            }
         }
 
-        // Saves created image
         private async void CreateEditButtonClick(object sender, RoutedEventArgs e)
         {
             await ViewModel.CreateCustomIconAsync();
             CategorySearchBox.Text = ViewModel.CurrentCategory.Name;
         }
 
-        private async void canvasControl_CreateResources(CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
+        private async void IconCanvasCreateResources(CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
         {
             var svgFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(AppConstants.AssetPaths.SVGFolderIconTemplate));
             using (var fileStream = await svgFile.OpenReadAsync())
             {
-                ViewModel.CanvasSVG = await CanvasSvgDocument.LoadAsync(canvasControl, fileStream);
+                ViewModel.CanvasSVG = await CanvasSvgDocument.LoadAsync(IconCanvas, fileStream);
                 SVGPainterService.Initialize(ViewModel.CanvasSVG);
-                canvasControl.Invalidate();
+                sender.Invalidate();
             }
         }
 
@@ -156,7 +142,6 @@ namespace FIP.App.Views
                 }
 
                 suggestions = suggestions.OrderByDescending(i => i.Name.StartsWith(sender.Text, StringComparison.CurrentCultureIgnoreCase)).ThenBy(i => i.Name);
-
                 sender.ItemsSource = suggestions;
             }
         }
@@ -172,7 +157,7 @@ namespace FIP.App.Views
 
                     if (ViewModel.CurrentCategory.IsNewCategory)
                     {
-                        ViewModel.SelectedCustomIcons.Clear();
+                        ViewModel.ClearSelectedCustomIcons();
                     }
                 }
                 catch (Exception)
@@ -196,14 +181,14 @@ namespace FIP.App.Views
                     }
                     else
                     {
-                        InitializeFolderIcon();
+                        ViewModel.InitializeFolderIcon();
                     }
 
                     ViewModel.SelectedCustomIcons = gridView.SelectedItems.Select(i => i as CustomIconViewModel).ToList();
                 }
                 else
                 {
-                    InitializeFolderIcon();
+                    ViewModel.InitializeFolderIcon();
                     ViewModel.ClearSelectedCustomIcons();
                 }
             }

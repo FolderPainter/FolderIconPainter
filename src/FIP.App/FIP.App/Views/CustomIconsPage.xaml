@@ -8,30 +8,34 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:models="using:FIP.Core.ViewModels"
     xmlns:appVm="using:FIP.App.ViewModels"
-	DataContext="{x:Bind ViewModel, Mode=OneWay}"
-    mc:Ignorable="d"
-    HighContrastAdjustment="None"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
-    x:Name="CreateCustomIconPageControl"
-    NavigationCacheMode="Enabled">
+    x:Name="CustomIconsPageControl"
+    NavigationCacheMode="Enabled"
+    HighContrastAdjustment="None"
+	DataContext="{x:Bind ViewModel, Mode=OneWay}"
+	mc:Ignorable="d">
 	<Page.Resources>
 		<DataTemplate x:Key="CustomIconItem" x:DataType="models:CustomIconViewModel">
-			<Border CornerRadius="4" Padding="8" Width="210" Height="150"
+			<Border CornerRadius="4" Padding="8" Width="210" Height="200"
 				Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
-				<Grid>
-					<Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-						<Button.Resources>
-							<ResourceDictionary>
-								<SolidColorBrush x:Key="ButtonBackground" Color="{x:Bind Color}"/>
-								<Thickness x:Key="BorderThickness">0</Thickness>
-							</ResourceDictionary>
-						</Button.Resources>
-					</Button>
-					<StackPanel Orientation="Vertical" Height="50" VerticalAlignment="Bottom" CornerRadius="0,0,4,4"
-						Background="LightGray" Opacity=".75">
-						<TextBlock FontSize="24" TextAlignment="Center" Foreground="#121212"
-								   VerticalAlignment="Center" Text="{x:Bind Name}"/>
-					</StackPanel>
+				<Grid Padding="8,0,8,8">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					
+					<TextBlock Grid.Row="0" 
+							   Style="{StaticResource SubtitleTextBlockStyle}"
+							   FontSize="20" TextWrapping="NoWrap" TextLineBounds="TrimToBaseline"
+							   Text="{x:Bind Name}"/>
+
+					<Image Grid.Row="1" 
+						   Stretch="UniformToFill" Margin="-12,-12,-12,0">
+						<Image.Source>
+							<BitmapImage UriSource="{x:Bind IconPath, Mode=OneTime}"
+										 CreateOptions="IgnoreImageCache"/>
+						</Image.Source>
+					</Image>
 				</Grid>
 			</Border>
 		</DataTemplate>
@@ -102,7 +106,8 @@
 						<AutoSuggestBox x:Name="CategorySearchBox" Header="Select category for icon:" PlaceholderText="Category"
                                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 										TextChanged="CategorySearchBoxTextChanged" 
-										QuerySubmitted="CategorySearchBoxQuerySubmitted"/>
+										QuerySubmitted="CategorySearchBoxQuerySubmitted"
+										Loaded="CategorySearchBoxLoaded"/>
 
 						<Button x:Name="CreateEditButton" Content="{x:Bind ViewModel.CreateOrEditButtonContent, Mode=OneWay}"
                                 VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
@@ -119,11 +124,11 @@
 								IsEnabled="{x:Bind appVm:Converters.IsNotNullOrEmpty(ViewModel.SelectedCustomIcons), Mode=OneWay}" Click="DeleteButton_Click" />
 					</StackPanel>
 				</Border>
-
+				
 				<Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
-					<canvas:CanvasControl x:Name="canvasControl" Draw="CanvasControl_Draw"
-                                          CreateResources="canvasControl_CreateResources"/>
+					<canvas:CanvasControl x:Name="IconCanvas" Draw="IconCanvasDraw"
+                                          CreateResources="IconCanvasCreateResources"/>
 				</Border>
 
 				<Border Padding="16" Margin="8" VariableSizedWrapGrid.ColumnSpan="3" CornerRadius="{StaticResource ControlCornerRadius}" 
@@ -142,7 +147,6 @@
 									<Button x:Name="CategoryRenameButton" Content="Rename category"
 											VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 											Click="CategoryRenameButtonClick" />
-
 								</StackPanel>
 							</Grid>
 						</GridView.Header>
