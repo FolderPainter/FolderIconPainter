@@ -18,6 +18,7 @@
     <None Remove="Views\AboutPage.xaml" />
     <None Remove="Views\AllIconsPage.xaml" />
     <None Remove="Views\CustomIconsPage.xaml" />
+    <None Remove="Views\Dialogs\MoveFolderIconsDialog.xaml" />
     <None Remove="Views\Dialogs\RenameCategoryDialog.xaml" />
     <None Remove="Views\SettingsPage.xaml" />
   </ItemGroup>
@@ -87,6 +88,12 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\FIP.Core\FIP.Core.csproj" />
 		<ProjectReference Include="..\..\FIP.Shared\FIP.Shared.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Page Update="Views\Dialogs\MoveFolderIconsDialog.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 
 </Project>
