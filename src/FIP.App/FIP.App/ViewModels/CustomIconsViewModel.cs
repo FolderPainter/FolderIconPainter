@@ -37,6 +37,7 @@ namespace FIP.App.ViewModels
         private Color buttonTitleColor;
         private Color pickedColor;
         private List<CustomIconViewModel> selectedCustomIcons;
+        private CategoryViewModel categoryToMove;
 
         public CustomIconsViewModel()
         {
@@ -82,6 +83,12 @@ namespace FIP.App.ViewModels
             set => SetProperty(ref selectedCustomIcons, value);
         }
 
+        public CategoryViewModel CategoryToMove
+        {
+            get => categoryToMove;
+            set => SetProperty(ref categoryToMove, value);
+        }
+
         private void CreateCustomIconPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName is nameof(CurrentCategory))
@@ -93,7 +100,11 @@ namespace FIP.App.ViewModels
 
         public void InitializeFolderIcon()
         {
-            NewCustomIcon = new CustomIconViewModel { IsNewCustomIcon = true };
+            NewCustomIcon = new CustomIconViewModel 
+            { 
+                IsNewCustomIcon = true,
+                CategoryId = CurrentCategory.Model.Id
+            };
             PickedColor = DefaultFolderColor;
         }
 
@@ -112,8 +123,11 @@ namespace FIP.App.ViewModels
 
         public void ClearSelectedCustomIcons()
         {
-            SelectedCustomIcons.Clear();
-            OnPropertyChanged(nameof(SelectedCustomIcons));
+            if (SelectedCustomIcons is not null)
+            {
+                SelectedCustomIcons.Clear();
+                OnPropertyChanged(nameof(SelectedCustomIcons));
+            }
         }
 
         public void RefreshCurrentCategoryName()
@@ -180,13 +194,9 @@ namespace FIP.App.ViewModels
             {
                 if (CurrentCategory.IsNewCategory)
                 {
-                    CurrentCategory = new CategoryViewModel(CategoryStorageService.AddCategory(CurrentCategory.Model));
+                    CategoryStorageService.AddCategory(CurrentCategory.Model);
                 }
-                else
-                {
-                    NewCustomIcon.CategoryId = Guid.Empty;
-                }
-
+               
                 CustomIconStorageService.PostCustomIcon(NewCustomIcon.Model);
 
                 if (NewCustomIcon.IsNewCustomIcon)
@@ -196,17 +206,8 @@ namespace FIP.App.ViewModels
                 }
                 else
                 {
-                    CustomIconViewModels.Insert(CustomIconViewModels.IndexOf(NewCustomIcon), new CustomIconViewModel
-                    {
-                        Model = new CustomIcon
-                        {
-                            Id = NewCustomIcon.Model.Id,
-                            Name = NewCustomIcon.Name,
-                            InfoTip = NewCustomIcon.InfoTip,
-                            Color = NewCustomIcon.Color,
-                            CategoryId = NewCustomIcon.CategoryId,
-                        }
-                    });
+                    CustomIconViewModels.Insert(CustomIconViewModels.IndexOf(NewCustomIcon),
+                        new CustomIconViewModel(NewCustomIcon.Model.ShallowCopy()));
                     CustomIconViewModels.Remove(NewCustomIcon);
                 }
 
@@ -225,6 +226,27 @@ namespace FIP.App.ViewModels
                         CustomIconStorageService.DeleteCustomIconById(item.Model.Id);
                     }
                 }
+
+                var deletedCustomIcons = new List<CustomIconViewModel>(SelectedCustomIcons);
+                ClearSelectedCustomIcons();
+
+                foreach (var item in deletedCustomIcons)
+                {
+                    CustomIconViewModels.Remove(item);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async void MoveSelectedFolderIcons()
+        {
+            try
+            {
+                CustomIconStorageService.MoveCustomIconsToOtherCategory(SelectedCustomIcons.Select(ci => ci.Model), CategoryToMove.Model.Id);
+                await FolderIconService.MoveFolderIconsAsync(SelectedCustomIcons.Select(ci => ci.Model), CategoryToMove.Model);
 
                 var deletedCustomIcons = new List<CustomIconViewModel>(SelectedCustomIcons);
                 ClearSelectedCustomIcons();
