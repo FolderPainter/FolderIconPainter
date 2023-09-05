@@ -5,7 +5,6 @@ using FIP.Core.Models;
 using FIP.Core.Services;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -89,20 +88,30 @@ namespace FIP.App.Services
 
             try
             {
-                string iconPath = GetFolderIconPath(customIcon);
+                string rasterIconPath = GetFolderIconPath(customIcon);
+                string svgIconPath = GetSvgFolderIconPath(customIcon);
 
-                if (File.Exists(iconPath))
+                bool rasterIconMoved = true, svgIconMoved = true;
+
+                string otherCategoryFolderPath = Path.Combine(_folderPath, category.Id.ToString());
+                Directory.CreateDirectory(otherCategoryFolderPath);
+                StorageFolder otherCategoryFolder = await StorageFolder.GetFolderFromPathAsync(otherCategoryFolderPath);
+
+                if (File.Exists(rasterIconPath))
                 {
-                    string otherCategoryFolderPath = Path.Combine(_folderPath, category.Id.ToString());
-                    Directory.CreateDirectory(otherCategoryFolderPath);
-                    StorageFolder otherCategoryFolder = await StorageFolder.GetFolderFromPathAsync(otherCategoryFolderPath);
-                    StorageFile iconFile = await StorageFile.GetFileFromPathAsync(iconPath);
-                    await iconFile.MoveAsync(otherCategoryFolder);
-
-                    return File.Exists(Path.Combine(otherCategoryFolderPath, $"{customIcon.Id}.ico"));
+                    StorageFile rasterIconFile = await StorageFile.GetFileFromPathAsync(rasterIconPath);
+                    await rasterIconFile.MoveAsync(otherCategoryFolder);
+                    rasterIconMoved = File.Exists(Path.Combine(otherCategoryFolderPath, $"{customIcon.Id}.ico"));
                 }
 
-                return false;
+                if (File.Exists(svgIconPath))
+                {
+                    StorageFile svgIconFile = await StorageFile.GetFileFromPathAsync(svgIconPath);
+                    await svgIconFile.MoveAsync(otherCategoryFolder);
+                    svgIconMoved = File.Exists(Path.Combine(otherCategoryFolderPath, $"{customIcon.Id}.svg"));
+                }
+
+                return rasterIconMoved && svgIconMoved;
             }
             catch (Exception)
             {

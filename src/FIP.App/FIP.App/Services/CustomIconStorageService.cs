@@ -111,8 +111,9 @@ namespace FIP.App.Services
         {
             var editedCustomIcons = customIcons.Select(ci =>
             {
-                ci.CategoryId = otherCategoryId;
-                return ci;
+                var editCi = ci.ShallowCopy();
+                editCi.CategoryId = otherCategoryId;
+                return editCi;
             });
 
             var newCustomIcons = CustomIcons.ToList();
