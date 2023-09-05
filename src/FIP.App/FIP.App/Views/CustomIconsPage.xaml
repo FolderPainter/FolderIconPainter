@@ -144,6 +144,11 @@
 											   Text="{x:Bind ViewModel.CurrentCategory.Name, Mode=TwoWay}" />
 								</StackPanel>
 								<StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+									<Button x:Name="MoveFolderIconsButton" Content="Move selected icons"
+											VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+											IsEnabled="{x:Bind appVm:Converters.IsNotNullOrEmpty(ViewModel.SelectedCustomIcons), Mode=OneWay}"
+											Click="MoveFolderIconsButtonClick" />
+									<AppBarSeparator/>
 									<Button x:Name="CategoryRenameButton" Content="Rename category"
 											VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
 											Click="CategoryRenameButtonClick" />

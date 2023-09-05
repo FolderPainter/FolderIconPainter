@@ -14,6 +14,7 @@ using FIP.Core.ViewModels;
 using System.Linq;
 using Microsoft.UI.Xaml.Navigation;
 using FIP.App.Views.Dialogs;
+using System.Threading.Tasks;
 
 namespace FIP.App.Views
 {
@@ -57,15 +58,13 @@ namespace FIP.App.Views
         private void MainColorPickerColorChanged(ColorPicker sender, ColorChangedEventArgs args)
         {
             var colorFromPicker = new FIPColor(args.NewColor);
+            SetUpButtonTitleColor(colorFromPicker);
             ViewModel.NewCustomIcon.Color = colorFromPicker.ToString(ColorOutputFormats.Hex);
 
             if (ViewModel.CanvasSVG != null)
             {
-                SetUpButtonTitleColor(colorFromPicker);
-
                 // Repaint SVG gradients
                 SVGPainterService.ApplyColorPalette(colorFromPicker);
-
                 // Draw refilled svg image
                 IconCanvas.Invalidate();
             }
@@ -154,11 +153,6 @@ namespace FIP.App.Views
                 {
                     var category = args.ChosenSuggestion as CategoryViewModel;
                     ViewModel.CurrentCategory = category;
-
-                    if (ViewModel.CurrentCategory.IsNewCategory)
-                    {
-                        ViewModel.ClearSelectedCustomIcons();
-                    }
                 }
                 catch (Exception)
                 {
@@ -211,6 +205,21 @@ namespace FIP.App.Views
                 };
                 dialog.XamlRoot = App.Window.Content.XamlRoot;
                 await dialog.ShowAsync();
+            }
+        }
+
+        private async void MoveFolderIconsButtonClick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var dialog = new MoveFolderIconsDialog();
+                dialog.XamlRoot = App.Window.Content.XamlRoot;
+
+                var result = await dialog.ShowAsync();
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
