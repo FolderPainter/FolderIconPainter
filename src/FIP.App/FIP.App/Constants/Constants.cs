@@ -16,6 +16,8 @@
             public const string CategoriesStorageFileName = "categories.json";
 
             public const string FolderIconsStorageFileName = "folderIcons.json";
+
+            public const string LogsFileName = "logs.json";
         }
 
         public static class ColorSettings
@@ -35,6 +37,12 @@
 
             public const int SVGRenderingPpi = 72;
         }
-        
+
+        public static class GitHub
+        {
+            public const string BugReportUrl = @"";
+
+        }
+
     }
 }
