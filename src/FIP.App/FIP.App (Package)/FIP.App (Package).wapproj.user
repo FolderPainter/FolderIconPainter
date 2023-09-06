@@ -10,4 +10,8 @@
     <SplashScreenSource>A:\bigfiles\FolderIconPainter\src\FIP.App\FIP.App %28Package%29\Images\FIP.ai</SplashScreenSource>
     <PackageLogoSource>A:\bigfiles\FolderIconPainter\src\FIP.App\FIP.App %28Package%29\Images\FIP.ai</PackageLogoSource>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebuggerFlavor>AppHostLocalDebugger</DebuggerFlavor>
+    <RemoteDebugEnabled>False</RemoteDebugEnabled>
+  </PropertyGroup>
 </Project>
