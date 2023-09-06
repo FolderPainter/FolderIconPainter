@@ -14,13 +14,13 @@ namespace FIP.App.Services
 {
     public class FolderIconService : IFolderIconService
     {
+        private string _folderPath;
+
         public FolderIconService()
         {
             Initialize(Path.Combine(ApplicationData.Current.LocalFolder.Path,
                 AppConstants.StorageSettings.IconsFolderName));
         }
-
-        private string _folderPath;
 
         public void Initialize(string folderPath)
         {

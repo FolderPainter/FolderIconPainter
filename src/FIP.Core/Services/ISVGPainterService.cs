@@ -1,5 +1,6 @@
 ﻿using FIP.Core.Models;
 using Microsoft.Graphics.Canvas.Svg;
+using System.Threading.Tasks;
 
 namespace FIP.Core.Services
 {
@@ -12,6 +13,6 @@ namespace FIP.Core.Services
 
         void Initialize(CanvasSvgDocument canvasSVG);
 
-        void ApplyColorPalette(FIPColor color);
+        Task ApplyColorPaletteAsync(FIPColor color);
     }
 }

@@ -41,6 +41,7 @@ namespace FIP.Core.ViewModels
 
                     // Raise the PropertyChanged event for all properties.
                     OnPropertyChanged(string.Empty);
+                    OnPropertyChanged(nameof(IconPath));
                     OnPropertyChanged(nameof(SvgIconPath));
                 }
             }

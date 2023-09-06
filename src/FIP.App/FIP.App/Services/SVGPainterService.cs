@@ -39,7 +39,7 @@ namespace FIP.App.Services
             }
         }
 
-        public async void ApplyColorPalette(FIPColor color)
+        public async Task ApplyColorPaletteAsync(FIPColor color)
         {
             await Task.Run(() =>
             {
@@ -50,9 +50,9 @@ namespace FIP.App.Services
                         ApplyColorPaletteForGradient(gradient, color);
                     });
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    throw new Exception(e.Message);
+                    throw;
                 }
             });
         }

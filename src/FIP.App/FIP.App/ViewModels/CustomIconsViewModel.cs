@@ -28,7 +28,7 @@ namespace FIP.App.ViewModels
 
         public IEnumerable<Category> Categories { get => CategoryStorageService.Categories; }
 
-        Color DefaultFolderColor => CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(AppConstants.ColorSettings.DefaultFolderColor); 
+        Color DefaultFolderColor => CommunityToolkit.WinUI.Helpers.ColorHelper.ToColor(AppConstants.ColorSettings.DefaultFolderColor);
 
         public ObservableCollection<CustomIconViewModel> CustomIconViewModels;
         public CanvasSvgDocument CanvasSVG;
@@ -100,8 +100,8 @@ namespace FIP.App.ViewModels
 
         public void InitializeFolderIcon()
         {
-            NewCustomIcon = new CustomIconViewModel 
-            { 
+            NewCustomIcon = new CustomIconViewModel
+            {
                 IsNewCustomIcon = true,
                 CategoryId = CurrentCategory.Model.Id
             };
@@ -132,14 +132,9 @@ namespace FIP.App.ViewModels
 
         public void RefreshCurrentCategoryName()
         {
-            if (CurrentCategory.Model.Id == Guid.Empty)
-            {
-                CurrentCategory.Name = String.Empty;
-            }
-            else
-            {
-                CurrentCategory.Name = CategoryStorageService.GetCategoryById(CurrentCategory.Model.Id).Name;
-            }
+            CurrentCategory.Name = CurrentCategory.Model.Id == Guid.Empty ?
+                String.Empty :
+                CategoryStorageService.GetCategoryById(CurrentCategory.Model.Id).Name;
         }
 
         public void RenameCurrentCategory()
@@ -154,7 +149,7 @@ namespace FIP.App.ViewModels
             }
         }
 
-        private Bitmap SaveSvgDocumentToBitmap(SvgDocument svgDocument)
+        public Bitmap SaveSvgDocumentToBitmap(SvgDocument svgDocument)
         {
             if (svgDocument is null)
                 return new Bitmap(0, 0);
@@ -196,7 +191,7 @@ namespace FIP.App.ViewModels
                 {
                     CategoryStorageService.AddCategory(CurrentCategory.Model);
                 }
-               
+
                 CustomIconStorageService.PostCustomIcon(NewCustomIcon.Model);
 
                 if (NewCustomIcon.IsNewCustomIcon)
@@ -215,6 +210,17 @@ namespace FIP.App.ViewModels
             }
         }
 
+        private void DeleteCustomIcons(List<CustomIconViewModel> customIcons)
+        {
+            var deletedCustomIcons = new List<CustomIconViewModel>(customIcons);
+            ClearSelectedCustomIcons();
+
+            foreach (var item in deletedCustomIcons)
+            {
+                CustomIconViewModels.Remove(item);
+            }
+        }
+
         public async Task DeleteSelectedCustomIcons()
         {
             try
@@ -227,13 +233,7 @@ namespace FIP.App.ViewModels
                     }
                 }
 
-                var deletedCustomIcons = new List<CustomIconViewModel>(SelectedCustomIcons);
-                ClearSelectedCustomIcons();
-
-                foreach (var item in deletedCustomIcons)
-                {
-                    CustomIconViewModels.Remove(item);
-                }
+                DeleteCustomIcons(SelectedCustomIcons);
             }
             catch (Exception)
             {
@@ -247,14 +247,7 @@ namespace FIP.App.ViewModels
             {
                 CustomIconStorageService.MoveCustomIconsToOtherCategory(SelectedCustomIcons.Select(ci => ci.Model), CategoryToMove.Model.Id);
                 await FolderIconService.MoveFolderIconsAsync(SelectedCustomIcons.Select(ci => ci.Model), CategoryToMove.Model);
-
-                var deletedCustomIcons = new List<CustomIconViewModel>(SelectedCustomIcons);
-                ClearSelectedCustomIcons();
-
-                foreach (var item in deletedCustomIcons)
-                {
-                    CustomIconViewModels.Remove(item);
-                }
+                DeleteCustomIcons(SelectedCustomIcons);
             }
             catch (Exception)
             {
