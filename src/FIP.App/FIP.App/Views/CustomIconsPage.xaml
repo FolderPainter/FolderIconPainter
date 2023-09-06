@@ -23,19 +23,15 @@
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
-					
+
 					<TextBlock Grid.Row="0" 
 							   Style="{StaticResource SubtitleTextBlockStyle}"
 							   FontSize="20" TextWrapping="NoWrap" TextLineBounds="TrimToBaseline"
 							   Text="{x:Bind Name}"/>
 
-					<Image Grid.Row="1" 
-						   Stretch="UniformToFill" Margin="-12,-12,-12,0">
-						<Image.Source>
-							<BitmapImage UriSource="{x:Bind IconPath, Mode=OneTime}"
-										 CreateOptions="IgnoreImageCache"/>
-						</Image.Source>
-					</Image>
+					<Image Grid.Row="1" DataContextChanged="GridViewItemImageDataContextChanged"
+						   Stretch="UniformToFill" Margin="-12,-12,-12,0"
+						   Source="{x:Bind SvgIconPath, Mode=OneWay}"/>
 				</Grid>
 			</Border>
 		</DataTemplate>
@@ -121,10 +117,20 @@
 						</Button>
 						<Button x:Name="DeleteButton" Style="{StaticResource AccentButtonStyle}" Content="Delete Selected Icons" 
 								VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
-								IsEnabled="{x:Bind appVm:Converters.IsNotNullOrEmpty(ViewModel.SelectedCustomIcons), Mode=OneWay}" Click="DeleteButton_Click" />
+								IsEnabled="{x:Bind appVm:Converters.IsNotNullOrEmpty(ViewModel.SelectedCustomIcons), Mode=OneWay}">
+							<Button.Flyout>
+								<Flyout>
+									<StackPanel>
+										<TextBlock Style="{ThemeResource BaseTextBlockStyle}" Margin="0,0,0,12"
+												   Text="Selected icons will be deleted. Do you want to continue?" />
+										<Button Click="DeleteConfirmationClick" Content="Yes, delete" />
+									</StackPanel>
+								</Flyout>
+							</Button.Flyout>
+						</Button>
 					</StackPanel>
 				</Border>
-				
+
 				<Border Padding="8" Margin="8" CornerRadius="{StaticResource ControlCornerRadius}" 
                         Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
 					<canvas:CanvasControl x:Name="IconCanvas" Draw="IconCanvasDraw"

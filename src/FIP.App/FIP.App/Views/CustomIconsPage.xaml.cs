@@ -14,7 +14,9 @@ using FIP.Core.ViewModels;
 using System.Linq;
 using Microsoft.UI.Xaml.Navigation;
 using FIP.App.Views.Dialogs;
-using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Svg;
+using System.IO;
 
 namespace FIP.App.Views
 {
@@ -64,7 +66,7 @@ namespace FIP.App.Views
             if (ViewModel.CanvasSVG != null)
             {
                 // Repaint SVG gradients
-                SVGPainterService.ApplyColorPalette(colorFromPicker);
+                SVGPainterService.ApplyColorPaletteAsync(colorFromPicker);
                 // Draw refilled svg image
                 IconCanvas.Invalidate();
             }
@@ -188,23 +190,15 @@ namespace FIP.App.Views
             }
         }
 
-        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        private async void DeleteConfirmationClick(object sender, RoutedEventArgs e)
         {
             try
             {
                 await ViewModel.DeleteSelectedCustomIcons();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                var dialog = new ContentDialog()
-                {
-                    Title = $"Unable to delete selected Custom Icons\"",
-                    Content = $"There was an error when we tried to delete " +
-                        $"invoice #:\n{ex.Message}",
-                    PrimaryButtonText = "OK"
-                };
-                dialog.XamlRoot = App.Window.Content.XamlRoot;
-                await dialog.ShowAsync();
+               throw;
             }
         }
 
@@ -232,18 +226,32 @@ namespace FIP.App.Views
 
                 var result = await dialog.ShowAsync();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                var dialog = new ContentDialog()
-                {
-                    Title = $"Unable to delete selected Custom Icons\"",
-                    Content = $"There was an error when we tried to delete " +
-                       $"invoice #:\n{ex.Message}",
-                    PrimaryButtonText = "OK"
-                };
-                dialog.XamlRoot = App.Window.Content.XamlRoot;
-                await dialog.ShowAsync();
+                throw;
             }
+        }
+
+        private void GridViewItemImageDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            if (args.NewValue is null)
+                return;
+
+            var image = sender as Image;
+            image.Source = null;
+
+            var newIcon = args.NewValue as CustomIconViewModel;
+            var svgDoc = SvgDocument.Open(newIcon.SvgIconPath);
+            var svgBitmap = ViewModel.SaveSvgDocumentToBitmap(svgDoc);
+
+            BitmapImage bitmapImage = new BitmapImage();
+            using (MemoryStream stream = new MemoryStream())
+            {
+                svgBitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Png);
+                stream.Position = 0;
+                bitmapImage.SetSource(stream.AsRandomAccessStream());
+            }
+            image.Source = bitmapImage;
         }
     }
 }
