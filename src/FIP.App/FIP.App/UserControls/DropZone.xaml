@@ -1,32 +1,58 @@
-<!-- Licensed under the MIT License. -->
-
 <UserControl
     x:Class="FIP.App.UserControls.DropZone"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:FIP.App.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    x:Name="DropZoneControl"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	xmlns:appVm="using:FIP.App.ViewModels"
+	x:Name="DropZoneControl"
     mc:Ignorable="d">
-    <Viewbox MaxWidth="210" MaxHeight="150" Stretch="Fill">
-        <Border x:Name="MainBorder" CornerRadius="4" Padding="8" Width="210" Height="150"
-                Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}">
-            <Button x:Name="ZoneButton"
-                HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AllowDrop="True"
-                Click="ZoneButton_Click" Drop="ZoneButton_Drop" DragOver="ZoneButton_DragOver">
-                <Button.Resources>
-                    <ResourceDictionary>
-                        <SolidColorBrush x:Key="ButtonBackground" Color="{Binding ElementName=DropZoneControl, Path=BackgroundColor}"/>
-                        <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{Binding ElementName=DropZoneControl, Path=BackgroundPressedColor}"/>
-                        <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{Binding ElementName=DropZoneControl, Path=BackgroundPointerOverColor}"/>
-                        <SolidColorBrush x:Key="ButtonBackgroundFocused" Color="{Binding ElementName=DropZoneControl, Path=BackgroundColor}"/>
-                    </ResourceDictionary>
-                </Button.Resources>
-                <TextBlock x:Name="ZoneTextBlock">
+	<Viewbox Stretch="UniformToFill" StretchDirection="DownOnly">
+		<Button CornerRadius="4" Padding="8"
+                Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+				Click="DropZoneClick" DragOver="DropZoneDragOver"
+				Drop="DropZoneDrop" AllowDrop="True"> 
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+				</Grid.RowDefinitions>
+				
+				<TextBlock Grid.Row="0" FontSize="20" Margin="8,6,8,8"
+						   Visibility="{x:Bind appVm:Converters.ToVisible(ShowNameMode), Mode=OneWay}"
+						   TextWrapping="NoWrap" TextLineBounds="TrimToBaseline"
+						   Style="{StaticResource SubtitleTextBlockStyle}"
+						   Text="{x:Bind IconViewModel.Name, Mode=OneWay, TargetNullValue='No name'}" />
+				
+				<Grid Visibility="{x:Bind appVm:Converters.ToVisible(ShowIconMode), Mode=OneWay}"
+					  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1"
+					  MaxWidth="210" MaxHeight="134">
+					<Image Stretch="Fill" Margin="-24,-16,-24,-24"
+						   Source="{x:Bind IconViewModel.SvgIconPath, Mode=OneWay}"/>
+				</Grid>
+				
+				<Button x:Name="ZoneButton" Grid.Row="1" Width="194" Height="118" 
+						Margin="8" CornerRadius="4" Click="DropZoneClick"
+						Visibility="{x:Bind appVm:Converters.ToNotVisible(ShowIconMode), Mode=OneWay}"
+						HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+					<Button.Resources>
+						<ResourceDictionary>
+							<SolidColorBrush x:Key="ButtonBackground" 
+											 Color="{Binding ElementName=DropZoneControl, Path=BackgroundColor}"/>
+							<SolidColorBrush x:Key="ButtonBackgroundPressed" 
+											 Color="{Binding ElementName=DropZoneControl, Path=BackgroundPressedColor}"/>
+							<SolidColorBrush x:Key="ButtonBackgroundPointerOver" 
+											 Color="{Binding ElementName=DropZoneControl, Path=BackgroundPointerOverColor}"/>
+							<SolidColorBrush x:Key="ButtonBackgroundFocused" 
+											 Color="{Binding ElementName=DropZoneControl, Path=BackgroundColor}"/>
+						</ResourceDictionary>
+					</Button.Resources>
+					<TextBlock x:Name="ZoneTextBlock">
 
-                </TextBlock>
-            </Button>
-        </Border>
-    </Viewbox>
+					</TextBlock>
+				</Button>
+			</Grid>
+		</Button>
+	</Viewbox>
 </UserControl>
