@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FIP.Core", "src\FIP.Core\FIP.Core.csproj", "{79CBE5DC-9AE0-4182-882E-FC3D832C0156}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FIP.Core.UnitTests", "src\FIP.Core.UnitTests\FIP.Core.UnitTests.csproj", "{14456154-7FBE-4AC1-96F2-B775991CD5B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FIP.Core.UnitTests", "src\FIP.Core.UnitTests\FIP.Core.UnitTests.csproj", "{14456154-7FBE-4AC1-96F2-B775991CD5B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
