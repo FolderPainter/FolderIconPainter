@@ -6,7 +6,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:usercontrols="using:FIP.App.UserControls"
-    KeyDown="AppShell_KeyDown"
     TabNavigation="Cycle"
     mc:Ignorable="d">
 
@@ -26,64 +25,87 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="TitleBarStates">
-                <VisualState x:Name="WideLayout">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="640" />
-                    </VisualState.StateTriggers>
-                </VisualState>
-                <VisualState x:Name="SmallLayout">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0" />
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="AppTitleBar.Margin" Value="96,0,0,0" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<!--  TitleBar  -->
+			<RowDefinition Height="*" />
+			<!--  NavView  -->
+		</Grid.RowDefinitions>
+		
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="TitleBarStates">
+				<VisualState x:Name="Default" />
+				<VisualState x:Name="Compact">
+					<VisualState.Setters>
+						<Setter Target="AppTitleBar.Margin" Value="96,0,0,0" />
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Top">
+					<VisualState.Setters>
+						<Setter Target="AppTitleBar.Margin" Value="16,0,0,0" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+			<VisualStateGroup x:Name="WindowActivationStates">
+				<VisualState x:Name="Activated" />
+				<VisualState x:Name="Deactivated">
+					<VisualState.Setters>
+						<Setter Target="AppTitle.Foreground" Value="{ThemeResource TextFillColorTertiaryBrush}" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
 
         <Border x:Name="AppTitleBar"
                 Grid.Column="1"
+                Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
                 Margin="48,0,0,0"
+				VerticalAlignment="Stretch"
                 IsHitTestVisible="True"
-                VerticalAlignment="Top"
-                Height="{Binding ElementName=NavView, Path=CompactPaneLength}"
                 Canvas.ZIndex="1">
-            <StackPanel Orientation="Horizontal">
-                <Image Width="18" Source="Images/Square44x44Logo.png"/>
+			<StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+				<Image Width="18" Source="ms-appx:///Images/Square44x44Logo.png"/>
                 <TextBlock x:Name="AppTitle"
+						   Margin="12,0,0,0"
+						   VerticalAlignment="Center"
                            Text="{x:Bind AppTitleText}"
-                           VerticalAlignment="Center"
-                           Margin="16,0,0,0"
                            Style="{StaticResource CaptionTextBlockStyle}" />
             </StackPanel>
         </Border>
 
-        <NavigationView Canvas.ZIndex="0"
-                        x:Name="NavView"
+		<NavigationView x:Name="NavigationViewControl"
+						Grid.RowSpan="2"
                         Grid.Column="1"
+						Canvas.ZIndex="0"
                         AlwaysShowHeader="True"
-                        Header="  "
                         HeaderTemplate="{StaticResource NavigationViewHeaderTemplate}"
-                        IsTitleBarAutoPaddingEnabled="False"
-                        ItemInvoked="NavigationView_ItemInvoked"
-                        BackRequested="NavigationView_BackRequested"
+                        IsTitleBarAutoPaddingEnabled="True"
+                        
+						SelectionChanged="OnNavigationViewSelectionChanged"
                         IsBackEnabled="{x:Bind AppFrame.CanGoBack, Mode=OneWay}">
-            <NavigationView.MenuItems>
-                <NavigationViewItem x:Name="AllIconsMenuItem"
+			
+			<!-- In OnNavigatingToPage, we synchronize the selected item in the NavigationView with the current page. -->
+			<Frame x:Name="rootFrame" Navigated="OnRootFrameNavigated" Navigating="OnNavigatingToPage">
+				<Frame.ContentTransitions>
+					<TransitionCollection>
+						<NavigationThemeTransition>
+							<NavigationThemeTransition.DefaultNavigationTransitionInfo>
+								<EntranceNavigationTransitionInfo />
+							</NavigationThemeTransition.DefaultNavigationTransitionInfo>
+						</NavigationThemeTransition>
+					</TransitionCollection>
+				</Frame.ContentTransitions>
+			</Frame>
+
+			<NavigationView.MenuItems>
+                <NavigationViewItem x:Name="AllIconsItem"
                                     Content="{x:Bind AllIconsLabel}"
-                                    ToolTipService.ToolTip="{x:Bind AllIconsLabel}"
                                     Icon="List"/>
-                <NavigationViewItem x:Name="CreateCustomIconMenuItem"
+                <NavigationViewItem x:Name="CustomIconsItem"
                                     Content="{x:Bind CustomIconsLabel}"
-                                    ToolTipService.ToolTip="{x:Bind CustomIconsLabel}"
                                     Icon="NewFolder"/>
-                <NavigationViewItem x:Name="AboutMenuItem"
-                                    Content="{x:Bind AboutLabel}" 
-                                    ToolTipService.ToolTip="{x:Bind AboutLabel}">
+                <NavigationViewItem x:Name="AboutItem"
+                                    Content="{x:Bind AboutLabel}">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xf167;"/>
                     </NavigationViewItem.Icon>
@@ -93,14 +115,12 @@
             <NavigationView.PaneFooter>
                 <StackPanel>
                     <NavigationViewItem Content="Open icons folder" 
-                                        ToolTipService.ToolTip="Opened icons folder"
                                         Tapped="OpenFolderNavPaneButton_Tapped">
                         <NavigationViewItem.Icon>
                             <SymbolIcon Symbol="MoveToFolder"/>
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
                     <NavigationViewItem Content="View code" 
-                                        ToolTipService.ToolTip="View code"
                                         Tapped="ViewCodeNavPaneButton_Tapped">
                         <NavigationViewItem.Icon>
                             <FontIcon Glyph="&#xE943;"/>
@@ -108,19 +128,7 @@
                     </NavigationViewItem>
                 </StackPanel>
             </NavigationView.PaneFooter>
-
-            <!-- In OnNavigatingToPage, we synchronize the selected item in the NavigationView with the current page. -->
-            <Frame x:Name="frame" Navigated="OnRootFrameNavigated" Navigating="OnNavigatingToPage">
-                <Frame.ContentTransitions>
-                    <TransitionCollection>
-                        <NavigationThemeTransition>
-                            <NavigationThemeTransition.DefaultNavigationTransitionInfo>
-                                <EntranceNavigationTransitionInfo />
-                            </NavigationThemeTransition.DefaultNavigationTransitionInfo>
-                        </NavigationThemeTransition>
-                    </TransitionCollection>
-                </Frame.ContentTransitions>
-            </Frame>
+            
         </NavigationView>
     </Grid>
 </Page>

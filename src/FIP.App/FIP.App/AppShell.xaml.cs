@@ -2,6 +2,7 @@
 
 using FIP.App.Helpers;
 using FIP.App.Views;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Automation;
 using Microsoft.UI.Xaml.Controls;
@@ -18,25 +19,35 @@ namespace FIP.App
     /// </summary>
     public sealed partial class AppShell : Page
     {
+        public VirtualKey ArrowKey;
+        public Microsoft.UI.Dispatching.DispatcherQueue dispatcherQueue;
+
         public AppShell()
         {
             this.InitializeComponent();
 
-            Loaded += (sender, args) =>
-            {
-                NavView.SelectedItem = AllIconsMenuItem;
-            };
-
-            AutomationProperties.SetName(AllIconsMenuItem, AllIconsLabel);
-
             Loaded += delegate (object sender, RoutedEventArgs e)
             {
                 NavigationOrientationHelper.UpdateTitleBarForElement(NavigationOrientationHelper.IsLeftMode(), this);
-                WindowHelper.GetWindowForElement(this).Title = AppTitleText;
+                
                 var window = WindowHelper.GetWindowForElement(sender as UIElement);
+                window.Title = AppTitleText;
                 window.ExtendsContentIntoTitleBar = true;
+                window.Activated += Window_Activated;
                 window.SetTitleBar(this.AppTitleBar);
             };
+        }
+
+        private void Window_Activated(object sender, WindowActivatedEventArgs args)
+        {
+            if (args.WindowActivationState == WindowActivationState.Deactivated)
+            {
+                VisualStateManager.GoToState(this, "Deactivated", true);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "Activated", true);
+            }
         }
 
         // Wraps a call to rootFrame.Navigate to give the Page a way to know which NavigationRootPage is navigating.
@@ -49,7 +60,7 @@ namespace FIP.App
             NavigationRootPageArgs args = new NavigationRootPageArgs();
             args.NavigationRootPage = this;
             args.Parameter = targetPageArguments;
-            frame.Navigate(pageType, args, navigationTransitionInfo);
+            AppFrame.Navigate(pageType, args, navigationTransitionInfo);
         }
 
         public static AppShell GetForElement(object obj)
@@ -66,11 +77,11 @@ namespace FIP.App
         /// <summary>
         /// Gets the navigation frame instance.
         /// </summary>
-        public Frame AppFrame => frame;
+        public Frame AppFrame => rootFrame;
 
         public NavigationView NavigationView
         {
-            get { return NavView; }
+            get { return NavigationViewControl; }
         }
 
         public string AppTitleText
@@ -85,74 +96,31 @@ namespace FIP.App
             }
         }
 
-        /// <summary>
-        /// Default keyboard focus movement for any unhandled keyboarding
-        /// </summary>
-        private void AppShell_KeyDown(object sender, KeyRoutedEventArgs e)
-        {
-            FocusNavigationDirection direction = FocusNavigationDirection.None;
-            switch (e.Key)
-            {
-                case VirtualKey.Left:
-                case VirtualKey.GamepadDPadLeft:
-                case VirtualKey.GamepadLeftThumbstickLeft:
-                case VirtualKey.NavigationLeft:
-                    direction = FocusNavigationDirection.Left;
-                    break;
-                case VirtualKey.Right:
-                case VirtualKey.GamepadDPadRight:
-                case VirtualKey.GamepadLeftThumbstickRight:
-                case VirtualKey.NavigationRight:
-                    direction = FocusNavigationDirection.Right;
-                    break;
-
-                case VirtualKey.Up:
-                case VirtualKey.GamepadDPadUp:
-                case VirtualKey.GamepadLeftThumbstickUp:
-                case VirtualKey.NavigationUp:
-                    direction = FocusNavigationDirection.Up;
-                    break;
-
-                case VirtualKey.Down:
-                case VirtualKey.GamepadDPadDown:
-                case VirtualKey.GamepadLeftThumbstickDown:
-                case VirtualKey.NavigationDown:
-                    direction = FocusNavigationDirection.Down;
-                    break;
-            }
-
-
-            if (direction != FocusNavigationDirection.None &&
-                FocusManager.FindNextFocusableElement(direction) is Control control)
-            {
-                control.Focus(FocusState.Keyboard);
-                e.Handled = true;
-            }
-        }
-
-        public readonly string AllIconsLabel = "All icons";
+        public readonly string AllIconsLabel = "All Folder Icons";
 
         public readonly string CustomIconsLabel = "Manage Custom Icons";
 
         public readonly string AboutLabel = "About";
+
+        public readonly string SettingsLabel = "Settings";
 
         /// <summary>
         /// Navigates to the page corresponding to the tapped item.
         /// </summary>
         private void NavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
-            var label = args.InvokedItem as string;
-            var pageType =
-                args.IsSettingsInvoked ? typeof(SettingsPage) :
-                label == AllIconsLabel ? typeof(AllIconsPage) :
-                label == CustomIconsLabel ? typeof(CustomIconsPage) :
-                label == AboutLabel ? typeof(AboutPage) : null;
-            if (pageType != null && pageType != AppFrame.CurrentSourcePageType)
-            {
-                AppFrame.Navigate(pageType);
-                NavView.Header = label;
+            //var label = args.InvokedItem as string;
+            //var pageType =
+            //    args.IsSettingsInvoked ? typeof(SettingsPage) :
+            //    label == AllIconsLabel ? typeof(AllFolderIconsPage) :
+            //    label == CustomIconsLabel ? typeof(CustomIconsPage) :
+            //    label == AboutLabel ? typeof(AboutPage) : null;
+            //if (pageType != null && pageType != AppFrame.CurrentSourcePageType)
+            //{
+            //    AppFrame.Navigate(pageType);
+            //    NavView.Header = label;
 
-            }
+            //}
         }
 
         /// <summary>
@@ -161,30 +129,70 @@ namespace FIP.App
         /// </summary>
         private void OnNavigatingToPage(object sender, NavigatingCancelEventArgs e)
         {
-            if (e.NavigationMode == NavigationMode.Back)
-            {
-                if (e.SourcePageType == typeof(AllIconsPage))
-                {
-                    NavView.SelectedItem = AllIconsMenuItem;
-                    NavView.Header = AllIconsLabel;
-                }
-                else if (e.SourcePageType == typeof(CustomIconsPage))
-                {
-                    NavView.SelectedItem = CreateCustomIconMenuItem;
-                    NavView.Header = CustomIconsLabel;
-                }
-                else if (e.SourcePageType == typeof(SettingsPage))
-                {
-                    NavView.SelectedItem = NavView.SettingsItem;
-                    NavView.Header = AboutLabel;
+            //if (e.NavigationMode == NavigationMode.Back)
+            //{
+            //    if (e.SourcePageType == typeof(AllFolderIconsPage))
+            //    {
+            //        NavView.SelectedItem = AllIconsMenuItem;
+            //        NavView.Header = AllIconsLabel;
+            //    }
+            //    else if (e.SourcePageType == typeof(CustomIconsPage))
+            //    {
+            //        NavView.SelectedItem = CreateCustomIconMenuItem;
+            //        NavView.Header = CustomIconsLabel;
+            //    }
+            //    else if (e.SourcePageType == typeof(AboutPage))
+            //    {
+            //        NavView.SelectedItem = AboutMenuItem;
+            //        NavView.Header = AboutLabel;
 
+            //    }
+            //}
+        }
+
+        private void OnNavigationViewSelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
+            if (args.IsSettingsSelected)
+            {
+                if (rootFrame.CurrentSourcePageType != typeof(SettingsPage))
+                {
+                    Navigate(typeof(SettingsPage));
+                    NavigationView.Header = SettingsLabel;
+                }
+            }
+            else
+            {
+                var selectedItem = args.SelectedItemContainer;
+                if (selectedItem == AllIconsItem)
+                {
+                    if (rootFrame.CurrentSourcePageType != typeof(AllFolderIconsPage))
+                    {
+                        Navigate(typeof(AllFolderIconsPage));
+                        NavigationView.Header = null;
+                    }
+                }
+                else if (selectedItem == CustomIconsItem)
+                {
+                    if (rootFrame.CurrentSourcePageType != typeof(CustomIconsPage))
+                    {
+                        Navigate(typeof(CustomIconsPage));
+                        NavigationView.Header = CustomIconsLabel;
+                    }
+                }
+                else if (selectedItem == AboutItem)
+                {
+                    if (rootFrame.CurrentSourcePageType != typeof(AboutPage))
+                    {
+                        Navigate(typeof(AboutPage));
+                        NavigationView.Header = AboutLabel;
+                    }
                 }
             }
         }
 
         private void OnRootFrameNavigated(object sender, NavigationEventArgs e)
         {
-            NavView.AlwaysShowHeader = e.SourcePageType != typeof(AllIconsPage);
+            //NavView.AlwaysShowHeader = e.SourcePageType != typeof(AllFolderIconsPage);
         }
 
         /// <summary>

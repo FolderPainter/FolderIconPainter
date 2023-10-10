@@ -34,6 +34,13 @@ namespace FIP.App
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+
+            // Configure the DI (dependency injection) container
+            var host = Startup.ConfigureHost();
+            Startup.ConfigureLogger();
+            Ioc.Default.ConfigureServices(host.Services);
+            Logger = Ioc.Default.GetRequiredService<ILogger<App>>();
+
             m_window = WindowHelper.CreateWindow();
 
             // Prepare the app shell and window content.
@@ -45,17 +52,10 @@ namespace FIP.App
             {
                 // When the navigation stack isn't restored, navigate to the first page
                 // suppressing the initial entrance animation.
-                shell.AppFrame.Navigate(typeof(AllIconsPage), null,
+                shell.AppFrame.Navigate(typeof(AllFolderIconsPage), null,
                     new SuppressNavigationTransitionInfo());
             }
             m_window.Activate();
-
-            // Configure the DI (dependency injection) container
-            var host = Startup.ConfigureHost();
-            Startup.ConfigureLogger();
-            Ioc.Default.ConfigureServices(host.Services);
-
-            Logger = Ioc.Default.GetRequiredService<ILogger<App>>();
         }
 
         /// <summary>
