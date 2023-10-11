@@ -2,12 +2,14 @@ using CommunityToolkit.Mvvm.DependencyInjection;
 using FIP.App.Constants;
 using FIP.App.ViewModels;
 using FIP.Core.Models;
+using FIP.Core.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Windows.ApplicationModel.Contacts;
 using Windows.UI;
 
@@ -20,10 +22,15 @@ namespace FIP.App.Views
     {
         private AllFolderIconsViewModel ViewModel { get; } = Ioc.Default.GetRequiredService<AllFolderIconsViewModel>();
 
-        private List<GroupInfoList> CustomIconsGroups { get; set; }
+        
+        private readonly List<GroupInfoList> CustomIconsGroups;
+
+        private List<GroupInfoList> FilteredCustomIconsGroups { get; set; }
 
         public AllFolderIconsPage()
         {
+            CustomIconsGroups = ViewModel.GetCustomIcons();
+
             this.InitializeComponent();
         }
 
@@ -32,22 +39,22 @@ namespace FIP.App.Views
             //NavigationRootPageArgs args = (NavigationRootPageArgs)e.Parameter;
             //var menuItem = (Microsoft.UI.Xaml.Controls.NavigationViewItem)args.NavigationRootPage.NavigationView.MenuItems.First();
             //menuItem.IsSelected = true;
-            CustomIconsGroups = ViewModel.GetCustomIcons();
             itemsCVS.Source = new ObservableCollection<GroupInfoList>(CustomIconsGroups);
         }
 
-        private void GridViewFilterTextChanged(object sender, TextChangedEventArgs args)
+        private void FilterFolderIcons()
         {
             if (string.IsNullOrEmpty(GridViewFilter.Text))
             {
-                itemsCVS.Source = new ObservableCollection<GroupInfoList>(CustomIconsGroups);
+                itemsCVS.Source = new ObservableCollection<GroupInfoList>(FilteredCustomIconsGroups);
                 return;
             }
 
             var suggestions = new List<GroupInfoList>();
 
             var querySplit = GridViewFilter.Text.Split(" ");
-            foreach (var group in CustomIconsGroups)
+
+            foreach (var group in FilteredCustomIconsGroups)
             {
                 var matchingItems = group.Where(
                     item =>
@@ -89,14 +96,28 @@ namespace FIP.App.Views
             }
         }
 
-        private void GridViewSearchBoxQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        private void GridViewFilterTextChanged(object sender, TextChangedEventArgs args)
         {
-
+            FilterFolderIcons();
         }
 
         private void GridViewSearchBoxLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
 
+        }
+
+        private void ListViewSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CategoryList.SelectedItems.Any())
+            {
+                FilteredCustomIconsGroups = CustomIconsGroups.Where(g => CategoryList.SelectedItems.Any(c => (c as CategoryViewModel).Model.Id == g.Key)).ToList();
+            }
+            else
+            {
+                FilteredCustomIconsGroups = ViewModel.GetCustomIcons();
+            }
+
+            FilterFolderIcons();
         }
     }
 }

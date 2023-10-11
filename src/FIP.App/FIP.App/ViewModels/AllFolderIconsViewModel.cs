@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using FIP.App.Constants;
+using FIP.Core.Models;
 using FIP.Core.Services;
+using FIP.Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +15,8 @@ namespace FIP.App.ViewModels
         private ICategoryStorageService CategoryStorageService { get; } = Ioc.Default.GetRequiredService<ICategoryStorageService>();
 
         private ICustomIconStorageService CustomIconStorageService { get; } = Ioc.Default.GetRequiredService<ICustomIconStorageService>();
+
+        public IEnumerable<CategoryViewModel> Categories { get => CategoryStorageService.Categories.Select(c => new CategoryViewModel(c)); }
 
         private GroupInfoList GetDefaultIcons()
         {
@@ -49,7 +53,7 @@ namespace FIP.App.ViewModels
     {
         public GroupInfoList(IEnumerable<DropZoneViewModel> items) : base(items) { }
 
-        public object Key { get; set; }
+        public Guid Key { get; set; }
 
         public string Title { get; set; }
 

@@ -10,7 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:usercontrols="using:FIP.App.UserControls"
     xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
-	xmlns:viewmodels="using:FIP.App.ViewModels"
+	xmlns:viewmodels="using:FIP.App.ViewModels" xmlns:models="using:FIP.Core.ViewModels"
 	DataContext="{x:Bind ViewModel, Mode=OneWay}"
     mc:Ignorable="d">
 
@@ -27,6 +27,10 @@
                                    BackgroundPressedColor="{Binding BackgroundPressedColor}">
 
 			</usercontrols:DropZone>
+		</DataTemplate>
+	
+		<DataTemplate x:Key="CategoryListViewTemplate" x:DataType="models:CategoryViewModel">
+			<TextBlock TextTrimming="CharacterEllipsis" Text="{x:Bind Name}"/>
 		</DataTemplate>
 	</Page.Resources>
 
@@ -52,7 +56,27 @@
 			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
 
-		<ScrollViewer x:Name="WrapScrollParent"
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="190"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<ListView x:Name="CategoryList" SelectionMode="Multiple" ItemsSource="{x:Bind ViewModel.Categories}"
+				  Margin="32,43,0,0" ItemTemplate="{StaticResource CategoryListViewTemplate}"
+				  SelectionChanged="ListViewSelectionChanged">
+		
+			<ListView.Header>
+				<TextBlock
+				x:Name="pageSubtitle"
+				Margin="16,0,0,8"
+				AutomationProperties.HeadingLevel="Level1"
+				Style="{StaticResource SubtitleTextBlockStyle}"
+				Text="Category Filter" />
+			</ListView.Header>
+		
+		</ListView>
+
+		<ScrollViewer x:Name="WrapScrollParent" Grid.Column="1"
                       Margin="31,0,0,0"
                       VerticalScrollBarVisibility="Auto"
                       VerticalScrollMode="Auto">
@@ -69,7 +93,7 @@
 				<controls:AdaptiveGridView.Header>
 					<Grid Margin="0,0,0,8">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="180px" />
+							<ColumnDefinition Width="auto" />
 							<ColumnDefinition Width="*" />
 						</Grid.ColumnDefinitions>
 						<TextBox x:Name="GridViewFilter" TextAlignment="Start"
@@ -83,8 +107,6 @@
 							<CheckBox x:Name="ShowNamesCheckBox" Content="Show Names" />
 						</StackPanel>
 					</Grid>
-					
-					
 				</controls:AdaptiveGridView.Header>
 				
 				<controls:AdaptiveGridView.GroupStyle>
