@@ -36,7 +36,7 @@ namespace FIP.App.Services
 
         public CustomIcon GetCustomIconById(Guid id)
         {
-            return CustomIcons.SingleOrDefault(x => x.Id == id);
+            return CustomIcons.FirstOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<CustomIcon> GetCustomIconsByCategoryId(Guid categoryId)

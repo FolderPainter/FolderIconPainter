@@ -31,6 +31,7 @@ namespace FIP.App.Helpers
                     .AddSingleton<ICustomIconStorageService, CustomIconStorageService>()
                     // ViewModels
                     .AddSingleton<CustomIconsViewModel>()
+                    .AddSingleton<AllFolderIconsViewModel>()
                 ).Build();
         }
 

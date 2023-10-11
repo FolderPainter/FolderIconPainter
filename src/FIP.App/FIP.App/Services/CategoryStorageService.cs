@@ -37,7 +37,7 @@ namespace FIP.App.Services
 
         public Category GetCategoryById(Guid id)
         {
-            return Categories.SingleOrDefault(x => x.Id == id);
+            return Categories.FirstOrDefault(x => x.Id == id);
         }
 
         public Category AddCategory(Category category)
