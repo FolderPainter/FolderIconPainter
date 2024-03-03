@@ -15,7 +15,7 @@ variables:
   group: BuildPipelineVariables
   solution: '**/FolderIconPainter.sln'
   testProject: '**/*.UnitTests.csproj'
-  buildPlatform: 'x86|x64|arm64'
+  buildPlatform: 'x64'
   buildConfiguration: 'Release'
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
   buildFolder: '$(Build.SourcesDirectory)\bin\'
