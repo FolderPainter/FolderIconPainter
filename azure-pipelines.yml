@@ -1,0 +1,67 @@
+# Universal Windows Platform
+# Build a Universal Windows Platform project using Visual Studio.
+# Add steps that test and distribute an app, save build artifacts, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - feature/*
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  group: BuildPipelineVariables
+  solution: '**/FolderIconPainter.sln'
+  testProject: '**/*.UnitTests.csproj'
+  buildPlatform: 'x64'
+  buildConfiguration: 'Release'
+  appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
+  buildFolder: '$(Build.SourcesDirectory)\bin\'
+  
+jobs:
+- job: Build
+  timeoutInMinutes: 120
+  steps:
+  - task: NuGetToolInstaller@1
+
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: '$(solution)'
+
+  - task: NuGetCommand@2
+    displayName: Restore NuGet Packages for WinUI Gallery
+    inputs:
+      command: 'restore'
+      restoreSolution: '**/*.sln'
+
+  - task: VSBuild@1
+    inputs:
+      platform: '$(buildPlatform)'
+      solution: '$(solution)'
+      configuration: '$(buildConfiguration)'
+      msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
+
+# Builds unit tests
+  - task: MSBuild@1
+    displayName: 'Build Unit Tests'
+    inputs:
+      solution: '$(testProject)'
+      configuration: 'Debug'
+      msbuildArguments: '/t:build /restore'
+      maximumCpuCount: true
+
+  - task: VSTest@2
+    displayName: 'Run Unit Tests'
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: |
+        **\Debug\**\*.Tests.build.appxrecipe
+        !**\obj\**
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      otherConsoleOptions: '/Framework:FrameworkUap10'
+      platform: '$(BuildPlatform)'
+      configuration: '$(BuildConfiguration)'
+      diagnosticsEnabled: True
+      collectDumpOn: always
