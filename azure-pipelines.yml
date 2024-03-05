@@ -62,4 +62,11 @@ jobs:
       platform: '$(BuildPlatform)'
       configuration: 'Debug'
       testAssemblyVer2: '$(System.DefaultWorkingDirectory)\**\**\bin\Debug\**\*UnitTests.dll'
+      codeCoverageEnabled: true
       
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publish code coverage report'
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)\**\**\bin\Debug\**/coverage.cobertura.xml'
+      failIfCoverageEmpty: true
