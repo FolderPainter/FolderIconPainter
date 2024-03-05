@@ -71,7 +71,7 @@ jobs:
     inputs:
       testResultsFormat: VSTest
       testResultsFiles: '**/*.trx'
-      searchFolder: '$(Build.SourcesDirectory)'
+      searchFolder: '$(Agent.TempDirectory)'
       failTaskOnFailedTests: true
       testRunTitle: 'Unit tests'
 
