@@ -61,7 +61,7 @@ jobs:
     inputs:
       platform: '$(BuildPlatform)'
       configuration: 'Debug'
-      searchFolder: '$(buildFolder)'
+      searchFolder: '$(System.DefaultWorkingDirectory)'
       testSelector: 'testAssemblies'
       testAssemblyVer2: |
         **\Microsoft.*.Test.dll
