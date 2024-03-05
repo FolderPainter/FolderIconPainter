@@ -79,5 +79,5 @@ jobs:
     displayName: 'Publish code coverage report'
     inputs:
       codeCoverageTool: 'Cobertura'
-      summaryFileLocation: '**/*.cobertura.xml'
+      summaryFileLocation: '$(Agent.TempDirectory)/**/**/*.coverage'
       failIfCoverageEmpty: true
