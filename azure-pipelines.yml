@@ -61,11 +61,11 @@ jobs:
     inputs:
       platform: '$(BuildPlatform)'
       configuration: 'Debug'
-      searchFolder: '$(System.DefaultWorkingDirectory)\src\FIP.Core.UnitTests\bin'
+      searchFolder: '$(System.DefaultWorkingDirectory)\src\FIP.Core.UnitTests'
       testSelector: 'testAssemblies'
       testAssemblyVer2: |
-        **\Microsoft.*.Test.dll
-        !**\*.UnitTests.dll'
-        !**\Microsoft.Datasync.Integration.Test.dll
-        !**\obj\**
+        **\**\**\Microsoft.*.Test.dll
+        !**\**\**\*.UnitTests.dll'
+        !**\**\Microsoft.Datasync.Integration.Test.dll
+        !\obj\**
       
