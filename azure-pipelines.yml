@@ -18,7 +18,6 @@ variables:
   buildPlatform: 'x64'
   buildConfiguration: 'Release'
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
-  buildFolder: '$(Build.SourcesDirectory)\bin\'
   
 jobs:
 - job: Build
@@ -31,7 +30,7 @@ jobs:
       restoreSolution: '$(solution)'
 
   - task: NuGetCommand@2
-    displayName: Restore NuGet Packages for WinUI Gallery
+    displayName: Restore NuGet Packages
     inputs:
       command: 'restore'
       restoreSolution: '**/*.sln'
@@ -41,7 +40,11 @@ jobs:
       platform: '$(buildPlatform)'
       solution: '$(solution)'
       configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
+      msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" 
+                    /p:AppxPackageDir="$(appxPackageDir)"
+                    /p:AppxPackageSigningEnabled=false 
+                    /p:AppxBundle=Always 
+                    /p:UapAppxPackageBuildMode=StoreUpload'
 
 # Builds unit tests
   - task: MSBuild@1
