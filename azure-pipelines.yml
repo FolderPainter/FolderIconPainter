@@ -62,11 +62,22 @@ jobs:
       platform: '$(BuildPlatform)'
       configuration: 'Debug'
       testAssemblyVer2: '$(System.DefaultWorkingDirectory)\**\**\bin\Debug\**\*UnitTests.dll'
+      minimumExpectedTests: 1
+      failOnMinTestsNotRun: true
       codeCoverageEnabled: true
       
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '**/*.trx'
+      searchFolder: '$(Build.SourcesDirectory)'
+      failTaskOnFailedTests: true
+      testRunTitle: 'Unit tests'
+
   - task: PublishCodeCoverageResults@1
     displayName: 'Publish code coverage report'
     inputs:
       codeCoverageTool: 'Cobertura'
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)\**\**\bin\Debug\**/coverage.cobertura.xml'
+      summaryFileLocation: '**/*.cobertura.xml'
       failIfCoverageEmpty: true
