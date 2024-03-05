@@ -18,6 +18,7 @@ variables:
   buildPlatform: 'x64'
   buildConfiguration: 'Release'
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
+  buildFolder: '$(Build.SourcesDirectory)\bin\'
   
 jobs:
 - job: Build
@@ -59,10 +60,12 @@ jobs:
     displayName: 'Run Unit Tests'
     inputs:
       platform: '$(BuildPlatform)'
-      configuration: '$(BuildConfiguration)'
+      configuration: 'Debug'
+      searchFolder: '$(buildFolder)'
       testSelector: 'testAssemblies'
       testAssemblyVer2: |
-        **\Debug\**\*.Tests.build.appxrecipe
+        **\Microsoft.*.Test.dll
+        !**\*.UnitTests.dll'
+        !**\Microsoft.Datasync.Integration.Test.dll
         !**\obj\**
-      searchFolder: '$(buildFolder)'
       
