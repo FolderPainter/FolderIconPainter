@@ -7,6 +7,7 @@ trigger:
   branches:
     include:
     - feature/*
+    - fix/*
 
 pool:
   vmImage: 'windows-latest'
@@ -22,26 +23,28 @@ variables:
   
 jobs:
 - job: Build
-  timeoutInMinutes: 120
+  displayName: 'Build & Run Tests'
+  timeoutInMinutes: 10
   steps:
   - task: NuGetToolInstaller@1
 
   - task: NuGetCommand@2
-    inputs:
-      restoreSolution: '$(solution)'
-
-  - task: NuGetCommand@2
-    displayName: Restore NuGet Packages for WinUI Gallery
+    displayName: Restore NuGet Packages for Folder Icon Painter 
     inputs:
       command: 'restore'
-      restoreSolution: '**/*.sln'
+      restoreSolution: '$(solution)'
 
   - task: VSBuild@1
+    displayName: 'Build Folder Icon Painter Package'
     inputs:
       platform: '$(buildPlatform)'
       solution: '$(solution)'
       configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" /p:AppxPackageDir="$(appxPackageDir)" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload'
+      msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" 
+                    /p:AppxPackageDir="$(appxPackageDir)"
+                    /p:AppxPackageSigningEnabled=false 
+                    /p:AppxBundle=Always 
+                    /p:UapAppxPackageBuildMode=StoreUpload'
 
 # Builds unit tests
   - task: MSBuild@1
@@ -55,13 +58,18 @@ jobs:
   - task: VSTest@2
     displayName: 'Run Unit Tests'
     inputs:
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: |
-        **\Debug\**\*.Tests.build.appxrecipe
-        !**\obj\**
-      searchFolder: '$(System.DefaultWorkingDirectory)'
-      otherConsoleOptions: '/Framework:FrameworkUap10'
       platform: '$(BuildPlatform)'
-      configuration: '$(BuildConfiguration)'
-      diagnosticsEnabled: True
-      collectDumpOn: always
+      configuration: 'Debug'
+      testAssemblyVer2: '$(System.DefaultWorkingDirectory)\**\**\bin\Debug\**\*UnitTests.dll'
+      minimumExpectedTests: 1
+      failOnMinTestsNotRun: true
+      codeCoverageEnabled: true
+      
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '**\*.trx'
+      searchFolder: '$(Agent.TempDirectory)'
+      failTaskOnFailedTests: true
+      testRunTitle: 'Unit tests'
