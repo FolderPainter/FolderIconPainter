@@ -78,8 +78,8 @@
                                     ToolTipService.ToolTip="{x:Bind AllIconsLabel}"
                                     Icon="List"/>
                 <NavigationViewItem x:Name="CreateCustomIconMenuItem"
-                                    Content="{x:Bind CreateCustomIconLabel}"
-                                    ToolTipService.ToolTip="{x:Bind CreateCustomIconLabel}"
+                                    Content="{x:Bind CustomIconsLabel}"
+                                    ToolTipService.ToolTip="{x:Bind CustomIconsLabel}"
                                     Icon="NewFolder"/>
                 <NavigationViewItem x:Name="AboutMenuItem"
                                     Content="{x:Bind AboutLabel}" 
@@ -92,6 +92,13 @@
 
             <NavigationView.PaneFooter>
                 <StackPanel>
+                    <NavigationViewItem Content="Open icons folder" 
+                                        ToolTipService.ToolTip="Opened icons folder"
+                                        Tapped="OpenFolderNavPaneButton_Tapped">
+                        <NavigationViewItem.Icon>
+                            <SymbolIcon Symbol="MoveToFolder"/>
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
                     <NavigationViewItem Content="View code" 
                                         ToolTipService.ToolTip="View code"
                                         Tapped="ViewCodeNavPaneButton_Tapped">

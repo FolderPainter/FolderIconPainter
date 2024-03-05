@@ -1,9 +1,10 @@
-﻿// Licensed under the MIT License.
-
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using FIP.App.Helpers;
 using FIP.App.Views;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media.Animation;
+using System;
 using Windows.Globalization;
 
 namespace FIP.App
@@ -13,6 +14,8 @@ namespace FIP.App
     /// </summary>
     public partial class App : Application
     {
+        public static ILogger Logger { get; private set; } = null!;
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -20,13 +23,16 @@ namespace FIP.App
         public App()
         {
             this.InitializeComponent();
+
+            UnhandledException += (sender, e) => Startup.HandleAppUnhandledException(e.Exception, true);
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) => Startup.HandleAppUnhandledException(e.ExceptionObject as Exception, false);
         }
 
         /// <summary>
         /// Invoked when the application is launched.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             m_window = WindowHelper.CreateWindow();
 
@@ -43,6 +49,13 @@ namespace FIP.App
                     new SuppressNavigationTransitionInfo());
             }
             m_window.Activate();
+
+            // Configure the DI (dependency injection) container
+            var host = Startup.ConfigureHost();
+            Startup.ConfigureLogger();
+            Ioc.Default.ConfigureServices(host.Services);
+
+            Logger = Ioc.Default.GetRequiredService<ILogger<App>>();
         }
 
         /// <summary>

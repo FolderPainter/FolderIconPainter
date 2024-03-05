@@ -1,8 +1,21 @@
-﻿using System;
+﻿using FIP.Core.Extensions;
+using System;
 using System.Globalization;
+using Windows.UI;
 
-namespace FIP.Backend.Helpers
+namespace FIP.Core.Models
 {
+    public record FIPColorConstants
+    {
+        public static readonly double CommonMinValue = 0D;
+
+        public static readonly double MaxHueAngle = 360D;
+        public static readonly double MaxSaturation = 1D;
+        public static readonly double MaxLightness = 1D;
+
+        public static readonly double RGBMaxValue = 255D;
+    }
+
     public enum ColorOutputFormats
     {
         /// <summary>
@@ -45,7 +58,7 @@ namespace FIP.Backend.Helpers
         public byte G => _valuesAsByte[1];
         public byte B => _valuesAsByte[2];
         public byte A => _valuesAsByte[3];
-        public double APercentage => Math.Round((A / 255.0), 2);
+        public double APercentage => Math.Round(A / FIPColorConstants.RGBMaxValue, 2);
 
         public double H { get; private set; }
         public double S { get; private set; }
@@ -63,54 +76,34 @@ namespace FIP.Backend.Helpers
         /// <param name="lightness">0..1 range lightness</param>
         /// <param name="alpha">0..1 alpha</param>
         /// <returns>The created <see cref="FIPColor"/>.</returns>
+        public FIPColor(double h, double s, double l, double a)
+        : this(h, s, l, (int)((a * 255.0).EnsureRange(255)))
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a <see cref="FIPColor"/> from the specified hue, saturation, lightness, and alpha values.
+        /// </summary>
+        /// <param name="hue">0..360 range hue</param>
+        /// <param name="saturation">0..1 range saturation</param>
+        /// <param name="lightness">0..1 range lightness</param>
+        /// <param name="alpha">0..255 alpha</param>
+        /// <returns>The created <see cref="FIPColor"/>.</returns>
         public FIPColor(double hue, double saturation, double lightness, int alpha)
         {
-            if (hue < 0 || hue > 360)
-            {
-                throw new ArgumentOutOfRangeException(nameof(hue));
-            }
-
             _valuesAsByte = new byte[4];
 
-            //var q = lightness < .5D
-            //           ? lightness * (1D + saturation)
-            //           : (lightness + saturation) - (lightness * saturation);
-            //var p = (2D * lightness) - q;
+            hue = Math.Round(hue.EnsureRange(360), 0);
+            saturation = Math.Round(saturation.EnsureRange(1), 2);
+            lightness = Math.Round(lightness.EnsureRange(1), 2);
+            alpha = alpha.EnsureRange(255);
 
-            //var hk = hue / 360D;
-            //var T = new double[3];
-            //T[0] = hk + (1D / 3D); // Tr
-            //T[1] = hk; // Tb
-            //T[2] = hk - (1D / 3D); // Tg
-
-            //for (var i = 0; i < 3; i++)
-            //{
-            //    if (T[i] < 0D)
-            //        T[i] += 1D;
-            //    if (T[i] > 1D)
-            //        T[i] -= 1D;
-
-            //    if ((T[i] * 6D) < 1D)
-            //        T[i] = p + ((q - p) * 6D * T[i]);
-            //    else if ((T[i] * 2D) < 1)
-            //        T[i] = q;
-            //    else if ((T[i] * 3D) < 2)
-            //        T[i] = p + ((q - p) * ((2D / 3D) - T[i]) * 6D);
-            //    else
-            //        T[i] = p;
-            //}
-
-            //_valuesAsByte[0] = (byte)Math.Round(T[0] * 255D);
-            //_valuesAsByte[1] = (byte)Math.Round(T[1] * 255D);
-            //_valuesAsByte[2] = (byte)Math.Round(T[2] * 255D);
-            //_valuesAsByte[3] = (byte)alpha;
-
-            double chroma = (1 - Math.Abs((2 * lightness) - 1)) * saturation;
+            double chroma = (1 - Math.Abs(2 * lightness - 1)) * saturation;
             double h1 = hue / 60;
-            double x = chroma * (1 - Math.Abs((h1 % 2) - 1));
-            double m = lightness - (0.5 * chroma);
+            double x = chroma * (1 - Math.Abs(h1 % 2 - 1));
+            double m = lightness - 0.5 * chroma;
             double r1, g1, b1;
-
 
             if (h1 < 1)
             {
@@ -149,9 +142,9 @@ namespace FIP.Backend.Helpers
                 b1 = x;
             }
 
-            _valuesAsByte[0] = (byte)(255 * (r1 + m)); // Red
-            _valuesAsByte[1] = (byte)(255 * (g1 + m)); // Green
-            _valuesAsByte[2] = (byte)(255 * (b1 + m)); // Blue
+            _valuesAsByte[0] = ((int)Math.Round((r1 + m) * FIPColorConstants.RGBMaxValue)).EnsureRangeToByte(); // Red
+            _valuesAsByte[1] = ((int)Math.Round((g1 + m) * FIPColorConstants.RGBMaxValue)).EnsureRangeToByte(); // Green
+            _valuesAsByte[2] = ((int)Math.Round((b1 + m) * FIPColorConstants.RGBMaxValue)).EnsureRangeToByte(); // Blue
             _valuesAsByte[3] = (byte)alpha; // Alpha
 
             H = Math.Round(hue, 0);
@@ -184,13 +177,21 @@ namespace FIP.Backend.Helpers
         }
 
         public FIPColor(int r, int g, int b, double alpha) :
-         this(r, g, b, (byte)((alpha * 255.0)))
+         this(r, g, b, (byte)(alpha * FIPColorConstants.RGBMaxValue).EnsureRange(FIPColorConstants.RGBMaxValue))
         {
 
         }
 
         public FIPColor(int r, int g, int b, int alpha) :
-            this((byte)r, (byte)g, (byte)b, (byte)alpha)
+            this((byte)r.EnsureRange((int)FIPColorConstants.RGBMaxValue),
+                (byte)g.EnsureRange((int)FIPColorConstants.RGBMaxValue),
+                (byte)b.EnsureRange((int)FIPColorConstants.RGBMaxValue),
+                (byte)alpha.EnsureRange((int)FIPColorConstants.RGBMaxValue))
+        {
+
+        }
+
+        public FIPColor(Color color) : this(color.R, color.G, color.B, color.A)
         {
 
         }
@@ -212,7 +213,7 @@ namespace FIP.Backend.Helpers
                     byte.Parse(parts[0],CultureInfo.InvariantCulture),
                     byte.Parse(parts[1],CultureInfo.InvariantCulture),
                     byte.Parse(parts[2],CultureInfo.InvariantCulture),
-                    (byte)Math.Max(0, Math.Min(255, 255 * double.Parse(parts[3],CultureInfo.InvariantCulture))),
+                    (byte)Math.Max(FIPColorConstants.CommonMinValue, Math.Min(FIPColorConstants.RGBMaxValue, FIPColorConstants.RGBMaxValue * double.Parse(parts[3],CultureInfo.InvariantCulture))),
                 };
             }
             else if (value.StartsWith("rgb") == true)
@@ -227,12 +228,11 @@ namespace FIP.Backend.Helpers
                     byte.Parse(parts[0],CultureInfo.InvariantCulture),
                     byte.Parse(parts[1],CultureInfo.InvariantCulture),
                     byte.Parse(parts[2],CultureInfo.InvariantCulture),
-                    255
+                    (byte)FIPColorConstants.RGBMaxValue
                 };
             }
             else
             {
-
                 if (value.StartsWith("#"))
                 {
                     value = value.Substring(1);
@@ -274,9 +274,9 @@ namespace FIP.Backend.Helpers
         private void CalculateHSL()
         {
             // normalize red, green, blue values
-            var r = R / 255D;
-            var g = G / 255D;
-            var b = B / 255D;
+            var r = R / FIPColorConstants.RGBMaxValue;
+            var g = G / FIPColorConstants.RGBMaxValue;
+            var b = B / FIPColorConstants.RGBMaxValue;
 
             var max = Math.Max(r, Math.Max(g, b));
             var min = Math.Min(r, Math.Min(g, b));
@@ -292,23 +292,24 @@ namespace FIP.Backend.Helpers
             {
                 // The % operator doesn't do proper modulo on negative
                 // numbers, so we'll add 6 before using it
-                h1 = (((g - b) / chroma) + 6) % 6;
+                h1 = ((g - b) / chroma + 6) % 6;
             }
             else if (max == g)
             {
-                h1 = 2 + ((b - r) / chroma);
+                h1 = 2 + (b - r) / chroma;
             }
             else
             {
-                h1 = 4 + ((r - g) / chroma);
+                h1 = 4 + (r - g) / chroma;
             }
 
             double lightness = (max + min) / 2D;
-            double saturation = chroma == 0 ? 0 : chroma / (1 - Math.Abs((2 * lightness) - 1));
+            double saturation = chroma == 0 ? 0 : chroma / (1 - Math.Abs(2 * lightness - 1));
 
-            H = 60 * h1;
-            S = saturation;
-            L = lightness;
+            h1 = (60 * h1);
+            H = Math.Round(h1.EnsureRange(360), 0);
+            S = Math.Round(saturation.EnsureRange(1), 2);
+            L = Math.Round(lightness.EnsureRange(1), 2);
         }
 
         public FIPColor SetH(double h) => new(h, S, L, A);
@@ -322,15 +323,30 @@ namespace FIP.Backend.Helpers
         public FIPColor SetAlpha(int a) => new(R, G, B, a);
         public FIPColor SetAlpha(double a) => new(R, G, B, a);
 
-        public FIPColor ChangeSL(double saturation, double light) => new(H, Math.Max(0, Math.Min(1, S + saturation)), Math.Max(0, Math.Min(1, L + light)), A);
+        public FIPColor ChangeHSL(double hueAngle, double saturation, double lightness)
+        {
+            double newHue = H + hueAngle;
 
-        public FIPColor ChangeLightness(double amount) => new(H, S, Math.Max(0, Math.Min(1, L + amount)), A);
+            // Hue Angle overflow logic 
+            if (FIPColorConstants.CommonMinValue > newHue)
+                newHue = FIPColorConstants.MaxHueAngle + hueAngle;
+            else if (newHue > FIPColorConstants.MaxHueAngle)
+                newHue = FIPColorConstants.CommonMinValue + (newHue - FIPColorConstants.MaxHueAngle);
+
+            return new FIPColor(
+                newHue,
+                (S + saturation).EnsureRange(1.0),
+                (L + lightness).EnsureRange(1.0),
+                A);
+        }
+
+        public FIPColor ChangeLightness(double amount) => new(H, S, (L + amount).EnsureRange(1.0), A);
         public FIPColor ColorLighten(double amount) => ChangeLightness(+amount);
         public FIPColor ColorDarken(double amount) => ChangeLightness(-amount);
         public FIPColor ColorRgbLighten() => ColorLighten(0.075);
         public FIPColor ColorRgbDarken() => ColorDarken(0.075);
 
-        #endregion*
+        #endregion
 
         #region Helper
 
@@ -349,7 +365,7 @@ namespace FIP.Backend.Helpers
 
         private byte GetByteFromValuePart(string input, int index) => byte.Parse(new string(new char[] { input[index], input[index + 1] }), NumberStyles.HexNumber);
 
-        public bool HslChanged(FIPColor value) => this.H != value.H || this.S != value.S || this.L != value.L;
+        public bool HslChanged(FIPColor value) => H != value.H || S != value.S || L != value.L;
 
         #endregion
 
@@ -388,7 +404,7 @@ namespace FIP.Backend.Helpers
 
         public override int GetHashCode() => _valuesAsByte[0] + _valuesAsByte[1] + _valuesAsByte[2] + _valuesAsByte[3];
 
-        public static bool operator == (FIPColor lhs, FIPColor rhs)
+        public static bool operator ==(FIPColor lhs, FIPColor rhs)
         {
             var lhsIsNull = ReferenceEquals(null, lhs);
             var rhsIsNull = ReferenceEquals(null, rhs);
@@ -409,7 +425,7 @@ namespace FIP.Backend.Helpers
             }
         }
 
-        public static bool operator != (FIPColor lhs, FIPColor rhs) => !(lhs == rhs);
+        public static bool operator !=(FIPColor lhs, FIPColor rhs) => !(lhs == rhs);
 
         #endregion
     }

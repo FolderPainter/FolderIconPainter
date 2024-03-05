@@ -1,0 +1,27 @@
+<ContentDialog
+    x:Class="FIP.App.Views.Dialogs.MoveFolderIconsDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:FIP.App.Views.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	Title="Move Folder Icons"
+    PrimaryButtonText="Move"  
+    CloseButtonText="Cancel"
+	PrimaryButtonClick="ContentDialogPrimaryButtonClick"
+	Closing="ContentDialogClosing"
+	mc:Ignorable="d">
+	<ContentDialog.Resources>
+		<Style TargetType="local:MoveFolderIconsDialog"
+			   BasedOn="{StaticResource DefaultContentDialogStyle}"/>
+	</ContentDialog.Resources>
+
+	<StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+		<ComboBox ItemsSource="{x:Bind AvailableCategories}"
+				  SelectionChanged="ComboBoxSelectionChanged"
+				  HorizontalAlignment="Stretch"
+				  MaxDropDownHeight="200"
+				  PlaceholderText="Category"
+				  Header="Category to move"/>
+	</StackPanel>
+</ContentDialog>

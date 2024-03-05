@@ -9,6 +9,7 @@
     <Platforms>x86;x64;ARM64</Platforms>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <UseWinUI>true</UseWinUI>
+    <UserSecretsId>18a87062-8b5a-4496-a3ae-68a955b20793</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,22 +18,30 @@
     <None Remove="UserControls\PageHeader.xaml" />
     <None Remove="Views\AboutPage.xaml" />
     <None Remove="Views\AllIconsPage.xaml" />
-    <None Remove="Views\CreateCustomIconPage.xaml" />
+    <None Remove="Views\CustomIconsPage.xaml" />
+    <None Remove="Views\Dialogs\MoveFolderIconsDialog.xaml" />
+    <None Remove="Views\Dialogs\RenameCategoryDialog.xaml" />
     <None Remove="Views\SettingsPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI" Version="7.1.2" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.Notifications" Version="7.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.49-beta" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.2.221116.1" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22621.755" />
-    <PackageReference Include="Svg" Version="3.4.4" />
+    <PackageReference Include="Serilog" Version="3.1.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Serilog.Formatting.Compact" Version="2.0.0" />
+	  <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+
+	  <PackageReference Include="Svg" Version="3.4.4" />
     <PackageReference Include="WinUIEx" Version="2.1.0" />
     <Manifest Include="$(ApplicationManifest)" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\FIP.Backend\FIP.Backend.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,7 +63,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Update="Views\CreateCustomIconPage.xaml">
+    <Page Update="Views\CustomIconsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
@@ -76,5 +85,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+	
+	<ItemGroup>
+		<Page Update="Views\Dialogs\RenameCategoryDialog.xaml">
+			<Generator>MSBuild:Compile</Generator>
+		</Page>
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\..\FIP.Core\FIP.Core.csproj" />
+		<ProjectReference Include="..\..\FIP.Shared\FIP.Shared.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Page Update="Views\Dialogs\MoveFolderIconsDialog.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
+	</ItemGroup>
 
 </Project>

@@ -1,7 +1,8 @@
 ﻿using System;
 
-namespace FIP.App.Extensions
+namespace FIP.Core.Extensions
 {
+#nullable enable
     public static class KeepInRangeExtensions
     {
         public static double EnsureRange(this double input, double max) => EnsureRange(input, 0.0, max);
