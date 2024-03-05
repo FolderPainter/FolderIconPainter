@@ -7,6 +7,7 @@ trigger:
   branches:
     include:
     - feature/*
+    - fix/*
 
 pool:
   vmImage: 'windows-latest'
@@ -22,21 +23,19 @@ variables:
   
 jobs:
 - job: Build
-  timeoutInMinutes: 120
+  displayName: 'Build & Run Tests'
+  timeoutInMinutes: 10
   steps:
   - task: NuGetToolInstaller@1
 
   - task: NuGetCommand@2
-    inputs:
-      restoreSolution: '$(solution)'
-
-  - task: NuGetCommand@2
-    displayName: Restore NuGet Packages
+    displayName: Restore NuGet Packages for Folder Icon Painter 
     inputs:
       command: 'restore'
-      restoreSolution: '**/*.sln'
+      restoreSolution: '$(solution)'
 
   - task: VSBuild@1
+    displayName: 'Build Folder Icon Painter Package'
     inputs:
       platform: '$(buildPlatform)'
       solution: '$(solution)'
@@ -74,10 +73,3 @@ jobs:
       searchFolder: '$(Agent.TempDirectory)'
       failTaskOnFailedTests: true
       testRunTitle: 'Unit tests'
-
-  - task: PublishCodeCoverageResults@1
-    displayName: 'Publish code coverage report'
-    inputs:
-      codeCoverageTool: 'Cobertura'
-      summaryFileLocation: '$(Agent.TempDirectory)\**\**\*.coverage'
-      failIfCoverageEmpty: true
