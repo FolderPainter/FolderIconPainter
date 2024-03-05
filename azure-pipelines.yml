@@ -61,7 +61,7 @@ jobs:
     inputs:
       platform: '$(BuildPlatform)'
       configuration: 'Debug'
-      searchFolder: '$(System.DefaultWorkingDirectory)'
+      searchFolder: '$(System.DefaultWorkingDirectory)\src\FIP.Core.UnitTests\bin'
       testSelector: 'testAssemblies'
       testAssemblyVer2: |
         **\Microsoft.*.Test.dll
