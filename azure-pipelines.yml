@@ -70,7 +70,7 @@ jobs:
     displayName: 'Publish Test Results'
     inputs:
       testResultsFormat: VSTest
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '**\*.trx'
       searchFolder: '$(Agent.TempDirectory)'
       failTaskOnFailedTests: true
       testRunTitle: 'Unit tests'
@@ -79,5 +79,5 @@ jobs:
     displayName: 'Publish code coverage report'
     inputs:
       codeCoverageTool: 'Cobertura'
-      summaryFileLocation: '$(Agent.TempDirectory)/**/**/*.coverage'
+      summaryFileLocation: '$(Agent.TempDirectory)\**\**\*.coverage'
       failIfCoverageEmpty: true
