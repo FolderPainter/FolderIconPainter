@@ -6,6 +6,7 @@ using FIP.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Bitmap = System.Drawing.Bitmap;
@@ -130,6 +131,16 @@ namespace FIP.App.Services
                     return false;
             }
 
+            // Delete folder if it's empty
+            string categoryFolderPath = Path.Combine(_folderPath, customIcons.FirstOrDefault().CategoryId.ToString());
+            if (Directory.Exists(categoryFolderPath))
+            {
+                StorageFolder iconsFolder = await StorageFolder.GetFolderFromPathAsync(categoryFolderPath);
+
+                if (!Directory.GetFiles(categoryFolderPath).Any())
+                    await iconsFolder.DeleteAsync();
+            }
+
             return true;
         }
 
@@ -137,8 +148,9 @@ namespace FIP.App.Services
         {
             ArgumentNullException.ThrowIfNull(customIcon);
 
-            string iconFolderPath = Path.Combine(_folderPath, customIcon.CategoryId.ToString());
-            return Path.Combine(iconFolderPath, $"{customIcon.Id}.ico");
+            string iconStorageFolderPath = GetIconsStorageFolder(customIcon.CategoryId);
+
+            return Path.Combine(iconStorageFolderPath, $"{customIcon.Id}.ico");
         }
 
         public bool FolderIconExists(CustomIcon customIcon)
@@ -195,10 +207,10 @@ namespace FIP.App.Services
         {
             ArgumentNullException.ThrowIfNull(customIcon);
 
-            string iconFolderPath = Path.Combine(_folderPath, customIcon.CategoryId.ToString());
-            return Path.Combine(iconFolderPath, $"{customIcon.Id}.svg");
-        }
+            string iconStorageFolderPath = GetIconsStorageFolder(customIcon.CategoryId);
 
+            return Path.Combine(iconStorageFolderPath, $"{customIcon.Id}.svg");
+        }
 
         public bool SvgFolderIconExists(CustomIcon customIcon)
         {
@@ -235,7 +247,29 @@ namespace FIP.App.Services
                 svgIconDeleted = await DeleteSvgFolderIconAsync(customIcon);
             }
 
+            if (rasterIconDeleted && svgIconDeleted)
+            {
+                // Delete folder if it's empty
+                string categoryFolderPath = Path.Combine(_folderPath, customIcon.CategoryId.ToString());
+                if (!Directory.Exists(categoryFolderPath))
+                {
+                    return true;
+                }
+
+                StorageFolder iconsFolder = await StorageFolder.GetFolderFromPathAsync(categoryFolderPath);
+
+                if (!Directory.GetFiles(categoryFolderPath).Any())
+                    await iconsFolder.DeleteAsync();
+            }
+
             return rasterIconDeleted && svgIconDeleted;
+        }
+
+        private string GetIconsStorageFolder(Guid categoryId)
+        {
+            return categoryId == AppConstants.DefaultCategoryId ?
+                AppConstants.AssetPaths.DefaultIconsFolder :
+                Path.Combine(_folderPath, categoryId.ToString());
         }
     }
 }
