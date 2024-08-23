@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="Current" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>a96c7535-fb23-472c-ab4d-7ca2b52b8043</ProjectGuid>
+    <TargetPlatformVersion>10.0.22621.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <AssetTargetFallback>net8.0-windows$(TargetPlatformVersion);$(AssetTargetFallback)</AssetTargetFallback>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <EntryPointProjectUniqueName>..\FIP.App\FIP.App.csproj</EntryPointProjectUniqueName>
+    <PackageCertificateThumbprint>4BFA5583CEFFB02D9A35522ABA77533D8EAACFF8</PackageCertificateThumbprint>
+    <UserSecretsId>a48d5e39-3ec2-4619-b9ac-e8dad75e10db</UserSecretsId>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '15.0'">
     <VisualStudioVersion>15.0</VisualStudioVersion>
   </PropertyGroup>
@@ -34,17 +45,6 @@
     <PathToXAMLWinRTImplementations>FIP.App\</PathToXAMLWinRTImplementations>
   </PropertyGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
-  <PropertyGroup>
-    <ProjectGuid>a96c7535-fb23-472c-ab4d-7ca2b52b8043</ProjectGuid>
-    <TargetPlatformVersion>10.0.22621.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-    <AssetTargetFallback>net8.0-windows$(TargetPlatformVersion);$(AssetTargetFallback)</AssetTargetFallback>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <EntryPointProjectUniqueName>..\FIP.App\FIP.App.csproj</EntryPointProjectUniqueName>
-    <PackageCertificateThumbprint>4BFA5583CEFFB02D9A35522ABA77533D8EAACFF8</PackageCertificateThumbprint>
-    <UserSecretsId>a48d5e39-3ec2-4619-b9ac-e8dad75e10db</UserSecretsId>
-  </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
@@ -111,12 +111,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="[1.5.240311000]">
-      <IncludeAssets>build</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="[10.0.22621.3233]">
-      <IncludeAssets>build</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
   </ItemGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
 </Project>
