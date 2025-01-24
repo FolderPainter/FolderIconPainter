@@ -26,6 +26,7 @@ namespace FIP.App.Helpers
                     // Services
                     .AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true))
                     .AddSingleton<ISVGPainterService, SVGPainterService>()
+                    .AddTransient<IFolderPainterService, FolderPainterService>()
                     .AddSingleton<IFolderIconService, FolderIconService>()
                     .AddSingleton<ICategoryStorageService, CategoryStorageService>()
                     .AddSingleton<ICustomIconStorageService, CustomIconStorageService>()
