@@ -1,12 +1,16 @@
 // Licensed under the MIT License.
 
+using CommunityToolkit.Mvvm.DependencyInjection;
 using FIP.App.Helpers;
+using FIP.Core.Services;
 using FIP.Core.ViewModels;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using System.IO.Compression;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Devices.Geolocation;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
@@ -16,6 +20,8 @@ namespace FIP.App.UserControls
 {
     public sealed partial class DropZone : UserControl
     {
+        private IFolderPainterService FolderPainterService { get; } = Ioc.Default.GetRequiredService<IFolderPainterService>();
+
         public DropZone()
         {
             this.InitializeComponent();
@@ -109,6 +115,9 @@ namespace FIP.App.UserControls
             {
                 StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", folder);
                 ZoneButton.Content = "Picked folder: " + folder.Name;
+
+                FolderPainterService.SettingIcon(folder.Path, IconViewModel.IconPath);
+                FolderPainterService.RefreshIcons();
             }
             else
             {
@@ -125,6 +134,9 @@ namespace FIP.App.UserControls
                 {
                     foreach (var appFile in items)
                     {
+                        FolderPainterService.SettingIcon(appFile.Path, IconViewModel.IconPath);
+                        FolderPainterService.RefreshIcons();
+
                         ZoneTextBlock.Text += appFile.Path;
                         ZoneTextBlock.Text += '\n';
                     }

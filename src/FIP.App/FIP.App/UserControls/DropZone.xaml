@@ -19,7 +19,7 @@
 					<RowDefinition Height="Auto"/>
 				</Grid.RowDefinitions>
 				
-				<TextBlock Grid.Row="0" FontSize="20" Margin="8,6,8,8"
+				<TextBlock Grid.Row="0" FontSize="20" Margin="8,4,8,8"
 						   Visibility="{x:Bind appVm:Converters.ToVisible(ShowNameMode), Mode=OneWay}"
 						   TextWrapping="NoWrap" TextLineBounds="TrimToBaseline"
 						   Style="{StaticResource SubtitleTextBlockStyle}"
@@ -27,12 +27,12 @@
 				
 				<Grid Visibility="{x:Bind appVm:Converters.ToVisible(ShowIconMode), Mode=OneWay}"
 					  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1"
-					  MaxWidth="210" MaxHeight="134">
+					  MaxWidth="200" MaxHeight="134">
 					<Image Stretch="Fill" Margin="-24,-16,-24,-24"
 						   Source="{x:Bind IconViewModel.SvgIconPath, Mode=OneWay}"/>
 				</Grid>
 				
-				<Button x:Name="ZoneButton" Grid.Row="1" Width="194" Height="118" 
+				<Button x:Name="ZoneButton" Grid.Row="1" Width="184" Height="118" 
 						Margin="8" CornerRadius="4" Click="DropZoneClick"
 						Visibility="{x:Bind appVm:Converters.ToNotVisible(ShowIconMode), Mode=OneWay}"
 						HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
