@@ -137,7 +137,7 @@ namespace FIP.App.ViewModels
                 CategoryStorageService.GetCategoryById(CurrentCategory.Model.Id).Name;
         }
 
-        public void RenameCurrentCategory()
+        public async Task RenameCurrentCategory()
         {
             var oldCategoryId = CurrentCategory.Model.Id;
             var newCategory = CategoryStorageService.PostCategory(CurrentCategory.Model);
@@ -145,7 +145,9 @@ namespace FIP.App.ViewModels
             if (oldCategoryId == Guid.Empty)
             {
                 CustomIconStorageService.MoveCustomIconsToOtherCategory(Guid.Empty, newCategory.Id);
-                FolderIconService.MoveFolderIconsAsync(CustomIconViewModels.Select(ci => ci.Model), newCategory);
+                await FolderIconService.MoveFolderIconsAsync(CustomIconViewModels.Select(ci => ci.Model), newCategory);
+
+                CurrentCategory = new CategoryViewModel(newCategory);
             }
         }
 
@@ -190,6 +192,7 @@ namespace FIP.App.ViewModels
                 if (CurrentCategory.IsNewCategory)
                 {
                     CategoryStorageService.AddCategory(CurrentCategory.Model);
+                    CurrentCategory.IsNewCategory = false;
                 }
 
                 CustomIconStorageService.PostCustomIcon(NewCustomIcon.Model);
@@ -234,6 +237,12 @@ namespace FIP.App.ViewModels
                 }
 
                 DeleteCustomIcons(SelectedCustomIcons);
+
+                if (!CustomIconViewModels.Any())
+                {
+                    CategoryStorageService.DeleteCategoryById(CurrentCategory.Model.Id);
+                    CurrentCategory = new CategoryViewModel(new Category { Id = Guid.Empty });
+                }
             }
             catch (Exception)
             {
@@ -248,6 +257,12 @@ namespace FIP.App.ViewModels
                 CustomIconStorageService.MoveCustomIconsToOtherCategory(SelectedCustomIcons.Select(ci => ci.Model), CategoryToMove.Model.Id);
                 await FolderIconService.MoveFolderIconsAsync(SelectedCustomIcons.Select(ci => ci.Model), CategoryToMove.Model);
                 DeleteCustomIcons(SelectedCustomIcons);
+
+                if (!CustomIconViewModels.Any())
+                {
+                    CategoryStorageService.DeleteCategoryById(CurrentCategory.Model.Id);
+                    CurrentCategory = CategoryToMove;
+                }
             }
             catch (Exception)
             {

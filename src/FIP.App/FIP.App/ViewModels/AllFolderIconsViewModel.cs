@@ -6,7 +6,11 @@ using FIP.Core.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace FIP.App.ViewModels
 {
@@ -16,23 +20,32 @@ namespace FIP.App.ViewModels
 
         private ICustomIconStorageService CustomIconStorageService { get; } = Ioc.Default.GetRequiredService<ICustomIconStorageService>();
 
-        public IEnumerable<CategoryViewModel> Categories { get => CategoryStorageService.Categories.Select(c => new CategoryViewModel(c)); }
+        public IEnumerable<CategoryViewModel> Categories { get => CategoryStorageService.Categories.Select(c => new CategoryViewModel(c)).Append(new (new Category { Id = Guid.Empty })); }
 
-        private GroupInfoList GetDefaultIcons()
+        private async Task<GroupInfoList> GetDefaultIconsAsync()
         {
-            var fipHexColors = DefaultColors.GetAllColors().ToList();
+            Uri sourceUri = new Uri(AppConstants.AssetPaths.DefaultIconsJSON);
+            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(sourceUri);
+            string jsonText = await FileIO.ReadTextAsync(file);
+
+            var defaultCustomIcons = JsonSerializer.Deserialize<List<CustomIcon>>(jsonText, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
             var dropZoneViewModels = new List<DropZoneViewModel>();
 
-            //fipHexColors.ForEach(c => dropZoneViewModels.Add(new DropZoneViewModel(c)));
+            defaultCustomIcons.ForEach(c => dropZoneViewModels.Add(
+                new DropZoneViewModel(new CustomIconViewModel(c))));
 
             return new GroupInfoList(dropZoneViewModels)
             {
-                Key = Guid.Empty,
+                Key = AppConstants.DefaultCategoryId,
                 Title = "Default Icons"
             };
         }
 
-        public List<GroupInfoList> GetCustomIcons()
+        public async Task<List<GroupInfoList>> GetCustomIconsAsync()
         {
             var icons = CustomIconStorageService.CustomIcons;
 
@@ -43,6 +56,7 @@ namespace FIP.App.ViewModels
                             Key = g.Key,
                             Title = g.Key == Guid.Empty ? "No Category" : CategoryStorageService.GetCategoryById(g.Key).Name
                         };
+            query = query.Prepend(await GetDefaultIconsAsync());
 
             //return new ObservableCollection<GroupInfoList>(query.Prepend(GetDefaultIcons()));
             return new List<GroupInfoList>(query);
