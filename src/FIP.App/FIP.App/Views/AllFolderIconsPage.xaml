@@ -21,7 +21,7 @@
 			<usercontrols:DropZone Margin="8"
 								   ShowIconMode="{Binding ElementName=ShowIconsCheckBox, Path=IsChecked}"
 								   ShowNameMode="{Binding ElementName=ShowNamesCheckBox, Path=IsChecked}"
-								   IconViewModel="{x:Bind CustomIconVM}"
+								   IconViewModel="{Binding CustomIconVM}"
 								   BackgroundColor="{Binding BackgroundColor}"
                                    BackgroundPointerOverColor="{Binding BackgroundPointerOverColor}"
                                    BackgroundPressedColor="{Binding BackgroundPressedColor}">
@@ -30,12 +30,12 @@
 		</DataTemplate>
 	
 		<DataTemplate x:Key="CategoryListViewTemplate" x:DataType="models:CategoryViewModel">
-			<TextBlock TextTrimming="CharacterEllipsis" Text="{x:Bind Name}"/>
+			<TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Name}"/>
 		</DataTemplate>
 	</Page.Resources>
 
 	<!--  This grid acts as a root panel for the page.  -->
-	<Grid Background="{ThemeResource HomePageBackgroundBrush}">
+	<Grid Background="{ThemeResource HomePageBackgroundBrush}" Padding="48,12,12,36">
 		<VisualStateManager.VisualStateGroups>
 			<!--  Visual states reflect the application's window size  -->
 			<VisualStateGroup x:Name="LayoutVisualStates">
@@ -60,10 +60,16 @@
 			<ColumnDefinition Width="190"/>
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-
+		
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		
 		<ListView x:Name="CategoryList" SelectionMode="Multiple" ItemsSource="{x:Bind ViewModel.Categories}"
-				  Margin="32,43,0,0" ItemTemplate="{StaticResource CategoryListViewTemplate}"
-				  SelectionChanged="ListViewSelectionChanged">
+				  Margin="-16,43,0,0" ItemTemplate="{StaticResource CategoryListViewTemplate}"
+				  SelectionChanged="ListViewSelectionChanged" Grid.Row="0" Grid.Column="0"
+				  Grid.RowSpan="2">
 		
 			<ListView.Header>
 				<TextBlock
@@ -76,47 +82,41 @@
 		
 		</ListView>
 
-		<ScrollViewer x:Name="WrapScrollParent" Grid.Column="1"
-                      Margin="31,0,0,0"
-                      VerticalScrollBarVisibility="Auto"
-                      VerticalScrollMode="Auto">
+		<Grid Margin="0,43,32,0" Grid.Row="0" Grid.Column="1">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="auto" />
+					<ColumnDefinition Width="*" />
+				</Grid.ColumnDefinitions>
+				<TextBox x:Name="GridViewFilter" TextAlignment="Start"
+					 PlaceholderText="Filter by Icon Name" HorizontalAlignment="Stretch"
+					TextChanged="GridViewFilterTextChanged"
+					Loaded="GridViewSearchBoxLoaded">
+				</TextBox>
+
+				<StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+					<CheckBox x:Name="ShowIconsCheckBox" Content="Show Icons" />
+					<CheckBox x:Name="ShowNamesCheckBox" Content="Show Names" />
+				</StackPanel>
+			</Grid>
 
 			<controls:AdaptiveGridView x:Name="AdaptiveGridViewControl"
-									   Margin="12,39,43,0"
+									   Margin="0,8,32,0" Grid.Row="1" Grid.Column="1"
                                        StretchContentForSingleRow="False"
                                        VerticalContentAlignment="Stretch"
                                        HorizontalContentAlignment="Stretch"
                                        OneRowModeEnabled="False"
                                        SelectionMode="None"
+									   ScrollViewer.VerticalScrollBarVisibility="Visible"
+									   ScrollViewer.VerticalScrollMode="Auto"
                                        ItemTemplate="{StaticResource WrapTemplate}"
 									   ItemsSource="{x:Bind itemsCVS.View, Mode=OneWay}">
-				<controls:AdaptiveGridView.Header>
-					<Grid Margin="0,0,0,8">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="auto" />
-							<ColumnDefinition Width="*" />
-						</Grid.ColumnDefinitions>
-						<TextBox x:Name="GridViewFilter" TextAlignment="Start"
-							 PlaceholderText="Filter by Icon Name" HorizontalAlignment="Stretch"
-							TextChanged="GridViewFilterTextChanged"
-							Loaded="GridViewSearchBoxLoaded">
-						</TextBox>
-
-						<StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-							<CheckBox x:Name="ShowIconsCheckBox" Content="Show Icons" />
-							<CheckBox x:Name="ShowNamesCheckBox" Content="Show Names" />
-						</StackPanel>
-					</Grid>
-				</controls:AdaptiveGridView.Header>
-				
+						
 				<controls:AdaptiveGridView.GroupStyle>
 					<GroupStyle>
 						<GroupStyle.HeaderTemplate>
 							<DataTemplate x:DataType="viewmodels:GroupInfoList">
 								<TextBlock
 									x:Name="pageSubtitle"
-									Margin="0,8,0,0"
-									AutomationProperties.HeadingLevel="Level1"
 									Style="{StaticResource SubtitleTextBlockStyle}"
 									Text="{x:Bind Title}" />
 							</DataTemplate>
@@ -124,6 +124,6 @@
 					</GroupStyle>
 				</controls:AdaptiveGridView.GroupStyle>
 			</controls:AdaptiveGridView>
-		</ScrollViewer>
+
 	</Grid>
 </Page>

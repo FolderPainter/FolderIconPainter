@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Contacts;
 using Windows.UI;
 
@@ -29,16 +30,17 @@ namespace FIP.App.Views
 
         public AllFolderIconsPage()
         {
-            CustomIconsGroups = ViewModel.GetCustomIcons();
+            CustomIconsGroups = Task.Run(async () => await ViewModel.GetCustomIconsAsync()).Result;
 
             this.InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             //NavigationRootPageArgs args = (NavigationRootPageArgs)e.Parameter;
             //var menuItem = (Microsoft.UI.Xaml.Controls.NavigationViewItem)args.NavigationRootPage.NavigationView.MenuItems.First();
             //menuItem.IsSelected = true;
+
             itemsCVS.Source = new ObservableCollection<GroupInfoList>(CustomIconsGroups);
         }
 
@@ -114,7 +116,7 @@ namespace FIP.App.Views
             }
             else
             {
-                FilteredCustomIconsGroups = ViewModel.GetCustomIcons();
+                FilteredCustomIconsGroups = CustomIconsGroups;
             }
 
             FilterFolderIcons();
