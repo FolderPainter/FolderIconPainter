@@ -34,9 +34,9 @@ namespace FIP.App.Views.Dialogs
             }
         }
 
-        private void ContentDialogPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private async void ContentDialogPrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
-            ViewModel.RenameCurrentCategory();
+            await ViewModel.RenameCurrentCategory();
         }
 
         private void ContentDialogClosing(ContentDialog sender, ContentDialogClosingEventArgs args)
