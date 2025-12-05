@@ -1,0 +1,3 @@
+IFileDialog
+CreateFileFromApp
+GetCurrentPackageFullName
