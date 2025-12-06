@@ -8,11 +8,11 @@ namespace FIP.App.Constants
 
         public static class AssetPaths
         {
-            public const string SVGFolderIconTemplate = "ms-appx:///Assets/win11-folder-template.svg";
+            public const string SVGFolderIconTemplate = "Assets/win11-folder-template.svg";
             
-            public const string DefaultIconsJSON = "ms-appx:///Assets/DefaultIcons.json";
+            public const string DefaultIconsJSON = "Assets/DefaultIcons.json";
 
-            public const string DefaultIconsFolder = "ms-appx:///Assets/DefaultIcons/";
+            public const string DefaultIconsFolder = "Assets/DefaultIcons/";
         }
 
         public static class StorageSettings

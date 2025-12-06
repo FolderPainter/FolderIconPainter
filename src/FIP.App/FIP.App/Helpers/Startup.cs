@@ -38,7 +38,9 @@ namespace FIP.App.Helpers
 
         public static void ConfigureLogger()
         {
-            var logPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, AppConstants.StorageSettings.LogsFileName);
+            StorageFolder localFolder = WindowHelper.GetAppLocalFolder();
+
+            var logPath = Path.Combine(localFolder.Path, AppConstants.StorageSettings.LogsFileName);
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(

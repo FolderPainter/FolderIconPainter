@@ -28,7 +28,7 @@ namespace FIP.App
 
             Loaded += delegate (object sender, RoutedEventArgs e)
             {
-                NavigationOrientationHelper.UpdateTitleBarForElement(NavigationOrientationHelper.IsLeftMode(), this);
+                //NavigationOrientationHelper.UpdateTitleBarForElement(NavigationOrientationHelper.IsLeftMode(), this);
                 
                 var window = WindowHelper.GetWindowForElement(sender as UIElement);
                 window.Title = AppTitleText;
@@ -206,7 +206,7 @@ namespace FIP.App
         /// Invoked wgen the Open Icons folder is clicked. Launches the folder
         /// </summary>
         private async void OpenFolderNavPaneButton_Tapped(object sender, TappedRoutedEventArgs e) =>
-            await Launcher.LaunchFolderAsync(ApplicationData.Current.LocalFolder);
+            await Launcher.LaunchFolderAsync(WindowHelper.GetAppLocalFolder());
 
 
         /// <summary>
