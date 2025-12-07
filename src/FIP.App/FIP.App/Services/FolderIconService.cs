@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.Storage;
 using Bitmap = System.Drawing.Bitmap;
 
@@ -19,8 +20,10 @@ namespace FIP.App.Services
 
         public FolderIconService()
         {
-            Initialize(Path.Combine(ApplicationData.Current.LocalFolder.Path,
-                AppConstants.StorageSettings.IconsFolderName));
+            StorageFolder localFolder = WindowHelper.GetAppLocalFolder();
+
+            Initialize(Path.Combine(localFolder.Path,
+                 AppConstants.StorageSettings.IconsFolderName));
         }
 
         public void Initialize(string folderPath)
@@ -148,9 +151,23 @@ namespace FIP.App.Services
         {
             ArgumentNullException.ThrowIfNull(customIcon);
 
-            string iconStorageFolderPath = GetIconsStorageFolder(customIcon.CategoryId);
-
-            return Path.Combine(iconStorageFolderPath, $"{customIcon.Id}.ico");
+            if (customIcon.CategoryId == AppConstants.DefaultCategoryId)
+            {
+                if (!NativeMethods.IsAppPackaged)
+                {
+                    return Path.Combine(AppContext.BaseDirectory, AppConstants.AssetPaths.DefaultIconsFolder, $"{customIcon.Id}.ico");
+                }
+                else
+                {
+                    Uri sourceUri = new Uri(new Uri($"ms-appx:///{AppConstants.AssetPaths.DefaultIconsFolder}"), $"{customIcon.Id}.ico");
+                    StorageFile file = Task.Run(async () => await StorageFile.GetFileFromApplicationUriAsync(sourceUri)).Result;
+                    return file.Path;
+                }
+            }
+            else
+            {
+                return Path.Combine(_folderPath, $"{customIcon.CategoryId}/{customIcon.Id}.ico");
+            }
         }
 
         public bool FolderIconExists(CustomIcon customIcon)
@@ -207,9 +224,23 @@ namespace FIP.App.Services
         {
             ArgumentNullException.ThrowIfNull(customIcon);
 
-            string iconStorageFolderPath = GetIconsStorageFolder(customIcon.CategoryId);
-
-            return Path.Combine(iconStorageFolderPath, $"{customIcon.Id}.svg");
+            if (customIcon.CategoryId == AppConstants.DefaultCategoryId)
+            {
+                if (!NativeMethods.IsAppPackaged)
+                {
+                    return Path.Combine(AppContext.BaseDirectory, AppConstants.AssetPaths.DefaultIconsFolder, $"{customIcon.Id}.svg");
+                }
+                else
+                {
+                    Uri sourceUri = new Uri(new Uri($"ms-appx:///{AppConstants.AssetPaths.DefaultIconsFolder}"), $"{customIcon.Id}.svg");
+                    StorageFile file = Task.Run(async () => await StorageFile.GetFileFromApplicationUriAsync(sourceUri)).Result;
+                    return file.Path;
+                }
+            }
+            else
+            {
+                return Path.Combine(_folderPath, $"{customIcon.CategoryId}/{customIcon.Id}.svg");
+            }
         }
 
         public bool SvgFolderIconExists(CustomIcon customIcon)
@@ -237,15 +268,8 @@ namespace FIP.App.Services
             bool rasterIconDeleted = true;
             bool svgIconDeleted = true;
 
-            if (FolderIconExists(customIcon))
-            {
-                rasterIconDeleted = await DeleteFolderIconAsync(customIcon);
-            }
-
-            if (SvgFolderIconExists(customIcon))
-            {
-                svgIconDeleted = await DeleteSvgFolderIconAsync(customIcon);
-            }
+            rasterIconDeleted = await DeleteFolderIconAsync(customIcon);
+            svgIconDeleted = await DeleteSvgFolderIconAsync(customIcon);
 
             if (rasterIconDeleted && svgIconDeleted)
             {
@@ -263,13 +287,6 @@ namespace FIP.App.Services
             }
 
             return rasterIconDeleted && svgIconDeleted;
-        }
-
-        private string GetIconsStorageFolder(Guid categoryId)
-        {
-            return categoryId == AppConstants.DefaultCategoryId ?
-                AppConstants.AssetPaths.DefaultIconsFolder :
-                Path.Combine(_folderPath, categoryId.ToString());
         }
     }
 }
