@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "FIP.Core.UnitTests (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "FIP.Core.UnitTests (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
