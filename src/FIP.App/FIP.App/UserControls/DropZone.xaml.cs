@@ -92,8 +92,13 @@ namespace FIP.App.UserControls
 
         private async void DropZoneClick(object sender, RoutedEventArgs e)
         {
+            if (IconViewModel is null)
+            {
+                return;
+            }
+
             // Clear previous returned file name, if it exists, between iterations of this scenario
-            ZoneButton.Content = "";
+            ZoneTextBlock.Text = "";
 
             // Create a folder picker
             FolderPicker openPicker = new FolderPicker();
@@ -114,19 +119,24 @@ namespace FIP.App.UserControls
             if (folder != null)
             {
                 StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", folder);
-                ZoneButton.Content = "Picked folder: " + folder.Name;
+                ZoneTextBlock.Text = "Picked folder: " + folder.Name;
 
                 FolderPainterService.SettingIcon(folder.Path, IconViewModel.IconPath);
                 FolderPainterService.RefreshIcons();
             }
             else
             {
-                ZoneButton.Content = "Operation cancelled.";
+                ZoneTextBlock.Text = "Operation cancelled.";
             }
         }
 
         private async void DropZoneDrop(object sender, DragEventArgs e)
         {
+            if (IconViewModel is null)
+            {
+                return;
+            }
+
             if (e.DataView.Contains(StandardDataFormats.StorageItems))
             {
                 var items = await e.DataView.GetStorageItemsAsync();

@@ -9,29 +9,29 @@
 	x:Name="DropZoneControl"
     mc:Ignorable="d">
 	<Viewbox Stretch="UniformToFill" StretchDirection="DownOnly">
-		<Button CornerRadius="4" Padding="8"
-                Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
-				Click="DropZoneClick" DragOver="DropZoneDragOver"
+		<Border CornerRadius="4" Padding="8"
+				Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+				DragOver="DropZoneDragOver"
 				Drop="DropZoneDrop" AllowDrop="True"> 
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="Auto"/>
 				</Grid.RowDefinitions>
-				
+
 				<TextBlock Grid.Row="0" FontSize="20" Margin="8,4,8,8"
 						   Visibility="{x:Bind appVm:Converters.ToVisible(ShowNameMode), Mode=OneWay}"
 						   TextWrapping="NoWrap" TextLineBounds="TrimToBaseline"
 						   Style="{StaticResource SubtitleTextBlockStyle}"
 						   Text="{x:Bind IconViewModel.Name, Mode=OneWay, TargetNullValue='No name'}" />
-				
+
 				<Grid Visibility="{x:Bind appVm:Converters.ToVisible(ShowIconMode), Mode=OneWay}"
 					  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="1"
 					  MaxWidth="200" MaxHeight="134">
 					<Image Stretch="Fill" Margin="-24,-16,-24,-24"
 						   Source="{x:Bind IconViewModel.SvgIconPath, Mode=OneWay}"/>
 				</Grid>
-				
+
 				<Button x:Name="ZoneButton" Grid.Row="1" Width="184" Height="118" 
 						Margin="8" CornerRadius="4" Click="DropZoneClick"
 						Visibility="{x:Bind appVm:Converters.ToNotVisible(ShowIconMode), Mode=OneWay}"
@@ -48,11 +48,10 @@
 											 Color="{Binding ElementName=DropZoneControl, Path=BackgroundColor}"/>
 						</ResourceDictionary>
 					</Button.Resources>
-					<TextBlock x:Name="ZoneTextBlock">
-
-					</TextBlock>
+					<TextBlock x:Name="ZoneTextBlock"
+							   HorizontalAlignment="Center" VerticalAlignment="Center" />
 				</Button>
 			</Grid>
-		</Button>
+		</Border>
 	</Viewbox>
 </UserControl>
