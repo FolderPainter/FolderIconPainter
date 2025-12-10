@@ -42,7 +42,7 @@ namespace FIP.App.ViewModels
             var defaultCustomIcons = JsonSerializer.Deserialize<List<CustomIcon>>(jsonText, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
-            });
+            }) ?? [];
 
             var dropZoneViewModels = new List<DropZoneViewModel>();
 

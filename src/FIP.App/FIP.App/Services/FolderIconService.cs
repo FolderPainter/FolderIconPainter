@@ -128,6 +128,12 @@ namespace FIP.App.Services
             ArgumentNullException.ThrowIfNull(customIcons);
             ArgumentNullException.ThrowIfNull(category);
 
+            var firstIcon = customIcons.FirstOrDefault();
+            if (firstIcon is null)
+            {
+                return true;
+            }
+
             foreach (var customIcon in customIcons)
             {
                 if (!await MoveFolderIconAsync(customIcon, category))
@@ -135,7 +141,7 @@ namespace FIP.App.Services
             }
 
             // Delete folder if it's empty
-            string categoryFolderPath = Path.Combine(_folderPath, customIcons.FirstOrDefault().CategoryId.ToString());
+            string categoryFolderPath = Path.Combine(_folderPath, firstIcon.CategoryId.ToString());
             if (Directory.Exists(categoryFolderPath))
             {
                 StorageFolder iconsFolder = await StorageFolder.GetFolderFromPathAsync(categoryFolderPath);

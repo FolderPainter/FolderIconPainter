@@ -53,7 +53,7 @@ namespace FIP.App.Services
                 // desktop.ini
                 if (File.Exists(dir + @"\desktop.ini"))
                 {
-                    File.SetAttributes(dir + @"\desktop.ini", File.GetAttributes(dir + @"\desktop.ini") | FileAttributes.Normal); //Normal file
+                    File.SetAttributes(dir + @"\desktop.ini", FileAttributes.Normal);
 
                     FileInfo fileInfo = new FileInfo(dir + @"\desktop.ini");
                     fileInfo.IsReadOnly = false;
@@ -64,7 +64,7 @@ namespace FIP.App.Services
                 // Icon.ico
                 if (File.Exists(dir + @"\Icon.ico"))
                 {
-                    File.SetAttributes(dir + @"\Icon.ico", File.GetAttributes(dir + @"\Icon.ico") | FileAttributes.Normal); //Normal file
+                    File.SetAttributes(dir + @"\Icon.ico", FileAttributes.Normal);
 
                     FileInfo fileInfo = new FileInfo(dir + @"\Icon.ico");
                     fileInfo.IsReadOnly = false;
@@ -75,7 +75,7 @@ namespace FIP.App.Services
                 // .hidden
                 if (File.Exists(dir + @"\.hidden"))
                 {
-                    File.SetAttributes(dir + @"\.hidden", File.GetAttributes(dir + @"\.hidden") | FileAttributes.Normal); //Normal file
+                    File.SetAttributes(dir + @"\.hidden", FileAttributes.Normal);
 
                     FileInfo fileInfo = new FileInfo(dir + @"\.hidden");
                     fileInfo.IsReadOnly = false;
