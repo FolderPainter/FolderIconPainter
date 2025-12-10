@@ -31,6 +31,7 @@ namespace FIP.App.Views
         public AllFolderIconsPage()
         {
             CustomIconsGroups = Task.Run(async () => await ViewModel.GetCustomIconsAsync()).Result;
+            FilteredCustomIconsGroups = CustomIconsGroups;
 
             this.InitializeComponent();
         }

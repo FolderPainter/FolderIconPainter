@@ -48,10 +48,6 @@
 					<VisualState.StateTriggers>
 						<AdaptiveTrigger MinWindowWidth="0" />
 					</VisualState.StateTriggers>
-					<VisualState.Setters>
-						<Setter Target="WrapScrollParent.Padding" Value="0,0,0,36" />
-						<Setter Target="WrapScrollParent.Margin" Value="0,-64,0,0" />
-					</VisualState.Setters>
 				</VisualState>
 			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
