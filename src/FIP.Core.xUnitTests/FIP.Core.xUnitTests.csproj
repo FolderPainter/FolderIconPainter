@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\FIP.Core\FIP.Core.csproj" />
+    <ProjectReference Include="..\FIP.Core\FIP.Core.csproj" />
   </ItemGroup>
 
 </Project>
