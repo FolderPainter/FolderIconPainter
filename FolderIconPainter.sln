@@ -19,6 +19,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E2E05C47-4C58-4406-9682-3ABB2FCC9325}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		.github\workflows\azure-pipelines.yml = .github\workflows\azure-pipelines.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
