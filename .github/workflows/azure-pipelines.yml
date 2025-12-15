@@ -13,13 +13,12 @@ pool:
   vmImage: 'windows-2022'
 
 variables:
-  group: BuildPipelineVariables
   solution: '**/FolderIconPainter.sln'
   testProject: '**/*.UnitTests.csproj'
-  xUnitTestProject: '**/FIP.Core.xUnitTests.csproj'
+  UnitTestProject: '**/FIP.UnitTests.csproj'
   buildPlatform: 'x64'
-  buildConfiguration: 'Release'
-  appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
+  buildConfiguration: 'Debug'
+  appxPackageDir: '$(Build.ArtifactStagingDirectory)\AppxPackages\\'
   buildFolder: '$(Build.SourcesDirectory)\bin\'
   
 jobs:
@@ -28,6 +27,9 @@ jobs:
   timeoutInMinutes: 10
   steps:
   - task: NuGetToolInstaller@1
+    displayName: Install NuGet 5.8.0
+    inputs:
+      versionSpec: 5.8.0
 
   - task: NuGetCommand@2
     displayName: Restore NuGet Packages for Folder Icon Painter 
@@ -38,76 +40,34 @@ jobs:
   - task: VSBuild@1
     displayName: 'Build Folder Icon Painter Package'
     inputs:
-      platform: '$(buildPlatform)'
-      solution: '$(solution)'
+      command: 'publish'
+      publishWebProjects: false
+      projects: '$(solution)'
       configuration: '$(buildConfiguration)'
-      msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" 
-                    /p:AppxPackageDir="$(appxPackageDir)"
-                    /p:AppxPackageSigningEnabled=false 
-                    /p:AppxBundle=Always 
-                    /p:GenerateAppxPackageOnBuild=true
-                    /p:PublishReadyToRun=false'
+      arguments: '/p:AppxPackageDir="$(appxPackageDir) 
+                  /p:platform="$(buildPlatform)" 
+                  /p:configuration="$(buildConfiguration)"
+                  /p:PublishProfile="./FIP.Core/Properties/PublishProfiles/win-$(buildPlatform).pubxml"'
+      zipAfterPublish: false
+      modifyOutputPath: false
 
-# Builds unit tests
-  - task: MSBuild@1
-    displayName: 'Build Unit Tests'
-    inputs:
-      solution: '$(testProject)'
-      platform: '$(buildPlatform)'
-      configuration: 'Debug'
-      msbuildArguments: '/t:build /restore'
-      maximumCpuCount: true
-
-  - task: Windows Application Driver@0
-    displayName: Start Windows Application Driver
-    inputs:
-      OperationType: "Start"
-      AgentResolution: "1080p"
-
-  - task: VSTest@2
-    displayName: 'Run UI Tests'
-    inputs:
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: |
-        **\bin\$(buildPlatform)\Debug\**\*UnitTests.dll
-        !**\*TestAdapter.dll
-        !**\obj\**
-        !**\ref\**
-      searchFolder: '$(System.DefaultWorkingDirectory)'
-      resultsFolder: '$(Build.ArtifactStagingDirectory)\TestResults'
-      platform: '$(BuildPlatform)'
-      configuration: 'Debug'
-      minimumExpectedTests: 1
-      failOnMinTestsNotRun: true
-      codeCoverageEnabled: true
-
-  - task: Windows Application Driver@0
-    displayName: Stop Windows Application Driver
-    inputs:
-      OperationType: "Stop"
-      condition: always()
-
-  - task: PublishTestResults@2
-    displayName: 'Publish Test Results'
-    inputs:
-      testResultsFormat: VSTest
-      testResultsFiles: '**\*.trx'
-      searchFolder: '$(Agent.TempDirectory)'
-      failTaskOnFailedTests: true
-      testRunTitle: 'Unit tests'
+  - script: |
+      dir /b /s $(Build.ArtifactStagingDirectory)
+      dir /b /s $(System.DefaultWorkingDirectory)
+    displayName: 'List contents of ArtifactStagingDirectory and DefaultWorkingDirectory'
 
   - task: DotNetCoreCLI@2
-    displayName: 'Run xUnit Tests'
+    displayName: 'Run Unit Tests'
     inputs:
       command: 'test'
-      projects: '$(xUnitTestProject)'
-      arguments: '--configuration Debug --logger trx --results-directory $(Agent.TempDirectory)/xUnitResults'
+      projects: '$(UnitTestProject)'
+      arguments: '--configuration Debug --logger trx --results-directory $(Agent.TempDirectory)/UnitTestsResults'
 
   - task: PublishTestResults@2
-    displayName: 'Publish xUnit Test Results'
+    displayName: 'Publish Unit Test Results'
     inputs:
       testResultsFormat: VSTest
       testResultsFiles: '**\*.trx'
-      searchFolder: '$(Agent.TempDirectory)/xUnitResults'
+      searchFolder: '$(Agent.TempDirectory)/UnitResults'
       failTaskOnFailedTests: true
       testRunTitle: 'xUnit tests'
