@@ -14,13 +14,11 @@ pool:
 
 variables:
   solution: '**/FolderIconPainter.sln'
-  testProject: '**/*.UnitTests.csproj'
   UnitTestProject: '**/FIP.UnitTests.csproj'
   buildPlatform: 'x64'
   buildConfiguration: 'Debug'
   appxPackageDir: '$(Build.ArtifactStagingDirectory)\AppxPackages\\'
-  buildFolder: '$(Build.SourcesDirectory)\bin\'
-  
+
 jobs:
 - job: Build
   displayName: 'Build & Run Tests'
@@ -37,16 +35,16 @@ jobs:
       command: 'restore'
       restoreSolution: '$(solution)'
 
-  - task: VSBuild@1
+  - task: DotNetCoreCLI@2
     displayName: 'Build Folder Icon Painter Package'
     inputs:
       command: 'publish'
       publishWebProjects: false
       projects: '$(solution)'
       configuration: '$(buildConfiguration)'
-      arguments: '/p:AppxPackageDir="$(appxPackageDir) 
+      arguments: '/p:AppxPackageDir="$(appxPackageDir)" 
                   /p:platform="$(buildPlatform)" 
-                  /p:configuration="$(buildConfiguration)"
+                  /p:configuration="$(buildConfiguration)" 
                   /p:PublishProfile="./FIP.Core/Properties/PublishProfiles/win-$(buildPlatform).pubxml"'
       zipAfterPublish: false
       modifyOutputPath: false
@@ -68,6 +66,6 @@ jobs:
     inputs:
       testResultsFormat: VSTest
       testResultsFiles: '**\*.trx'
-      searchFolder: '$(Agent.TempDirectory)/UnitResults'
+      searchFolder: '$(Agent.TempDirectory)/UnitTestsResults'
       failTaskOnFailedTests: true
       testRunTitle: 'xUnit tests'
