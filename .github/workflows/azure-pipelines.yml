@@ -35,18 +35,18 @@ jobs:
       command: 'restore'
       restoreSolution: '$(solution)'
 
-  - task: DotNetCoreCLI@2
+  - task: VSBuild@1
     displayName: 'Build Folder Icon Painter Package'
     inputs:
-      command: 'publish'
-      publishWebProjects: false
-      projects: '$(solution)'
-      arguments: '/p:AppxPackageDir="$(appxPackageDir)" 
-                  /p:platform="$(buildPlatform)" 
-                  /p:configuration="$(buildConfiguration)" 
-                  /p:PublishProfile="./FIP.Core/Properties/PublishProfiles/win-$(buildPlatform).pubxml"'
-      zipAfterPublish: false
-      modifyOutputPath: false
+      platform: '$(buildPlatform)'
+      solution: '$(solution)'
+      configuration: '$(buildConfiguration)'
+      msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" 
+                    /p:AppxPackageDir="$(appxPackageDir)"
+                    /p:AppxPackageSigningEnabled=false 
+                    /p:AppxBundle=Always 
+                    /p:GenerateAppxPackageOnBuild=true
+                    /p:PublishReadyToRun=false'
 
   - script: |
       dir /b /s $(Build.ArtifactStagingDirectory)
