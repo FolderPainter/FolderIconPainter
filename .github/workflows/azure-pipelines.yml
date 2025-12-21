@@ -59,6 +59,7 @@ jobs:
       command: 'test'
       projects: '$(UnitTestProject)'
       arguments: '--configuration Debug --logger trx --results-directory $(Agent.TempDirectory)/UnitTestsResults'
+      publishTestResults: false
 
   - task: PublishTestResults@2
     displayName: 'Publish Unit Test Results'
