@@ -58,17 +58,19 @@ jobs:
     inputs:
       testSelector: 'testAssemblies'
       testAssemblyVer2: |
-        **\*test*.dll
+        **\FIP.UnitTests.dll
         !**\*TestAdapter.dll
         !**\obj\**
+        !**\ref\**
       searchFolder: '$(System.DefaultWorkingDirectory)'
-      configuration: 'Debug'
+      resultsFolder: "$(Build.ArtifactStagingDirectory)\\UnitTestsResults"
+      overrideTestrunParameters: '-ArtifactStagingDirectory "$(Build.ArtifactStagingDirectory)"'
 
-  - task: PublishTestResults@2
-    displayName: 'Publish Unit Test Results'
-    inputs:
-      testResultsFormat: VSTest
-      testResultsFiles: '**\*.trx'
-      searchFolder: '$(Agent.TempDirectory)/UnitTestsResults'
-      failTaskOnFailedTests: true
-      testRunTitle: 'xUnit tests'
+  # - task: PublishTestResults@2
+  #   displayName: 'Publish Unit Test Results'
+  #   inputs:
+  #     testResultsFormat: VSTest
+  #     testResultsFiles: '**\*.trx'
+  #     searchFolder: '$(Agent.TempDirectory)/UnitTestsResults'
+  #     failTaskOnFailedTests: true
+  #     testRunTitle: 'xUnit tests'
