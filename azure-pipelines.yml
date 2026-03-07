@@ -10,12 +10,13 @@ trigger:
     - fix/*
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'windows-2022'
 
 variables:
   group: BuildPipelineVariables
   solution: '**/FolderIconPainter.sln'
   testProject: '**/*.UnitTests.csproj'
+  xUnitTestProject: '**/FIP.Core.xUnitTests.csproj'
   buildPlatform: 'x64'
   buildConfiguration: 'Release'
   appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
@@ -44,7 +45,8 @@ jobs:
                     /p:AppxPackageDir="$(appxPackageDir)"
                     /p:AppxPackageSigningEnabled=false 
                     /p:AppxBundle=Always 
-                    /p:UapAppxPackageBuildMode=StoreUpload'
+                    /p:GenerateAppxPackageOnBuild=true
+                    /p:PublishReadyToRun=false'
 
 # Builds unit tests
   - task: MSBuild@1
@@ -73,3 +75,19 @@ jobs:
       searchFolder: '$(Agent.TempDirectory)'
       failTaskOnFailedTests: true
       testRunTitle: 'Unit tests'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run xUnit Tests'
+    inputs:
+      command: 'test'
+      projects: '$(xUnitTestProject)'
+      arguments: '--configuration Debug --logger trx --results-directory $(Agent.TempDirectory)/xUnitResults'
+
+  - task: PublishTestResults@2
+    displayName: 'Publish xUnit Test Results'
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '**\*.trx'
+      searchFolder: '$(Agent.TempDirectory)/xUnitResults'
+      failTaskOnFailedTests: true
+      testRunTitle: 'xUnit tests'
