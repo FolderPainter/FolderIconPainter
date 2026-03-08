@@ -58,16 +58,35 @@ jobs:
       msbuildArguments: '/t:build /restore'
       maximumCpuCount: true
 
-  - task: VSTest@2
-    displayName: 'Run Unit Tests'
+  - task: Windows Application Driver@0
+    displayName: Start Windows Application Driver
     inputs:
+      OperationType: "Start"
+      AgentResolution: "1080p"
+
+  - task: VSTest@2
+    displayName: 'Run UI Tests'
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: |
+        **\bin\$(buildPlatform)\Debug\**\*UnitTests.dll
+        !**\*TestAdapter.dll
+        !**\obj\**
+        !**\ref\**
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      resultsFolder: '$(Build.ArtifactStagingDirectory)\TestResults'
       platform: '$(BuildPlatform)'
       configuration: 'Debug'
-      testAssemblyVer2: '$(System.DefaultWorkingDirectory)\**\**\bin\Debug\**\*UnitTests.dll'
       minimumExpectedTests: 1
       failOnMinTestsNotRun: true
       codeCoverageEnabled: true
-      
+
+  - task: Windows Application Driver@0
+    displayName: Stop Windows Application Driver
+    inputs:
+      OperationType: "Stop"
+      condition: always()
+
   - task: PublishTestResults@2
     displayName: 'Publish Test Results'
     inputs:
