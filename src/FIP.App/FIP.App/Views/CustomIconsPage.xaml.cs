@@ -1,22 +1,23 @@
-using Microsoft.Graphics.Canvas.Svg;
-using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using System;
-using Windows.Storage;
-using Microsoft.UI;
-using FIP.Core.Models;
-using FIP.Core.Services;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using FIP.App.Constants;
+using FIP.App.Helpers;
 using FIP.App.ViewModels;
-using FIP.Core.ViewModels;
-using System.Linq;
-using Microsoft.UI.Xaml.Navigation;
 using FIP.App.Views.Dialogs;
+using FIP.Core.Models;
+using FIP.Core.Services;
+using FIP.Core.ViewModels;
+using Microsoft.Graphics.Canvas.Svg;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.UI;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Navigation;
 using Svg;
+using System;
 using System.IO;
+using System.Linq;
+using Windows.Storage;
 
 namespace FIP.App.Views
 {
@@ -80,7 +81,19 @@ namespace FIP.App.Views
 
         private async void IconCanvasCreateResources(CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
         {
-            var svgFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri(AppConstants.AssetPaths.SVGFolderIconTemplate));
+            StorageFile? svgFile = null;
+
+            if (!NativeMethods.IsAppPackaged)
+            {
+                var sourcePath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, AppConstants.AssetPaths.SVGFolderIconTemplate));
+                svgFile = await StorageFile.GetFileFromPathAsync(sourcePath);
+            }
+            else
+            {
+                Uri sourceUri = new Uri("ms-appx:///" + AppConstants.AssetPaths.SVGFolderIconTemplate);
+                svgFile = await StorageFile.GetFileFromApplicationUriAsync(sourceUri);
+            }
+
             using (var fileStream = await svgFile.OpenReadAsync())
             {
                 ViewModel.CanvasSVG = await CanvasSvgDocument.LoadAsync(IconCanvas, fileStream);

@@ -1,0 +1,114 @@
+[
+    {
+        "CategoryId": "11111111-1111-1111-1111-111111111111",
+        "Name": "Red",
+        "InfoTip": "Default red folder icon",
+        "Color": "#C71313",
+        "Id": "11111111-0000-0000-0000-000000000000"
+    },
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Lime",
+		"InfoTip": "Default lime folder icon",
+		"Color": "#69D92A",
+		"Id": "22222222-0000-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Rose",
+		"InfoTip": "Default rose folder icon",
+		"Color": "#D122C2",
+		"Id": "33333333-0000-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Bright Turquoise",
+		"InfoTip": "Default bright turquoise folder icon",
+		"Color": "#0ECCAA",
+		"Id": "44444444-0000-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Dark Turquoise",
+		"InfoTip": "Default dark turquoise folder icon",
+		"Color": "#239C86",
+		"Id": "55555555-0000-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Yellow",
+		"InfoTip": "Default yellow folder icon",
+		"Color": "#E0DE39",
+		"Id": "66666666-0000-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Green",
+		"InfoTip": "Default green folder icon",
+		"Color": "#38AE03",
+		"Id": "77777777-0000-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Cornflower Blue",
+		"InfoTip": "Default cornflower blue folder icon",
+		"Color": "#5C6BDB",
+		"Id": "88888888-0000-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Orange",
+		"InfoTip": "Default orange folder icon",
+		"Color": "#EB8519",
+		"Id": "99999999-0000-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Magenta",
+		"InfoTip": "Default magenta folder icon",
+		"Color": "#C943EB",
+		"Id": "99999999-1000-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Dark magenta",
+		"InfoTip": "Default dark magenta folder icon",
+		"Color": "#920FA8",
+		"Id": "99999999-1100-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Bright cyan",
+		"InfoTip": "Default bright cyan folder icon",
+		"Color": "#2FEDB3",
+		"Id": "99999999-1200-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Malibu",
+		"InfoTip": "Default malibu folder icon",
+		"Color": "#6AB1E8",
+		"Id": "99999999-1300-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Gray",
+		"InfoTip": "Default gray folder icon",
+		"Color": "#707070",
+		"Id": "99999999-1400-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Bright magenta",
+		"InfoTip": "Default bright magenta folder icon",
+		"Color": "#FF269E",
+		"Id": "99999999-1500-0000-0000-000000000000"
+	},
+	{
+		"CategoryId": "11111111-1111-1111-1111-111111111111",
+		"Name": "Blue",
+		"InfoTip": "Default blue folder icon",
+		"Color": "#0D28EE",
+		"Id": "99999999-1600-0000-0000-000000000000"
+	}
+]

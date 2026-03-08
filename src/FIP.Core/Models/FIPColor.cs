@@ -389,6 +389,8 @@ namespace FIP.Core.Models
             _ => Value,
         };
 
+        public Color ToWindowsUIColor() => Color.FromArgb(A, R, G, B);
+
         public override bool Equals(object obj) => obj is FIPColor color && Equals(color);
 
         public bool Equals(FIPColor other)

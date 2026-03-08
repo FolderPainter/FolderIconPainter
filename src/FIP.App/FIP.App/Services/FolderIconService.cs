@@ -6,7 +6,9 @@ using FIP.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.Storage;
 using Bitmap = System.Drawing.Bitmap;
 
@@ -18,8 +20,10 @@ namespace FIP.App.Services
 
         public FolderIconService()
         {
-            Initialize(Path.Combine(ApplicationData.Current.LocalFolder.Path,
-                AppConstants.StorageSettings.IconsFolderName));
+            StorageFolder localFolder = WindowHelper.GetAppLocalFolder();
+
+            Initialize(Path.Combine(localFolder.Path,
+                 AppConstants.StorageSettings.IconsFolderName));
         }
 
         public void Initialize(string folderPath)
@@ -124,10 +128,26 @@ namespace FIP.App.Services
             ArgumentNullException.ThrowIfNull(customIcons);
             ArgumentNullException.ThrowIfNull(category);
 
+            var firstIcon = customIcons.FirstOrDefault();
+            if (firstIcon is null)
+            {
+                return true;
+            }
+
             foreach (var customIcon in customIcons)
             {
                 if (!await MoveFolderIconAsync(customIcon, category))
                     return false;
+            }
+
+            // Delete folder if it's empty
+            string categoryFolderPath = Path.Combine(_folderPath, firstIcon.CategoryId.ToString());
+            if (Directory.Exists(categoryFolderPath))
+            {
+                StorageFolder iconsFolder = await StorageFolder.GetFolderFromPathAsync(categoryFolderPath);
+
+                if (!Directory.GetFiles(categoryFolderPath).Any())
+                    await iconsFolder.DeleteAsync();
             }
 
             return true;
@@ -137,8 +157,23 @@ namespace FIP.App.Services
         {
             ArgumentNullException.ThrowIfNull(customIcon);
 
-            string iconFolderPath = Path.Combine(_folderPath, customIcon.CategoryId.ToString());
-            return Path.Combine(iconFolderPath, $"{customIcon.Id}.ico");
+            if (customIcon.CategoryId == AppConstants.DefaultCategoryId)
+            {
+                if (!NativeMethods.IsAppPackaged)
+                {
+                    return Path.Combine(AppContext.BaseDirectory, AppConstants.AssetPaths.DefaultIconsFolder, $"{customIcon.Id}.ico");
+                }
+                else
+                {
+                    Uri sourceUri = new Uri(new Uri($"ms-appx:///{AppConstants.AssetPaths.DefaultIconsFolder}"), $"{customIcon.Id}.ico");
+                    StorageFile file = Task.Run(async () => await StorageFile.GetFileFromApplicationUriAsync(sourceUri)).Result;
+                    return file.Path;
+                }
+            }
+            else
+            {
+                return Path.Combine(_folderPath, $"{customIcon.CategoryId}/{customIcon.Id}.ico");
+            }
         }
 
         public bool FolderIconExists(CustomIcon customIcon)
@@ -195,10 +230,24 @@ namespace FIP.App.Services
         {
             ArgumentNullException.ThrowIfNull(customIcon);
 
-            string iconFolderPath = Path.Combine(_folderPath, customIcon.CategoryId.ToString());
-            return Path.Combine(iconFolderPath, $"{customIcon.Id}.svg");
+            if (customIcon.CategoryId == AppConstants.DefaultCategoryId)
+            {
+                if (!NativeMethods.IsAppPackaged)
+                {
+                    return Path.Combine(AppContext.BaseDirectory, AppConstants.AssetPaths.DefaultIconsFolder, $"{customIcon.Id}.svg");
+                }
+                else
+                {
+                    Uri sourceUri = new Uri(new Uri($"ms-appx:///{AppConstants.AssetPaths.DefaultIconsFolder}"), $"{customIcon.Id}.svg");
+                    StorageFile file = Task.Run(async () => await StorageFile.GetFileFromApplicationUriAsync(sourceUri)).Result;
+                    return file.Path;
+                }
+            }
+            else
+            {
+                return Path.Combine(_folderPath, $"{customIcon.CategoryId}/{customIcon.Id}.svg");
+            }
         }
-
 
         public bool SvgFolderIconExists(CustomIcon customIcon)
         {
@@ -225,14 +274,22 @@ namespace FIP.App.Services
             bool rasterIconDeleted = true;
             bool svgIconDeleted = true;
 
-            if (FolderIconExists(customIcon))
-            {
-                rasterIconDeleted = await DeleteFolderIconAsync(customIcon);
-            }
+            rasterIconDeleted = await DeleteFolderIconAsync(customIcon);
+            svgIconDeleted = await DeleteSvgFolderIconAsync(customIcon);
 
-            if (SvgFolderIconExists(customIcon))
+            if (rasterIconDeleted && svgIconDeleted)
             {
-                svgIconDeleted = await DeleteSvgFolderIconAsync(customIcon);
+                // Delete folder if it's empty
+                string categoryFolderPath = Path.Combine(_folderPath, customIcon.CategoryId.ToString());
+                if (!Directory.Exists(categoryFolderPath))
+                {
+                    return true;
+                }
+
+                StorageFolder iconsFolder = await StorageFolder.GetFolderFromPathAsync(categoryFolderPath);
+
+                if (!Directory.GetFiles(categoryFolderPath).Any())
+                    await iconsFolder.DeleteAsync();
             }
 
             return rasterIconDeleted && svgIconDeleted;

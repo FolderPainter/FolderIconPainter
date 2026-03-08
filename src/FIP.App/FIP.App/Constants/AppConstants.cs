@@ -1,10 +1,18 @@
-﻿namespace FIP.App.Constants
+﻿using System;
+
+namespace FIP.App.Constants
 {
     public static class AppConstants
     {
+        public static Guid DefaultCategoryId => new Guid("11111111-1111-1111-1111-111111111111");
+
         public static class AssetPaths
         {
-            public const string SVGFolderIconTemplate = "ms-appx:///Assets/win11-folder-template.svg";
+            public const string SVGFolderIconTemplate = "Assets/win11-folder-template.svg";
+            
+            public const string DefaultIconsJSON = "Assets/DefaultIcons.json";
+
+            public const string DefaultIconsFolder = "Assets/DefaultIcons/";
         }
 
         public static class StorageSettings

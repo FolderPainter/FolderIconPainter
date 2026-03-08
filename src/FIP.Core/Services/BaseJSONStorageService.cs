@@ -11,7 +11,7 @@ namespace FIP.Core.Services
 
         public JsonSerializerOptions JsonSerializerOptions { get; set; }
 
-        protected BaseJSONStorageService ()
+        protected BaseJSONStorageService()
         {
             JsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
         }
@@ -34,7 +34,7 @@ namespace FIP.Core.Services
             }
         }
 
-        public virtual IEnumerable<TValue> GetAllValues<TValue>() 
+        public virtual IEnumerable<TValue> GetAllValues<TValue>()
         {
             try
             {

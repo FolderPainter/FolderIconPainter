@@ -26,17 +26,21 @@ namespace FIP.App.Helpers
                     // Services
                     .AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true))
                     .AddSingleton<ISVGPainterService, SVGPainterService>()
+                    .AddTransient<IFolderPainterService, FolderPainterService>()
                     .AddSingleton<IFolderIconService, FolderIconService>()
                     .AddSingleton<ICategoryStorageService, CategoryStorageService>()
                     .AddSingleton<ICustomIconStorageService, CustomIconStorageService>()
                     // ViewModels
                     .AddSingleton<CustomIconsViewModel>()
+                    .AddSingleton<AllFolderIconsViewModel>()
                 ).Build();
         }
 
         public static void ConfigureLogger()
         {
-            var logPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, AppConstants.StorageSettings.LogsFileName);
+            StorageFolder localFolder = WindowHelper.GetAppLocalFolder();
+
+            var logPath = Path.Combine(localFolder.Path, AppConstants.StorageSettings.LogsFileName);
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File(

@@ -1,4 +1,5 @@
 ﻿using FIP.App.Constants;
+using FIP.App.Helpers;
 using FIP.Core.Models;
 using FIP.Core.Services;
 using System;
@@ -17,7 +18,9 @@ namespace FIP.App.Services
 
         public CustomIconStorageService()
         {
-            Initialize(Path.Combine(ApplicationData.Current.LocalFolder.Path,
+            StorageFolder localFolder = WindowHelper.GetAppLocalFolder();
+
+            Initialize(Path.Combine(localFolder.Path,
                 AppConstants.StorageSettings.StorageFolderName, AppConstants.StorageSettings.FolderIconsStorageFileName));
 
             _customIcons = GetAllValues<CustomIcon>();
@@ -36,7 +39,7 @@ namespace FIP.App.Services
 
         public CustomIcon GetCustomIconById(Guid id)
         {
-            return CustomIcons.SingleOrDefault(x => x.Id == id);
+            return CustomIcons.FirstOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<CustomIcon> GetCustomIconsByCategoryId(Guid categoryId)

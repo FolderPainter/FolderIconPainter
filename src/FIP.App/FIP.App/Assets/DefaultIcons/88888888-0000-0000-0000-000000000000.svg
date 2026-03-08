@@ -1,0 +1,72 @@
+<svg id="Win11FolderIcon" viewBox="0 0 300 300" x="0" y="0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <linearGradient gradientTransform="matrix(2.8346 0 0 -2.8346 2297.11 99.6771)" gradientUnits="userSpaceOnUse" id="BackRectGradient" x1="-769.062" x2="-740.602" y1="3.5525" y2="-54.8002">
+    <stop id="BackGradientStop0" offset="0" stop-color="#5C6BDB">
+    </stop>
+    <stop id="BackGradientStop1" offset="0.2636" stop-color="#6371CF">
+    </stop>
+    <stop id="BackGradientStop2" offset="0.6061" stop-color="#6C7AC6">
+    </stop>
+    <stop id="BackGradientStop3" offset="1" stop-color="#6F7DC3">
+    </stop>
+  </linearGradient>
+  <path d="M33.1,40.1c-7.7,0 -14,6.3 -14,14v13.8V232c0,7.7 6.2,14 14,14h233.8c7.7,0 14,-6.3 14,-14V82c0,-7.7 -6.2,-14 -14,-14H136c0,0 -13.3,-18.4 -19,-22.6c-5.6,-4.2 -12.5,-5.3 -12.5,-5.3L33.1,40.1L33.1,40.1Z" fill="url(#BackRectGradient)" id="BackRect">
+  </path>
+  <radialGradient cx="77.9905" cy="11.3605" fx="77.6635" fy="-16.0154" gradientTransform="matrix(1.017 -0.0396431 -0.00779803 -0.2175 2.1971 92.313)" gradientUnits="userSpaceOnUse" id="ShadowGradient" r="87.0198">
+    <stop id="ShadowGradientStop0" offset="0" stop-color="#2E2E2E" stop-opacity="0.5">
+    </stop>
+    <stop id="ShadowGradientStop1" offset="1" stop-color="#5C6BDB" stop-opacity="0">
+    </stop>
+  </radialGradient>
+  <path d="M138,108.4H19.1V67.1h108.2c5.9,0 10.7,4.8 10.7,10.7V108.4Z" fill="url(#ShadowGradient)" id="Shadow" opacity="0.9">
+  </path>
+  <g display="none" id="File">
+    <path d="M136,111.5H26.7V78.7c0,-3.3 2.7,-6 6,-6H136V111.5Z" display="inline" fill="#F4F4F4" id="FileRect">
+    </path>
+    <linearGradient gradientTransform="matrix(1 0 0 1 0 -196)" gradientUnits="userSpaceOnUse" id="VGradRect_1_" x1="81.35" x2="81.35" y1="274.3" y2="287.766">
+      <stop offset="0" stop-color="#F4F4F4">
+      </stop>
+      <stop offset="0.1272" stop-color="#EBEBEB">
+      </stop>
+      <stop offset="0.3342" stop-color="#D3D3D3">
+      </stop>
+      <stop offset="0.5952" stop-color="#ABABAB">
+      </stop>
+      <stop offset="0.8971" stop-color="#757575">
+      </stop>
+      <stop offset="1" stop-color="#616161">
+      </stop>
+    </linearGradient>
+    <path d="M136,91.8H26.7v-7.5c0,-3.3 2.7,-6 6,-6H136V91.8Z" display="inline" fill="url(#VGradRect_1_)" id="VGradRect">
+    </path>
+    <linearGradient gradientTransform="matrix(1 0 0 1 0 -196)" gradientUnits="userSpaceOnUse" id="HGradRect_1_" x1="26.7" x2="137.085" y1="293.7" y2="293.7">
+      <stop offset="0" stop-color="#F4F4F4">
+      </stop>
+      <stop offset="0.1698" stop-color="#E9E9E9" stop-opacity="0.9151">
+      </stop>
+      <stop offset="0.4278" stop-color="#E2E2E2" stop-opacity="0.7861">
+      </stop>
+      <stop offset="1" stop-color="#E0E0E0" stop-opacity="0.5">
+      </stop>
+    </linearGradient>
+    <path d="M136,117.1H26.7V84.3c0,-3.3 2.7,-6 6,-6H136V117.1Z" display="inline" fill="url(#HGradRect_1_)" id="HGradRect">
+    </path>
+  </g>
+  <linearGradient gradientTransform="matrix(1 0 0 -1 0 106)" gradientUnits="userSpaceOnUse" id="MiddleRectGradient" x1="19.1" x2="280.9" y1="-51.2" y2="-51.2">
+    <stop id="MiddleGradientStop0" offset="0" stop-color="#E5E7FA">
+    </stop>
+    <stop id="MiddleGradientStop1" offset="1" stop-color="#A6ADED">
+    </stop>
+  </linearGradient>
+  <path d="M135.6,72.7v13.9H103C119.3,86.7 123.5,81.9 135.6,72.7ZM135.6,72.7h131.3c7.7,0 14,6.2 14,13.9H135.6V72.7ZM33.1,86.6h247.8v141.1c0,7.7 -6.2,14 -14,14l0,0H33.1c-7.7,0 -14,-6.3 -14,-14l0,0v-127C19.1,92.9 25.3,86.6 33.1,86.6L33.1,86.6L33.1,86.6Z" fill="url(#MiddleRectGradient)" id="MiddleRect">
+  </path>
+  <linearGradient gradientTransform="matrix(1 0 0 -1 0 204)" gradientUnits="userSpaceOnUse" id="FrontRectGradient" x1="112.305" x2="194.319" y1="118.019" y2="-42.9412">
+    <stop id="FrontGradientStop0" offset="0" stop-color="#BBC0F2" stop-opacity="0.7">
+    </stop>
+    <stop id="FrontGradientStop1" offset="0.3287" stop-color="#A6ADED" stop-opacity="0.7986">
+    </stop>
+    <stop id="FrontGradientStop2" offset="1" stop-color="#7782E4">
+    </stop>
+  </linearGradient>
+  <path d="M137.3,78.3v13.9h-32.6C120.9,92.1 125.3,87.4 137.3,78.3ZM137.3,78.3h129.6c7.7,0 14,6.2 14,13.9H137.3V78.3ZM33.1,92.2h247.8v135.5c0,7.7 -6.2,14 -14,14H33.1c-7.7,0 -14,-6.3 -14,-14V106.2C19.1,98.4 25.3,92.2 33.1,92.2Z" fill="url(#FrontRectGradient)" id="FrontRect">
+  </path>
+</svg>

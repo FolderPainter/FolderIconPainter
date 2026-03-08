@@ -1,11 +1,16 @@
 // Licensed under the MIT License.
 
+using CommunityToolkit.Mvvm.DependencyInjection;
 using FIP.App.Helpers;
+using FIP.Core.Services;
+using FIP.Core.ViewModels;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using System.IO.Compression;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Devices.Geolocation;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using Windows.Storage.Pickers;
@@ -15,9 +20,43 @@ namespace FIP.App.UserControls
 {
     public sealed partial class DropZone : UserControl
     {
+        private IFolderPainterService FolderPainterService { get; } = Ioc.Default.GetRequiredService<IFolderPainterService>();
+
         public DropZone()
         {
             this.InitializeComponent();
+        }
+
+        public static readonly string NoNameString = "No name";
+
+        public static readonly DependencyProperty IconViewModelProperty = 
+            DependencyProperty.Register("IconViewModel", typeof(CustomIconViewModel),
+                typeof(DropZone), new PropertyMetadata(null));
+
+        public CustomIconViewModel IconViewModel
+        {
+            get { return (CustomIconViewModel)GetValue(IconViewModelProperty); }
+            set { SetValue(IconViewModelProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowIconModeProperty = 
+            DependencyProperty.Register("ShowIconMode", typeof(bool),
+                typeof(DropZone), new PropertyMetadata(false));
+
+        public bool ShowIconMode
+        {
+            get { return (bool)GetValue(ShowIconModeProperty); }
+            set { SetValue(ShowIconModeProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowNameModeProperty =
+            DependencyProperty.Register("ShowNameMode", typeof(bool),
+                typeof(DropZone), new PropertyMetadata(false));
+
+        public bool ShowNameMode
+        {
+            get { return (bool)GetValue(ShowNameModeProperty); }
+            set { SetValue(ShowNameModeProperty, value); }
         }
 
         public Color BackgroundColor
@@ -28,7 +67,8 @@ namespace FIP.App.UserControls
 
         // Using a DependencyProperty as the backing store for BackgroundColor.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BackgroundColorProperty =
-            DependencyProperty.Register("BackgroundColor", typeof(Color), typeof(DropZone), new PropertyMetadata(Colors.AliceBlue));
+            DependencyProperty.Register("BackgroundColor", typeof(Color), 
+                typeof(DropZone), new PropertyMetadata(Colors.AliceBlue));
 
         public Color BackgroundPointerOverColor
         {
@@ -50,10 +90,15 @@ namespace FIP.App.UserControls
         public static readonly DependencyProperty BackgroundPressedColorProperty =
             DependencyProperty.Register("BackgroundPressedColor", typeof(Color), typeof(DropZone), new PropertyMetadata(Colors.Aqua));
 
-        private async void ZoneButton_Click(object sender, RoutedEventArgs e)
+        private async void DropZoneClick(object sender, RoutedEventArgs e)
         {
+            if (IconViewModel is null)
+            {
+                return;
+            }
+
             // Clear previous returned file name, if it exists, between iterations of this scenario
-            ZoneButton.Content = "";
+            ZoneTextBlock.Text = "";
 
             // Create a folder picker
             FolderPicker openPicker = new FolderPicker();
@@ -74,16 +119,23 @@ namespace FIP.App.UserControls
             if (folder != null)
             {
                 StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", folder);
-                ZoneButton.Content = "Picked folder: " + folder.Name;
+                ZoneTextBlock.Text = "Picked folder: " + folder.Name;
+
+                FolderPainterService.SettingIcon(folder.Path, IconViewModel.IconPath);
+                FolderPainterService.RefreshIcons();
             }
             else
             {
-                ZoneButton.Content = "Operation cancelled.";
+                ZoneTextBlock.Text = "Operation cancelled.";
             }
         }
 
-        private async void ZoneButton_Drop(object sender, DragEventArgs e)
+        private async void DropZoneDrop(object sender, DragEventArgs e)
         {
+            if (IconViewModel is null)
+            {
+                return;
+            }
 
             if (e.DataView.Contains(StandardDataFormats.StorageItems))
             {
@@ -92,6 +144,9 @@ namespace FIP.App.UserControls
                 {
                     foreach (var appFile in items)
                     {
+                        FolderPainterService.SettingIcon(appFile.Path, IconViewModel.IconPath);
+                        FolderPainterService.RefreshIcons();
+
                         ZoneTextBlock.Text += appFile.Path;
                         ZoneTextBlock.Text += '\n';
                     }
@@ -99,14 +154,13 @@ namespace FIP.App.UserControls
             }
         }
 
-        private void ZoneButton_DragOver(object sender, DragEventArgs e)
+        private void DropZoneDragOver(object sender, DragEventArgs e)
         {
             e.AcceptedOperation = DataPackageOperation.Move;
 
             if (e.DragUIOverride != null)
             {
-                e.DragUIOverride.Caption = "Paint Folder!";
-                e.DragUIOverride.IsContentVisible = true;
+                ZoneTextBlock.Text = "Paint Folder!";
             }
         }
     }

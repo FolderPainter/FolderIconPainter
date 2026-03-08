@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
 using FIP.Core.Models;
 using FluentAssertions;
+using System.Collections.Generic;
+using System.Globalization;
 using Xunit;
 
-namespace MudBlazor.UnitTests.Utilities
+namespace FIP.Core.UnitTests
 {
     public class FIPColorTests
     {

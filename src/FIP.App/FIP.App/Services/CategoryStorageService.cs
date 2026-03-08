@@ -7,6 +7,7 @@ using System.Linq;
 using Windows.Storage;
 using FIP.Core.Models;
 using CommunityToolkit.WinUI.UI;
+using FIP.App.Helpers;
 
 namespace FIP.App.Services
 {
@@ -18,7 +19,9 @@ namespace FIP.App.Services
 
         public CategoryStorageService()
         {
-            Initialize(Path.Combine(ApplicationData.Current.LocalFolder.Path,
+            StorageFolder localFolder = WindowHelper.GetAppLocalFolder();
+
+            Initialize(Path.Combine(localFolder.Path,
                 AppConstants.StorageSettings.StorageFolderName, AppConstants.StorageSettings.CategoriesStorageFileName));
 
             _categories = GetAllValues<Category>();
@@ -37,7 +40,7 @@ namespace FIP.App.Services
 
         public Category GetCategoryById(Guid id)
         {
-            return Categories.SingleOrDefault(x => x.Id == id);
+            return Categories.FirstOrDefault(x => x.Id == id);
         }
 
         public Category AddCategory(Category category)

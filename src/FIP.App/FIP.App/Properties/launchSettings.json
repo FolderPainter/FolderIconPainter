@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "FIP Packaged": {
+      "commandName": "MsixPackage",
+      "nativeDebugging": true
+    },
+    "FIP Unpackaged": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}

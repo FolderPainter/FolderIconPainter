@@ -25,7 +25,7 @@
     <Page Update="Views\CustomIconsPage.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\AllIconsPage.xaml">
+    <Page Update="Views\AllFolderIconsPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SettingsPage.xaml">

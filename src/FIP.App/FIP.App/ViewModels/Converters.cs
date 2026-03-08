@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using Microsoft.UI.Xaml;
+using System.Collections;
+using System.Reflection;
 
 namespace FIP.App.ViewModels
 {
     /// <summary>
     /// Provides static methods for use in x:Bind function binding to convert bound values to the required value.
     /// </summary>
+#nullable enable
     public static class Converters
     {
         /// <summary>
@@ -21,5 +24,9 @@ namespace FIP.App.ViewModels
         /// Returns true if the specified <see cref="IList"/> value is not null or empty; otherwise, returns false.
         /// </summary>
         public static bool IsNotNullOrEmpty(IList value) => !(value is null or []);
+
+        public static Visibility ToVisible(bool value) => value ? Visibility.Visible : Visibility.Collapsed;
+
+        public static Visibility ToNotVisible(bool value) => ToVisible(!value);
     }
 }
