@@ -13,8 +13,8 @@ pool:
   vmImage: 'windows-2022'
 
 variables:
-  solution: '**/**/FolderIconPainter.sln'
-  UnitTestProject: '**/**/**/src/FIP.UnitTests.csproj'
+  solution: '**/FolderIconPainter.sln'
+  UnitTestProject: '**/**/FIP.UnitTests.csproj'
   buildPlatform: 'x64'
   buildConfiguration: 'Debug'
   appxPackageDir: '$(Build.ArtifactStagingDirectory)\AppxPackages\\'
