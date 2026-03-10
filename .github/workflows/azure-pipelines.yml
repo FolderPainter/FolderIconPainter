@@ -1,0 +1,71 @@
+# Universal Windows Platform
+# Build a Universal Windows Platform project using Visual Studio.
+# Add steps that test and distribute an app, save build artifacts, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - feature/*
+    - fix/*
+
+pool:
+  vmImage: 'windows-2022'
+
+variables:
+  solution: '**/FolderIconPainter.sln'
+  UnitTestProject: '**/FIP.UnitTests.csproj'
+  buildPlatform: 'x64'
+  buildConfiguration: 'Debug'
+  appxPackageDir: '$(Build.ArtifactStagingDirectory)\AppxPackages\\'
+
+jobs:
+- job: Build
+  displayName: 'Build & Run Tests'
+  timeoutInMinutes: 10
+  steps:
+  - task: NuGetToolInstaller@1
+    displayName: Install NuGet 5.8.0
+    inputs:
+      versionSpec: 5.8.0
+
+  - task: NuGetCommand@2
+    displayName: Restore NuGet Packages for Folder Icon Painter 
+    inputs:
+      command: 'restore'
+      restoreSolution: '$(solution)'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build Folder Icon Painter Package'
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      projects: '$(solution)'
+      configuration: '$(buildConfiguration)'
+      arguments: '/p:AppxPackageDir="$(appxPackageDir)" 
+                  /p:platform="$(buildPlatform)" 
+                  /p:configuration="$(buildConfiguration)" 
+                  /p:PublishProfile="./FIP.Core/Properties/PublishProfiles/win-$(buildPlatform).pubxml"'
+      zipAfterPublish: false
+      modifyOutputPath: false
+
+  - script: |
+      dir /b /s $(Build.ArtifactStagingDirectory)
+      dir /b /s $(System.DefaultWorkingDirectory)
+    displayName: 'List contents of ArtifactStagingDirectory and DefaultWorkingDirectory'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Run Unit Tests'
+    inputs:
+      command: 'test'
+      projects: '$(UnitTestProject)'
+      arguments: '--configuration Debug --logger trx --results-directory $(Agent.TempDirectory)/UnitTestsResults'
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Unit Test Results'
+    inputs:
+      testResultsFormat: VSTest
+      testResultsFiles: '**\*.trx'
+      searchFolder: '$(Agent.TempDirectory)/UnitTestsResults'
+      failTaskOnFailedTests: true
+      testRunTitle: 'xUnit tests'
