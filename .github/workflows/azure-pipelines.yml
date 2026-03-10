@@ -13,8 +13,8 @@ pool:
   vmImage: 'windows-2022'
 
 variables:
-  solution: '**/**/src/FolderIconPainter.sln'
-  UnitTestProject: '**/**/**/FIP.UnitTests.csproj'
+  solution: '**/**/FolderIconPainter.sln'
+  UnitTestProject: '**/**/**/src/FIP.UnitTests.csproj'
   buildPlatform: 'x64'
   buildConfiguration: 'Debug'
   appxPackageDir: '$(Build.ArtifactStagingDirectory)\AppxPackages\\'
@@ -41,7 +41,6 @@ jobs:
       command: 'publish'
       publishWebProjects: false
       projects: '$(solution)'
-      configuration: '$(buildConfiguration)'
       arguments: '/p:AppxPackageDir="$(appxPackageDir)" 
                   /p:platform="$(buildPlatform)" 
                   /p:configuration="$(buildConfiguration)" 
