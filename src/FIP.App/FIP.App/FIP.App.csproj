@@ -10,6 +10,14 @@
         <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
         <UseWinUI>true</UseWinUI>
         <UserSecretsId>18a87062-8b5a-4496-a3ae-68a955b20793</UserSecretsId>
+        <Configurations>Debug;Release;Debug-Unpackaged;Release-Unpackaged</Configurations>
+        <Release>true</Release>
+        <Release Condition="'$(Configuration)' == 'Debug' Or '$(Configuration)' == 'Debug-Unpackaged'">false</Release>
+        <Packaged>true</Packaged>
+        <Packaged Condition="'$(Configuration)' == 'Debug-Unpackaged' Or '$(Configuration)' == 'Release-Unpackaged'">false</Packaged>
+        <Optimized>true</Optimized>
+        <Optimized Condition="'$(Configuration)' == 'Debug-Unpackaged' Or '$(Configuration)' == 'Debug'">false</Optimized>
+        <PublishProfile>win-$(Platform).pubxml</PublishProfile>
     </PropertyGroup>
     <ItemGroup>
         <None Remove="AppShell.xaml" />
