@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using Windows.Storage;
 using FIP.Core.Models;
-using CommunityToolkit.WinUI.UI;
 using FIP.App.Helpers;
 
 namespace FIP.App.Services

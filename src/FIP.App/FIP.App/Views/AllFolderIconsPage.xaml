@@ -9,7 +9,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:usercontrols="using:FIP.App.UserControls"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
 	xmlns:viewmodels="using:FIP.App.ViewModels" xmlns:models="using:FIP.Core.ViewModels"
 	DataContext="{x:Bind ViewModel, Mode=OneWay}"
     mc:Ignorable="d">
@@ -95,19 +94,15 @@
 				</StackPanel>
 			</Grid>
 
-			<controls:AdaptiveGridView x:Name="AdaptiveGridViewControl"
+		<GridView x:Name="AdaptiveGridViewControl"
 									   Margin="0,8,32,0" Grid.Row="1" Grid.Column="1"
-                                       StretchContentForSingleRow="False"
-                                       VerticalContentAlignment="Stretch"
-                                       HorizontalContentAlignment="Stretch"
-                                       OneRowModeEnabled="False"
-                                       SelectionMode="None"
-									   ScrollViewer.VerticalScrollBarVisibility="Visible"
+									   SelectionMode="None"
+									   ScrollViewer.VerticalScrollBarVisibility="Auto"
 									   ScrollViewer.VerticalScrollMode="Auto"
-                                       ItemTemplate="{StaticResource WrapTemplate}"
+									   ItemTemplate="{StaticResource WrapTemplate}"
 									   ItemsSource="{x:Bind itemsCVS.View, Mode=OneWay}">
-						
-				<controls:AdaptiveGridView.GroupStyle>
+
+				<GridView.GroupStyle>
 					<GroupStyle>
 						<GroupStyle.HeaderTemplate>
 							<DataTemplate x:DataType="viewmodels:GroupInfoList">
@@ -118,8 +113,8 @@
 							</DataTemplate>
 						</GroupStyle.HeaderTemplate>
 					</GroupStyle>
-				</controls:AdaptiveGridView.GroupStyle>
-			</controls:AdaptiveGridView>
+				</GridView.GroupStyle>
+			</GridView>
 
 	</Grid>
 </Page>

@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.WinUI.Helpers;
-using FIP.App.Constants;
+﻿using FIP.App.Constants;
 using FIP.App.Helpers;
 using FIP.Core.Models;
 using FIP.Core.Services;
@@ -8,7 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.Storage;
 using Bitmap = System.Drawing.Bitmap;
 
@@ -194,7 +192,8 @@ namespace FIP.App.Services
                 Directory.CreateDirectory(newIconFolderPath);
                 StorageFolder iconsFolder = await StorageFolder.GetFolderFromPathAsync(newIconFolderPath);
                 StorageFile newIconFile = await iconsFolder.CreateFileAsync($"{customIcon.Id}.svg");
-                return await iconsFolder.WriteTextToFileAsync(svgString, newIconFile.Name);
+                await FileIO.WriteTextAsync(newIconFile, svgString);
+                return newIconFile;
             }
             catch (Exception)
             {

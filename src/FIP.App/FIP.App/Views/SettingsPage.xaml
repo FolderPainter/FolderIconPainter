@@ -7,10 +7,104 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:FIP.App.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
+    <Page.Resources>
+        <!--  These styles can be referenced to create a consistent SettingsPage layout  -->
+        <!--  Reference SettingsExpander Page in Windows Community Toolkit Gallery for the full sample  -->
 
-    <Grid>
-       
+        <!--  Spacing between cards  -->
+        <x:Double x:Key="SettingsCardSpacing">4</x:Double>
+
+        <!--  Style (inc. the correct spacing) of a section header  -->
+        <Style 
+            x:Key="SettingsSectionHeaderTextBlockStyle"
+            BasedOn="{StaticResource BodyStrongTextBlockStyle}"
+            TargetType="TextBlock">
+            <Style.Setters>
+                <Setter Property="Margin" Value="1,30,0,6" />
+            </Style.Setters>
+        </Style>
+    </Page.Resources>
+    <Grid x:Name="RootGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ScrollView
+            Grid.Row="1"
+            Padding="36,0,36,0"
+            VerticalScrollBarVisibility="Auto"
+            VerticalScrollMode="Auto">
+            <Border>
+                <StackPanel MaxWidth="1064" Spacing="{StaticResource SettingsCardSpacing}">
+                    <StackPanel.ChildrenTransitions>
+                        <RepositionThemeTransition />
+                    </StackPanel.ChildrenTransitions>
+                    <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="Appearance &amp; behavior" />
+                    <controls:SettingsCard Description="Select which app theme to display" Header="App theme">
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE790;" />
+                        </controls:SettingsCard.HeaderIcon>
+                        <ComboBox
+                            x:Name="themeMode"
+                            AutomationProperties.AutomationId="themeModeComboBox"
+                            SelectionChanged="themeMode_SelectionChanged">
+                            <ComboBoxItem Content="Light" Tag="Light" />
+                            <ComboBoxItem Content="Dark" Tag="Dark" />
+                            <ComboBoxItem Content="Use system setting" Tag="Default" />
+                        </ComboBox>
+                    </controls:SettingsCard>
+
+                    <controls:SettingsCard Description="Clear your recent or favorite icons" Header="Manage icons">
+                        <controls:SettingsCard.HeaderIcon>
+                            <FontIcon Glyph="&#xE8A9;" />
+                        </controls:SettingsCard.HeaderIcon>
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button
+                                x:Name="ClearRecentBtn"
+                                MinWidth="120"
+                                Content="Clear recents" />
+                            <Button
+                                x:Name="UnfavoriteBtn"
+                                MinWidth="120"
+                                Content="Remove favorites" />
+                        </StackPanel>
+                    </controls:SettingsCard>
+                    <!--  About  -->
+                    <TextBlock Style="{StaticResource SettingsSectionHeaderTextBlockStyle}" Text="About" />
+                    <controls:SettingsExpander
+                        Margin="0,0,0,36"
+                        Description="© 2026 George Radchuk. All rights reserved."
+                        Header="{StaticResource AppTitleName}">
+                        <controls:SettingsExpander.HeaderIcon>
+                            <BitmapIcon ShowAsMonochrome="False" UriSource="ms-appx:///Images/BadgeLogo.png" />
+                        </controls:SettingsExpander.HeaderIcon>
+                        <TextBlock
+                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                            IsTextSelectionEnabled="True"
+                            Text="{x:Bind Version}" />
+                        <controls:SettingsExpander.Items>
+                            <controls:SettingsCard
+                                x:Name="toCloneRepoCard"
+                                Header="To clone this repository"
+                                IsClickEnabled="True">
+                                <TextBlock
+                                    x:Name="gitCloneTextBlock"
+                                    FontFamily="Consolas"
+                                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                    IsTextSelectionEnabled="True"
+                                    Text="git clone https://github.com/FolderPainter/FolderIconPainter" />
+                                <controls:SettingsCard.ActionIcon>
+                                    <FontIcon Glyph="&#xE8C8;" />
+                                </controls:SettingsCard.ActionIcon>
+                            </controls:SettingsCard>
+                        </controls:SettingsExpander.Items>
+                    </controls:SettingsExpander>
+                </StackPanel>
+
+            </Border>
+        </ScrollView>
     </Grid>
 </Page>

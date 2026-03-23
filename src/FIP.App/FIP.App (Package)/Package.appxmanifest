@@ -7,9 +7,9 @@
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="c8dd2b97-cef4-4e7f-91d2-7bd09b448b31"
-    Publisher="CN=George Radchuk"
-    Version="1.0.0.0" />
+    Name="GeorgeRadchuk.FolderIconPainter"
+    Publisher="CN=456F105E-8C42-4336-90BA-66BA6A287BBA"
+    Version="1.0.2.0" />
 
   <Properties>
     <DisplayName>Folder Icon Painter</DisplayName>
@@ -35,7 +35,7 @@
         Description="This program can help you change the color of the default folder icon on Windows 11 and 10."
         BackgroundColor="transparent"
         Square150x150Logo="Images\Square150x150Logo.png"
-        Square44x44Logo="Images\Square44x44Logo.png">
+        Square44x44Logo="Images\AppIcon.png">
         <uap:DefaultTile Wide310x150Logo="Images\Wide310x150Logo.png"  Square71x71Logo="Images\SmallTile.png" Square310x310Logo="Images\LargeTile.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="square150x150Logo"/>
@@ -44,6 +44,7 @@
           </uap:ShowNameOnTiles>
         </uap:DefaultTile >
         <uap:SplashScreen Image="Images\SplashScreen.png"  BackgroundColor="transparent"/>
+        <uap:LockScreen BadgeLogo="Images\BadgeLogo.png" Notification="badge"/>
       </uap:VisualElements>
     </Application>
   </Applications>
